@@ -9,29 +9,41 @@ export class AuthService {
 
   async init() {
     try {
+      console.log('Initializing Keycloak...');
       await this.keycloak.init({
         config: {
-          url: 'http://localhost:8080',
-          realm: 'SpeedyGo', // Your Keycloak realm
-          clientId: 'speedygo-frontend', // Your client ID
+          url: 'http://localhost:8080', // Keycloak server URL
+          realm: 'SpeedyGo', // Replace with your realm name
+          clientId: 'speedygo-frontend', // Replace with your client ID
         },
         initOptions: {
-          onLoad: 'check-sso', // ✅ Use 'check-sso' instead of 'login-required'
+          onLoad: 'login-required', // ✅ Force login
           checkLoginIframe: false,
-          silentCheckSsoRedirectUri: window.location.origin + '/assets/silent-check-sso.html',
         },
         enableBearerInterceptor: true,
       });
+
+      console.log('Keycloak initialized successfully');
     } catch (error) {
       console.error('Keycloak initialization failed:', error);
     }
   }
 
-  getToken(): string {
-    return this.keycloak.getKeycloakInstance().token || '';
+  async isLoggedIn(): Promise<boolean> {
+    return this.keycloak.isLoggedIn();
+  }
+
+  getToken(): string | null {
+    return this.keycloak.getKeycloakInstance().token || null;
+  }
+
+  async login() {
+    console.log('Redirecting to Keycloak login...');
+    await this.keycloak.login();
   }
 
   logout() {
+    console.log('Logging out...');
     this.keycloak.logout();
   }
 }

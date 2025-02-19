@@ -1,17 +1,17 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { DashboardComponent } from './dashboard/dashboard.component';
-import { HomeComponent } from './home/home.component';
+import { authGuard } from './guards/auth.guard';
+import {AllTemplateFrontComponent} from "./FrontOffice/all-template-front/all-template-front.component";
+import {AllTemplateBackComponent} from "./BackOffice/all-template-back/all-template-back.component";
 
 const routes: Routes = [
-  { path: 'admin', title: 'Dashboard Page', component: DashboardComponent },
-  {
-    path: '', title: 'Home Page', component: HomeComponent,
-  }
+  { path: '', component: AllTemplateFrontComponent },
+  { path: 'admin', component: AllTemplateBackComponent, canActivate: [authGuard] },
+  { path: '**', redirectTo: '' },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

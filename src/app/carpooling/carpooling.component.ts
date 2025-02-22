@@ -32,6 +32,7 @@ export class CarpoolingComponent implements OnInit {
     pricePerSeat: 0,
     typeservice: 'Carpooling'
   };
+  
 
   constructor(private carpoolingService: CarpoolingService) {}
 
@@ -66,6 +67,29 @@ export class CarpoolingComponent implements OnInit {
       }
     );
   }
+
+  deleteCarpool(id?: string) {
+    if (!id) {
+      console.error('Error: Cannot delete carpooling ride without an ID');
+      alert('Error: Ride ID is missing!');
+      return;
+    }
+  
+    if (confirm('Are you sure you want to cancel this ride?')) {
+      this.carpoolingService.deleteCarpooling(id).subscribe(
+        () => {
+          console.log('Carpooling ride canceled:', id);
+          alert('Ride canceled successfully!');
+          this.loadCarpooling(); // Refresh list after deleting
+        },
+        (error) => {
+          console.error('Error canceling carpooling:', error);
+          alert('Failed to cancel the ride.');
+        }
+      );
+    }
+  }
+  
 
   
   resetForm() {

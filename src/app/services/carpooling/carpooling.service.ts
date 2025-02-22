@@ -21,11 +21,14 @@ export class CarpoolingService {
 
   constructor(private http: HttpClient) {}
 
-  // Fetch available carpooling rides
+  
   getCarpooling(): Observable<Carpool[]> {
     return this.http.get<Carpool[]>(this.apiUrl);
   }
   addCarpooling(carpool: Carpool): Observable<Carpool> {
     return this.http.post<Carpool>(this.apiUrl, carpool);
+  }
+  deleteCarpooling(id: string): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
 }

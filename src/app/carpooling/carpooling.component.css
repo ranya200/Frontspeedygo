@@ -1,0 +1,145 @@
+/* Container Styling */
+.carpooling-container {
+    max-width: 1200px;
+    margin: auto;
+    text-align: center;
+    padding: 20px;
+  }
+  
+  h2 {
+    font-size: 28px;
+    color: #007bff;
+    margin-bottom: 20px;
+  }
+  
+  /* Carpooling List */
+  .carpooling-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+  }
+  
+  /* Carpool Card */
+  .carpool-card {
+    background: white;
+    width: 300px;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease-in-out;
+  }
+  
+  .carpool-card:hover {
+    transform: translateY(-5px);
+  }
+  
+  /* Card Header */
+  .card-header {
+    font-size: 20px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 15px;
+  }
+  
+  .card-header i {
+    color: #007bff;
+    margin-right: 5px;
+  }
+  
+  /* Card Body */
+  .card-body {
+    font-size: 16px;
+    color: #666;
+    text-align: left;
+  }
+  
+  .card-body p {
+    margin: 5px 0;
+  }
+  
+  .card-body i {
+    color: #ff6b6b;
+    margin-right: 5px;
+  }
+  
+  /* Card Footer */
+  .card-footer {
+    margin-top: 15px;
+  }
+  
+  .btn {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  
+  .btn:hover {
+    background-color: #0056b3;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .carpooling-list {
+      flex-direction: column;
+      align-items: center;
+    }
+  
+    .carpool-card {
+      width: 90%;
+    }
+
+    /* Submit Form Styling */
+.submit-form {
+    max-width: 500px;
+    margin: 40px auto;
+    padding: 20px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+  }
+  
+  .submit-form h2 {
+    font-size: 24px;
+    color: #007bff;
+    margin-bottom: 15px;
+  }
+  
+  .submit-form form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .submit-form input, .submit-form button {
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    font-size: 16px;
+    width: 100%;
+  }
+  
+  .submit-form input:focus {
+    outline: none;
+    border-color: #007bff;
+  }
+  
+  .submit-form button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .submit-form button:hover {
+    background-color: #0056b3;
+  }
+  
+  }
+  

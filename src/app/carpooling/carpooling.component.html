@@ -1,0 +1,37 @@
+<div class="carpooling-container">
+    <h2>Available Carpooling Rides</h2>
+  
+    <div class="carpooling-list">
+      <div class="carpool-card" *ngFor="let carpool of carpoolingList">
+        <div class="card-header">
+          <h3><i class="fas fa-user"></i> {{ carpool.driverName }}</h3>
+        </div>
+        <div class="card-body">
+          <p><i class="fas fa-map-marker-alt"></i> <strong>Pickup:</strong> {{ carpool.pickupLocation }}</p>
+          <p><i class="fas fa-map-marker-alt"></i> <strong>Dropoff:</strong> {{ carpool.dropoffLocation }}</p>
+          <p><i class="fas fa-clock"></i> <strong>Time:</strong> {{ carpool.departureTime }}</p>
+          <p><i class="fas fa-chair"></i> <strong>Seats Available:</strong> {{ carpool.availableSeats }}</p>
+          <p><i class="fas fa-dollar-sign"></i> <strong>Price:</strong> {{ carpool.pricePerSeat | currency }}</p>
+        </div>
+        <div class="card-footer">
+          <button class="btn">Book This ↑</button>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Submit Carpooling Form -->
+    <div class="submit-form">
+      <h2>Submit a Carpooling Ride</h2>
+      <form (submit)="submitCarpooling(); $event.preventDefault()">
+        <input type="text" placeholder="Driver Name" [(ngModel)]="newCarpool.driverName" name="driverName" required />
+        <input type="text" placeholder="Pickup Location" [(ngModel)]="newCarpool.pickupLocation" name="pickupLocation" required />
+        <input type="text" placeholder="Dropoff Location" [(ngModel)]="newCarpool.dropoffLocation" name="dropoffLocation" required />
+        <input type="datetime-local" [(ngModel)]="newCarpool.departureTime" name="departureTime" required />
+        <input type="number" placeholder="Seats Available" [(ngModel)]="newCarpool.availableSeats" name="availableSeats" min="1" required />
+        <input type="number" placeholder="Price per Seat ($)" [(ngModel)]="newCarpool.pricePerSeat" name="pricePerSeat" min="1" required />
+        <button type="submit">Submit</button>
+      </form>
+      
+    </div>
+  </div>
+  

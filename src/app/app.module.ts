@@ -1,5 +1,6 @@
 import { NgModule, APP_INITIALIZER } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { HttpClientModule } from '@angular/common/http'; // ✅ Import HttpClientModule
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -10,16 +11,17 @@ import { NavbarBackComponent } from './BackOffice/navbar-back/navbar-back.compon
 import { AllTemplateFrontComponent } from './FrontOffice/all-template-front/all-template-front.component';
 import { FooterFrontComponent } from './FrontOffice/footer-front/footer-front.component';
 import { HeaderFrontComponent } from './FrontOffice/header-front/header-front.component';
-import { SidebarBackComponent} from "./BackOffice/sidebar-back/sidebar-back.component";
+import { SidebarBackComponent } from "./BackOffice/sidebar-back/sidebar-back.component";
 
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 
+import { CommonModule } from '@angular/common';
 
 import { KeycloakAngularModule, KeycloakService } from 'keycloak-angular';
 import { AuthService } from './services/auth.service';
-import {NgOptimizedImage} from "@angular/common";
-
+import { NgOptimizedImage } from "@angular/common";
+import { CarpoolingComponent } from './carpooling/carpooling.component';
 
 export function initializeKeycloak(authService: AuthService) {
   return () => authService.init();
@@ -35,6 +37,7 @@ export function initializeKeycloak(authService: AuthService) {
   imports: [
     BrowserModule,
     AppRoutingModule,
+    HttpClientModule, // ✅ Ensure this is imported to fix HttpClient errors
     KeycloakAngularModule, // ✅ Keycloak Integration
     FormsModule,
     RouterModule,
@@ -42,7 +45,9 @@ export function initializeKeycloak(authService: AuthService) {
     NgOptimizedImage,
     SidebarBackComponent,
     NavbarBackComponent,
-    FooterBackComponent
+    FooterBackComponent,
+    CarpoolingComponent,
+    CommonModule
   ],
   providers: [
     {

@@ -30,9 +30,8 @@ export function initializeKeycloak(authService: AuthService) {
 @NgModule({
   declarations: [
     AppComponent,
-    AllTemplateFrontComponent,
-    HeaderFrontComponent,
-    FooterFrontComponent,
+    
+  
   ],
   imports: [
     BrowserModule,

@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { CarpoolingService } from '../services/carpooling/carpooling.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { HeaderFrontComponent } from '../FrontOffice/header-front/header-front.component';
+import { FooterFrontComponent } from '../FrontOffice/footer-front/footer-front.component';
 
 interface Carpool {
   id?: string;
@@ -17,7 +19,7 @@ interface Carpool {
 @Component({
   selector: 'app-carpooling',
   standalone: true,
-  imports: [CommonModule, FormsModule], // ✅ Import FormsModule for form handling
+  imports: [CommonModule, FormsModule, HeaderFrontComponent,FooterFrontComponent], // ✅ Import FormsModule for form handling
   templateUrl: './carpooling.component.html',
   styleUrls: ['./carpooling.component.css']
 })

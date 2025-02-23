@@ -22,6 +22,7 @@ import { KeycloakAngularModule, KeycloakService } from 'keycloak-angular';
 import { AuthService } from './services/auth.service';
 import { NgOptimizedImage } from "@angular/common";
 import { CarpoolingComponent } from './carpooling/carpooling.component';
+import { CompanyComponent } from './BackOffice/company/company.component';
 
 export function initializeKeycloak(authService: AuthService) {
   return () => authService.init();
@@ -46,6 +47,7 @@ export function initializeKeycloak(authService: AuthService) {
     NavbarBackComponent,
     FooterBackComponent,
     CarpoolingComponent,
+    CompanyComponent,
     CommonModule
   ],
   providers: [

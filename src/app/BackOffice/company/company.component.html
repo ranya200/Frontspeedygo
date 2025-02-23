@@ -1,0 +1,59 @@
+<app-sidebar-back></app-sidebar-back>
+<app-navbar-back></app-navbar-back>
+<div class="company-container">
+    <div class="company-header">
+        <h2>Company Information</h2>
+        <button class="add-btn" (click)="showAddCompanyModal = true">+ Add Company</button>
+    </div>
+
+    <div class="company-list">
+        <div class="company-card" *ngFor="let company of companyList" (click)="selectCompany(company)">
+            <button class="delete-btn" (click)="deleteCompany(company.id ); $event.stopPropagation()">X</button>
+            <div class="card-body">
+                <p><i class="fas fa-map-marker-alt"></i> <strong>Address:</strong> {{ company.address }}</p>
+                <p><i class="fas fa-phone"></i> <strong>Telephone:</strong> {{ company.telephone }}</p>
+                <p><i class="fas fa-envelope"></i> <strong>Email:</strong> {{ company.email }}</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Update Company Modal -->
+    <div class="modal-backdrop" *ngIf="selectedCompany">
+        <div class="modal">
+            <div class="modal-header">
+                <h2>Update Company</h2>
+                
+            </div>
+            <div class="modal-body">
+                <form (submit)="updateCompany(); $event.preventDefault()">
+                    <input type="text" placeholder="Company Address" [(ngModel)]="selectedCompany.address" name="address" required />
+                    <input type="text" placeholder="Telephone" [(ngModel)]="selectedCompany.telephone" name="telephone" required />
+                    <input type="email" placeholder="Email" [(ngModel)]="selectedCompany.email" name="email" required />
+                    <button type="submit" class="btn">Update</button>
+                    <button type="button" class="cancel-btn" (click)="selectedCompany = null">Cancel</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Company Modal -->
+    <div class="modal-backdrop" *ngIf="showAddCompanyModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2>Add New Company</h2>
+                
+            </div>
+            <div class="modal-body">
+                <form (submit)="submitCompany(); $event.preventDefault()">
+                    <input type="text" placeholder="Company Address" [(ngModel)]="newCompany.address" name="address" required />
+                    <input type="text" placeholder="Telephone" [(ngModel)]="newCompany.telephone" name="telephone" required />
+                    <input type="email" placeholder="Email" [(ngModel)]="newCompany.email" name="email" required />
+                    <button type="submit" class="btn">Submit</button>
+                    <button type="button" class="cancel-btn" (click)="showAddCompanyModal = false">Cancel</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+

@@ -26,8 +26,10 @@ interface Carpool {
 export class CarpoolingComponent implements OnInit {
   
   carpoolingList: Carpool[] = [];
+  
 
   selectedCarpool: Carpool | null = null
+  showSuggestRideModal: boolean = false;
   
   newCarpool: Carpool = {
     driverName: '',
@@ -67,6 +69,7 @@ export class CarpoolingComponent implements OnInit {
         alert('Carpooling added successfully!');
         this.loadCarpooling(); 
         this.resetForm();
+        this.showSuggestRideModal = false;
       },
       (error) => {
         console.error('Error submitting carpooling:', error);

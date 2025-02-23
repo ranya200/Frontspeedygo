@@ -1,0 +1,24 @@
+<!-- src/app/product-list/product-list.component.html -->
+<div class="container mt-4">
+  <h1>Liste des Produits</h1>
+  <div *ngIf="errorMessage" class="alert alert-danger">
+    {{ errorMessage }}
+  </div>
+  <div class="row">
+    <div *ngFor="let product of products" class="col-md-4 mb-4">
+      <div class="card h-100">
+        <!-- Afficher l'image si présente -->
+        <img src = 'assets/FrontOffice/images/covers/foodDelivery.png' class="card-img-top" alt="{{ product.name }}">
+        <div class="card-body">
+          <h5 class="card-title">{{ product.name }}</h5>
+          <p class="card-text">{{ product.description }}</p>
+          <p class="card-text"><strong>{{ product.price }} €</strong></p>
+        </div>
+        <div class="card-footer">
+          <button (click)="editProduct(product.id!)" class="btn btn-secondary btn-sm mr-2">Modifier</button>
+          <button (click)="deleteProduct(product.id!)" class="btn btn-danger btn-sm">Supprimer</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

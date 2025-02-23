@@ -205,3 +205,66 @@
   background-color: #0056b3;
 }
   
+
+
+/*Modal css*/
+
+
+
+
+
+/* Close Button */
+
+
+/* Hide Modal If `display: none` Is Applied Somewhere */
+.modal-backdrop[hidden] {
+  display: flex !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+/* Animation */
+@keyframes fadeIn {
+  from {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex !important; /* ✅ Ensure it's always visible */
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+.modal {
+  background: white;
+  width: 400px;
+  height: 700px;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  position: fixed; /* ✅ Ensures it appears on the screen */
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation: fadeIn 0.3s ease-in-out;
+  z-index: 10001;
+  display: block !important; /* ✅ Force visibility */
+  visibility: visible !important;
+  opacity: 1 !important;
+}

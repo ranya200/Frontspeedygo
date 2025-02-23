@@ -22,7 +22,7 @@
     <h2>Available Carpooling Rides</h2>
   
     <div class="carpooling-list">
-      <div class="carpool-card" *ngFor="let carpool of carpoolingList">
+      <div class="carpool-card" *ngFor="let carpool of carpoolingList" (click)="selectCarpool(carpool)">
         <button class="delete-btn" (click)="deleteCarpool(carpool.id )">X</button>
 
         <div class="card-header">
@@ -40,6 +40,30 @@
         </div>
       </div>
     </div>
+
+    <div class="modal-backdrop" *ngIf="selectedCarpool">
+      <div class="modal">
+        <div class="modal-header">
+          <h2>Update Carpooling Ride</h2>
+          
+        </div>
+        <div class="modal-body">
+          <form (submit)="updateCarpooling(); $event.preventDefault()">
+            <input type="text" placeholder="Driver Name" [(ngModel)]="selectedCarpool.driverName" name="driverName" required />
+            <input type="text" placeholder="Pickup Location" [(ngModel)]="selectedCarpool.pickupLocation" name="pickupLocation" required />
+            <input type="text" placeholder="Dropoff Location" [(ngModel)]="selectedCarpool.dropoffLocation" name="dropoffLocation" required />
+            <input type="datetime-local" [(ngModel)]="selectedCarpool.departureTime" name="departureTime" required />
+            <input type="number" placeholder="Seats Available" [(ngModel)]="selectedCarpool.availableSeats" name="availableSeats" min="1" required />
+            <input type="number" placeholder="Price per Seat ($)" [(ngModel)]="selectedCarpool.pricePerSeat" name="pricePerSeat" min="1" required />
+            <button type="submit" class="btn">Update</button>
+            <button type="button" class="cancel-btn" (click)="selectedCarpool = null">Cancel</button>
+          </form>
+        </div>
+      </div>
+    </div>
+    
+    
+
   
     <!-- Submit Carpooling Form -->
     <div class="submit-form">

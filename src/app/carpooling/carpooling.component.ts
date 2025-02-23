@@ -24,7 +24,11 @@ interface Carpool {
   styleUrls: ['./carpooling.component.css']
 })
 export class CarpoolingComponent implements OnInit {
+  
   carpoolingList: Carpool[] = [];
+
+  selectedCarpool: Carpool | null = null
+  
   newCarpool: Carpool = {
     driverName: '',
     pickupLocation: '',
@@ -47,6 +51,7 @@ export class CarpoolingComponent implements OnInit {
     this.carpoolingService.getCarpooling().subscribe(
       (data) => {
         this.carpoolingList = data;
+        console.log(data)
       },
       (error) => {
         console.error('Error fetching carpooling data:', error);
@@ -91,6 +96,40 @@ export class CarpoolingComponent implements OnInit {
       );
     }
   }
+
+
+  selectCarpool(carpool: Carpool) {
+    console.log('Selected Carpool:', carpool);
+    this.selectedCarpool = { ...carpool }; 
+    console.log('✔ selectedCarpool is now:', this.selectedCarpool); // ✅ Confirm value in console
+
+  }
+
+
+  updateCarpooling() {
+    if (!this.selectedCarpool || !this.selectedCarpool.id) {
+      alert('Error: No carpool selected for updating.');
+      return;
+    }
+
+    this.carpoolingService.updateCarpooling(this.selectedCarpool.id, this.selectedCarpool).subscribe(
+      (response) => {
+        console.log('Carpooling updated:', response);
+        alert('Carpooling updated successfully!');
+        this.loadCarpooling(); 
+        this.selectedCarpool = null; 
+      },
+      (error) => {
+        console.error('Error updating carpooling:', error);
+        alert('Failed to update carpooling.');
+      }
+    );
+  }
+
+
+  cancelUpdate() {
+    this.selectedCarpool = null;
+  }
   
 
   
@@ -104,5 +143,10 @@ export class CarpoolingComponent implements OnInit {
       pricePerSeat: 0,
       typeservice: 'Carpooling'
     };
+
+   
+
+
+
   }
 }

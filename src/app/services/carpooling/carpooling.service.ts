@@ -31,4 +31,7 @@ export class CarpoolingService {
   deleteCarpooling(id: string): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
+  updateCarpooling(id: string, carpool: Carpool): Observable<Carpool> {
+    return this.http.put<Carpool>(`${this.apiUrl}/${id}`, carpool);
+  }
 }

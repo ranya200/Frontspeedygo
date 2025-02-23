@@ -9,6 +9,7 @@ const routes: Routes = [
   { path: '', component: AllTemplateFrontComponent },
   { path: 'carpooling', component: CarpoolingComponent },
   { path: 'admin', component: AllTemplateBackComponent, canActivate: [authGuard] },
+  
   { path: '**', redirectTo: '' },
   
 ];

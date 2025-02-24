@@ -5,7 +5,8 @@
   <!-- Affichage de la liste des produits -->
   <div>
     <h3>Liste des produits</h3>
-    <div *ngFor="let product of products">
+    <div *ngFor="let product of products" class="col-md-4 mb-4">
+      <img *ngIf="product.image" [src]="'data:image/jpeg;base64,' + product.image" class="card-img-top" alt="{{ product.name }}">
       <p>{{ product.name }} - {{ product.price }} €</p>
       <input type="number" [(ngModel)]="product.selectedQuantity" placeholder="Quantité" min="1"/>
       <button (click)="addProductToOrder(product, product.selectedQuantity ?? 0)">Ajouter</button>

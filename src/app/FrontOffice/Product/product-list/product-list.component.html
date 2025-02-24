@@ -15,7 +15,7 @@
     <div *ngFor="let product of products" class="col-md-4 mb-4">
       <div class="card h-100">
         <!-- Afficher l'image si présente -->
-        <img src = '../../../../assets/FrontOffice/images/covers/foodDelivery.png' class="card-img-top" alt="{{ product.name }}">
+        <img *ngIf="product.image" [src]="'data:image/jpeg;base64,' + product.image" class="card-img-top" alt="{{ product.name }}">
         <div class="card-body">
           <h5 class="card-title">{{ product.name }}</h5>
           <p class="card-text">{{ product.description }}</p>

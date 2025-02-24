@@ -3,9 +3,7 @@
 <div class="container mt-4">
   <ng-container *ngIf="!isLoading; else loading">
     <div class="card shadow-sm" *ngIf="product; else noProduct">
-      <img [src]="product.image ? product.image : 'assets/FrontOffice/images/covers/foodDelivery.png'"
-           class="card-img-top" alt="{{ product.name }}"
-           style="height: 300px; object-fit: cover;">
+      <img *ngIf="product.image" [src]="'data:image/jpeg;base64,' + product.image" class="card-img-top" alt="{{ product.name }}">
       <div class="card-body">
         <h2 class="card-title">{{ product.name }}</h2>
         <p class="card-text">{{ product.description }}</p>

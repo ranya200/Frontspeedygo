@@ -14,6 +14,8 @@ import {FooterFrontComponent} from "../../footer-front/footer-front.component";
 })
 export class ProductCreateComponent implements OnInit {
   productForm!: FormGroup;
+  selectedFile!: File;
+
 // Liste des catégories valides (adapter selon votre enum réel)
   categories: string[] = ['FOOD', 'ELECTRONICS', 'CLOTHING'];
 
@@ -35,15 +37,30 @@ export class ProductCreateComponent implements OnInit {
   }
 
   onSubmit(): void {
-    if (this.productForm.valid) {
+    if (this.productForm.valid && this.selectedFile) {
       const product: Product = this.productForm.value;
-      this.productService.addProduct(product).subscribe({
+      const image: Blob = this.selectedFile; // votre fichier sélectionné
+
+      this.productService.addProduct(product, image).subscribe({
         next: (data) => {
           console.log('Produit créé', data);
           this.router.navigate(['/product']); // Redirection vers la liste des produits
         },
         error: (err) => console.error('Erreur lors de la création', err)
       });
+    } else {
+      console.error("Formulaire invalide ou image non sélectionnée");
     }
   }
+
+
+  onFileSelected(event: any): void {
+    if (event.target.files && event.target.files.length > 0) {
+      this.selectedFile = event.target.files[0];
+      // Met à jour le contrôle "image" avec le nom du fichier
+      this.productForm.patchValue({ image: this.selectedFile.name });
+    }
+  }
+
+
 }

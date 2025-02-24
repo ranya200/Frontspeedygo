@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { ProductControllerService, Product } from '../../openapi';
+import { ProductControllerService, Product } from '../../../openapi';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import {HeaderFrontComponent} from "../header-front/header-front.component";
-import {FooterFrontComponent} from "../footer-front/footer-front.component";
+import {HeaderFrontComponent} from "../../header-front/header-front.component";
+import {FooterFrontComponent} from "../../footer-front/footer-front.component";
 
 @Component({
   selector: 'app-product-create',
@@ -14,6 +14,8 @@ import {FooterFrontComponent} from "../footer-front/footer-front.component";
 })
 export class ProductCreateComponent implements OnInit {
   productForm!: FormGroup;
+// Liste des catégories valides (adapter selon votre enum réel)
+  categories: string[] = ['FOOD', 'ELECTRONICS', 'CLOTHING'];
 
   constructor(
     private fb: FormBuilder,
@@ -28,7 +30,7 @@ export class ProductCreateComponent implements OnInit {
       price: [0, Validators.required],
       stockQuantity: [0, Validators.required],
       category: [''], // Adapter si c'est un objet ou un enum
-      image: ['']
+      image: ['', Validators.required]
     });
   }
 
@@ -38,7 +40,7 @@ export class ProductCreateComponent implements OnInit {
       this.productService.addProduct(product).subscribe({
         next: (data) => {
           console.log('Produit créé', data);
-          this.router.navigate(['/products']); // Redirection vers la liste des produits
+          this.router.navigate(['/product']); // Redirection vers la liste des produits
         },
         error: (err) => console.error('Erreur lors de la création', err)
       });

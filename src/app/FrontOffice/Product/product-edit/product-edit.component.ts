@@ -3,14 +3,16 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ProductControllerService, Product } from '../../openapi';
+import { ProductControllerService, Product } from '../../../openapi';
 import { ReactiveFormsModule } from '@angular/forms';
+import {HeaderFrontComponent} from "../../header-front/header-front.component";
+import {FooterFrontComponent} from "../../footer-front/footer-front.component";
 
 @Component({
   selector: 'app-product-edit',
   templateUrl: './product-edit.component.html',
   styleUrls: ['./product-edit.component.css'],
-  imports: [CommonModule, ReactiveFormsModule]
+  imports: [CommonModule, ReactiveFormsModule, HeaderFrontComponent, FooterFrontComponent]
 })
 export class ProductEditComponent implements OnInit {
   productForm!: FormGroup;

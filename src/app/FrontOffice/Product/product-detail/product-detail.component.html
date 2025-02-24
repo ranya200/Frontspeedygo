@@ -1,0 +1,38 @@
+<app-header-front></app-header-front>
+
+<div class="container mt-4">
+  <ng-container *ngIf="!isLoading; else loading">
+    <div class="card shadow-sm" *ngIf="product; else noProduct">
+      <img [src]="product.image ? product.image : 'assets/FrontOffice/images/covers/foodDelivery.png'"
+           class="card-img-top" alt="{{ product.name }}"
+           style="height: 300px; object-fit: cover;">
+      <div class="card-body">
+        <h2 class="card-title">{{ product.name }}</h2>
+        <p class="card-text">{{ product.description }}</p>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item"><strong>Prix :</strong> {{ product.price }} €</li>
+          <li class="list-group-item"><strong>Quantité :</strong> {{ product.stockQuantity }}</li>
+          <li class="list-group-item"><strong>Catégorie :</strong> {{ product.category }}</li>
+        </ul>
+      </div>
+      <div class="card-footer text-end">
+        <button (click)="goBack()" class="btn btn-primary">
+          <i class="fa fa-arrow-left"></i> Retour
+        </button>
+      </div>
+    </div>
+    <ng-template #noProduct>
+      <p>Aucun produit trouvé.</p>
+    </ng-template>
+  </ng-container>
+
+  <ng-template #loading>
+    <div class="text-center mt-5">
+      <div class="spinner-border" role="status">
+        <span class="visually-hidden">Chargement...</span>
+      </div>
+    </div>
+  </ng-template>
+</div>
+
+<app-footer-front></app-footer-front>

@@ -1,12 +1,14 @@
 import {Component, OnInit} from '@angular/core';
-import { ProductControllerService, Product } from '../../openapi';
+import { ProductControllerService, Product } from '../../../openapi';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import {HeaderFrontComponent} from "../../header-front/header-front.component";
+import {FooterFrontComponent} from "../../footer-front/footer-front.component";
 
 @Component({
   selector: 'app-product-list',
   standalone: true,  // Optionnel, si vous utilisez des composants standalone
-  imports: [CommonModule], // Ajoutez CommonModule ici
+  imports: [CommonModule, HeaderFrontComponent, FooterFrontComponent], // Ajoutez CommonModule ici
   templateUrl: './product-list.component.html',
   styleUrl: './product-list.component.css'
 })
@@ -15,7 +17,7 @@ export class ProductListComponent implements OnInit {
   products: Product[] = [];
   errorMessage: string = '';
 
-  constructor(private productService: ProductControllerService, private router: Router) {}
+  constructor(private productService: ProductControllerService, public router: Router) {}
 
   ngOnInit(): void {
     this.loadProducts();
@@ -47,4 +49,8 @@ export class ProductListComponent implements OnInit {
     // Redirection vers le composant d'édition
     this.router.navigate(['/edit-product', id]);
   }
+  viewProductDetails(id: string): void {
+    this.router.navigate(['/product-detail', id]);
+  }
+
 }

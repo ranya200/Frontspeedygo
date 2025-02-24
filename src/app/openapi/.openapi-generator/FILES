@@ -31,6 +31,7 @@ model/leave.ts
 model/models.ts
 model/notification.ts
 model/order.ts
+model/orderItem.ts
 model/payment.ts
 model/product.ts
 model/promotion.ts

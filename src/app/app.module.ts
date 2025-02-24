@@ -27,6 +27,8 @@ import { ProductCreateComponent } from './FrontOffice/product-create/product-cre
 import { ProductEditComponent } from './FrontOffice/product-edit/product-edit.component';
 
 import { ReactiveFormsModule } from '@angular/forms';
+import {OrderCreateComponent} from "./FrontOffice/Order/order-create/order-create.component";
+import {PaymentFormComponent} from "./FrontOffice/payment/payment-form/payment-form.component";
 
 export function initializeKeycloak(authService: AuthService) {
   return () => authService.init();
@@ -60,6 +62,8 @@ const apiConfig = new Configuration({
     AllTemplateFrontComponent,
     HeaderFrontComponent,
     FooterFrontComponent,
+    OrderCreateComponent,
+    PaymentFormComponent,
     // Configuration du module API pour pointer vers l'URL racine de votre backend
     ApiModule.forRoot(() => apiConfig)
   ],

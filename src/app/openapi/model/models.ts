@@ -8,6 +8,7 @@ export * from './fastPost';
 export * from './leave';
 export * from './notification';
 export * from './order';
+export * from './orderItem';
 export * from './payment';
 export * from './product';
 export * from './promotion';

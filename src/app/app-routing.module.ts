@@ -6,12 +6,16 @@ import {AllTemplateBackComponent} from "./BackOffice/all-template-back/all-templ
 import {ProductListComponent} from "./FrontOffice/product-list/product-list.component";
 import { ProductCreateComponent } from './FrontOffice/product-create/product-create.component';
 import { ProductEditComponent } from './FrontOffice/product-edit/product-edit.component';
+import {OrderCreateComponent} from "./FrontOffice/Order/order-create/order-create.component";
+import {PaymentFormComponent} from "./FrontOffice/payment/payment-form/payment-form.component";
 
 const routes: Routes = [
   { path: '', component: AllTemplateFrontComponent },
   { path: 'product', component: ProductListComponent },
   { path: 'create-product', component: ProductCreateComponent },
   { path: 'edit-product/:id', component: ProductEditComponent },
+  { path: 'create-order', component: OrderCreateComponent },
+  { path: 'payment' , component: PaymentFormComponent },
   { path: 'admin', component: AllTemplateBackComponent, canActivate: [authGuard] },
   { path: '**', redirectTo: '' },
 

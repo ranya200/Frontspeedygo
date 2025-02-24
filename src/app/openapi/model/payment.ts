@@ -17,6 +17,7 @@ export interface Payment {
     paymentType?: Payment.PaymentTypeEnum;
     paymentDate?: string;
     status?: boolean;
+    orderId?: string;
 }
 export namespace Payment {
     export type PaymentTypeEnum = 'CASH' | 'CARD';

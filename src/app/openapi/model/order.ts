@@ -9,6 +9,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { OrderItem } from './orderItem';
 
 
 export interface Order { 
@@ -19,6 +20,7 @@ export interface Order {
     priority?: Order.PriorityEnum;
     status?: Order.StatusEnum;
     date?: string;
+    items?: Array<OrderItem>;
 }
 export namespace Order {
     export type PriorityEnum = 'LOW' | 'MEDIUM' | 'HIGH';

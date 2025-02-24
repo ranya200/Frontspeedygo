@@ -1,0 +1,14 @@
+<div class="container">
+  <h2>Paiement</h2>
+  <p>Montant à payer : {{ payment.amount }} €</p>
+
+  <div>
+    <label for="paymentType">Type de paiement :</label>
+    <select id="paymentType" [(ngModel)]="payment.paymentType">
+      <option value="CASH">Espèces</option>
+      <option value="CARD">Carte</option>
+    </select>
+  </div>
+
+  <button (click)="processPayment()">Payer</button>
+</div>

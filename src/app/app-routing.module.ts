@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { authGuard } from './guards/auth.guard';
 import {AllTemplateFrontComponent} from "./FrontOffice/all-template-front/all-template-front.component";
 import {AllTemplateBackComponent} from "./BackOffice/all-template-back/all-template-back.component";
-import { CarpoolingComponent } from './carpooling/carpooling.component';
+import { CarpoolingComponent } from './FrontOffice/carpooling/carpooling.component';
 import { CompanyComponent } from './BackOffice/company/company.component';
 
 

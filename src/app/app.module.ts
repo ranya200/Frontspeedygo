@@ -21,7 +21,7 @@ import { CommonModule } from '@angular/common';
 import { KeycloakAngularModule, KeycloakService } from 'keycloak-angular';
 import { AuthService } from './services/auth.service';
 import { NgOptimizedImage } from "@angular/common";
-import { CarpoolingComponent } from './carpooling/carpooling.component';
+import { CarpoolingComponent } from './FrontOffice/carpooling/carpooling.component';
 import { CompanyComponent } from './BackOffice/company/company.component';
 
 export function initializeKeycloak(authService: AuthService) {
@@ -37,8 +37,8 @@ export function initializeKeycloak(authService: AuthService) {
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule, // ✅ Ensure this is imported to fix HttpClient errors
-    KeycloakAngularModule, // ✅ Keycloak Integration
+    HttpClientModule, // 
+    KeycloakAngularModule, 
     FormsModule,
     RouterModule,
     AllTemplateBackComponent,

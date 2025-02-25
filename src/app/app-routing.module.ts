@@ -20,7 +20,6 @@ const routes: Routes = [
   { path: 'payment' , component: PaymentFormComponent },
   { path: 'admin', component: AllTemplateBackComponent, canActivate: [authGuard] },
   { path: '**', redirectTo: '' },
-
 ];
 
 @NgModule({

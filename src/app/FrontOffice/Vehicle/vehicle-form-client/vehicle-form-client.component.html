@@ -1,0 +1,46 @@
+<app-header-front></app-header-front>
+
+<div class="container">
+  <form [formGroup]="vehicleForm" (ngSubmit)="onSubmit()">
+    <div class="form-group mb-3">
+      <label for="brand">Brand</label>
+      <input id="brand" formControlName="brand" class="form-control">
+    </div>
+    <div class="form-group mb-3">
+      <label for="model">Model</label>
+      <input id="model" formControlName="model" class="form-control">
+    </div>
+    <div class="form-group mb-3">
+      <label for="capacity">Capacity</label>
+      <input id="capacity" formControlName="capacity" class="form-control">
+    </div>
+    <div class="form-group mb-3">
+      <label for="licensePlate">License Plate</label>
+      <input id="licensePlate" formControlName="licensePlate" class="form-control">
+    </div>
+    <div class="form-group mb-3">
+      <label for="vin">VIN</label>
+      <input id="vin" formControlName="vin" class="form-control">
+    </div>
+    <div class="form-group mb-3">
+      <label for="fabricationDate">Fabrication Date</label>
+      <input id="fabricationDate" type="date" formControlName="fabricationDate" class="form-control">
+    </div>
+    <div class="form-group mb-3">
+      <label for="fuelType">Fuel Type</label>
+      <input id="fuelType" formControlName="fuelType" class="form-control">
+    </div>
+    <!-- File Input for Image -->
+    <div class="form-group mb-3">
+      <label for="image">registration document</label>
+      <input type="file" id="image" class="form-control" (change)="onFileSelected($event)">
+    </div>
+    <!-- Removed vehicleStatus and vehicleType inputs -->
+
+    <button type="submit" class="btn btn-primary">
+      {{ vehicleForm.value.id ? 'Update' : 'Add' }}
+    </button>
+  </form>
+</div>
+
+<app-footer-front></app-footer-front>

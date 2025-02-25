@@ -1,0 +1,63 @@
+<app-navbar-back></app-navbar-back>
+
+<div class="container-fluid">
+  <div class="row">
+    <!-- Sidebar Column -->
+    <div class="col-md-2">
+      <app-sidebar-back></app-sidebar-back>
+    </div>
+
+    <!-- Main Content Column -->
+    <div class="col-md-10 mt-4">
+      <form [formGroup]="vehicleForm" (ngSubmit)="onSubmit()">
+        <div class="form-group mb-3">
+          <label for="brand">Brand</label>
+          <input id="brand" formControlName="brand" class="form-control">
+        </div>
+        <div class="form-group mb-3">
+          <label for="model">Model</label>
+          <input id="model" formControlName="model" class="form-control">
+        </div>
+        <div class="form-group mb-3">
+          <label for="capacity">Capacity</label>
+          <input id="capacity" formControlName="capacity" class="form-control">
+        </div>
+        <div class="form-group mb-3">
+          <label for="licensePlate">License Plate</label>
+          <input id="licensePlate" formControlName="licensePlate" class="form-control">
+        </div>
+        <div class="form-group mb-3">
+          <label for="vin">VIN</label>
+          <input id="vin" formControlName="vin" class="form-control">
+        </div>
+        <div class="form-group mb-3">
+          <label for="fabricationDate">Fabrication Date</label>
+          <input id="fabricationDate" type="date" formControlName="fabricationDate" class="form-control">
+        </div>
+        <div class="form-group mb-3">
+          <label for="fuelType">Fuel Type</label>
+          <input id="fuelType" formControlName="fuelType" class="form-control">
+        </div>
+        <div class="form-group mb-3">
+          <label for="imageFileName">Image File Name</label>
+          <input id="imageFileName" formControlName="imageFileName" class="form-control">
+        </div>
+        <div class="form-group mb-3">
+          <label for="vehicleStatus">Status</label>
+          <select id="vehicleStatus" formControlName="vehicleStatus" class="form-control">
+            <option *ngFor="let status of vehicleStatuses" [value]="status">{{ status }}</option>
+          </select>
+        </div>
+        <div class="form-group mb-3">
+          <label for="vehicleType">Type</label>
+          <select id="vehicleType" formControlName="vehicleType" class="form-control">
+            <option *ngFor="let type of vehicleTypes" [value]="type">{{ type }}</option>
+          </select>
+        </div>
+        <button type="submit" class="btn btn-primary">
+          {{ vehicleId ? 'Update' : 'Add' }}
+        </button>
+      </form>
+    </div>
+  </div>
+</div>

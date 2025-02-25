@@ -12,13 +12,16 @@ import { FooterFrontComponent } from './FrontOffice/footer-front/footer-front.co
 import { HeaderFrontComponent } from './FrontOffice/header-front/header-front.component';
 import { SidebarBackComponent} from "./BackOffice/sidebar-back/sidebar-back.component";
 
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 
 
 import { KeycloakAngularModule, KeycloakService } from 'keycloak-angular';
 import { AuthService } from './services/auth.service';
 import {NgOptimizedImage} from "@angular/common";
+import { LeaveComponent } from './FrontOffice/leave/leave.component';
+import { HttpClientModule } from '@angular/common/http';
+import { PromotionComponent } from './FrontOffice/promotion/promotion.component';
 
 
 export function initializeKeycloak(authService: AuthService) {
@@ -29,11 +32,11 @@ export function initializeKeycloak(authService: AuthService) {
   declarations: [
     AppComponent,
     AllTemplateFrontComponent,
-    HeaderFrontComponent,
-    FooterFrontComponent,
+    
   ],
   imports: [
     BrowserModule,
+    ReactiveFormsModule,
     AppRoutingModule,
     KeycloakAngularModule, // ✅ Keycloak Integration
     FormsModule,
@@ -42,7 +45,13 @@ export function initializeKeycloak(authService: AuthService) {
     NgOptimizedImage,
     SidebarBackComponent,
     NavbarBackComponent,
-    FooterBackComponent
+    FooterBackComponent,
+    LeaveComponent,
+    HeaderFrontComponent,
+    FooterFrontComponent,
+    HttpClientModule ,
+    PromotionComponent,
+
   ],
   providers: [
     {

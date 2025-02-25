@@ -9,10 +9,8 @@ import { CommonModule } from '@angular/common';
   selector: 'app-all-template-front',
   templateUrl: './all-template-front.component.html',
   styleUrl: './all-template-front.component.css',
-
   standalone: true, // ✅ Make it standalone like CarpoolingComponent
   imports: [CommonModule, HeaderFrontComponent, FooterFrontComponent],
-
 })
 export class AllTemplateFrontComponent {
 

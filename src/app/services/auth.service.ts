@@ -13,7 +13,6 @@ export class AuthService {
       await this.keycloak.init({
         config: {
           url: 'http://localhost:8085', // Keycloak server URL
-
           realm: 'SpeedyGo', // Replace with your realm name
           clientId: 'speedygo-frontend', // Replace with your client ID
         },

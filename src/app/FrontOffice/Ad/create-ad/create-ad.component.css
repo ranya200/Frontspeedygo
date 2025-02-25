@@ -1,0 +1,90 @@
+/* Style général du conteneur */
+.ad-container {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.1);
+  }
+  
+  /* Titres et labels */
+  .ad-container h2 {
+    color: #333;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    display: block;
+    color: #444;
+  }
+  
+  /* Style des groupes de formulaire */
+  .form-group {
+    margin-bottom: 15px;
+  }
+  
+  .form-group label {
+    font-size: 16px;
+    color: #555;
+  }
+  
+  /* Améliorations des inputs et textareas */
+  .input, .form-control {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box; /* S'assure que le padding ne change pas la largeur */
+  }
+  
+  .form-control:focus {
+    border-color: #66afe9;
+    outline: 0;
+    box-shadow: 0 0 8px rgba(102, 175, 233, 0.6);
+  }
+  
+  /* Style des messages d'erreur */
+  .error {
+    color: #d9534f; /* rouge */
+    font-size: 0.875em;
+    margin-top: 5px;
+  }
+  
+  /* Bouton de soumission */
+  .btn-primary {
+    color: #fff;
+    background-color: #007bff;
+    border-color: #007bff;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .btn-primary:hover {
+    background-color: #0056b3;
+    border-color: #004085;
+  }
+  
+  .btn-primary:disabled {
+    background-color: #ccc;
+    border-color: #ccc;
+    cursor: default;
+  }
+  
+  /* Styles spécifiques aux composants Angular Material, si utilisé */
+  mat-form-field {
+    width: 100%;
+  }
+  
+  /* Responsive */
+  @media (max-width: 768px) {
+    .ad-container {
+      padding: 10px;
+    }
+  }
+  

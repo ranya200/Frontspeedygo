@@ -21,11 +21,13 @@ import { LeaveslistComponent } from './FrontOffice/leave/leaveslist/leaveslist.c
 import { LeaveEditComponent } from './FrontOffice/leave/leave-edit/leave-edit.component';
 import { CarpoolingComponent } from './FrontOffice/carpooling/carpooling.component';
 
-// Product Components
+
+
 import { ProductListComponent } from "./FrontOffice/Product/product-list/product-list.component";
 import { ProductCreateComponent } from './FrontOffice/Product/product-create/product-create.component';
 import { ProductEditComponent } from './FrontOffice/Product/product-edit/product-edit.component';
 import { ProductDetailComponent } from "./FrontOffice/Product/product-detail/product-detail.component";
+
 
 // Order & Payment Components
 import { OrderCreateComponent } from "./FrontOffice/Order/order-create/order-create.component";
@@ -36,8 +38,16 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { KeycloakAngularModule, KeycloakService } from 'keycloak-angular';
+
+import { CreateAdComponent } from './FrontOffice/Ad/create-ad/create-ad.component';
+
+import { AdListComponent } from './FrontOffice/Ad/ad-list/ad-list.component';
+import { EditAdComponent } from './FrontOffice/Ad/ad-edit/ad-edit.component';
+import { ComplaintComponent } from './FrontOffice/complaint/complaint.component';
+
 import { NgOptimizedImage } from "@angular/common";
 import { ApiModule, Configuration } from './openapi';
+
 
 // Services
 import { AuthService } from './services/auth.service';
@@ -55,6 +65,7 @@ const apiConfig = new Configuration({
   declarations: [
     AppComponent
  
+
   ],
   imports: [
     BrowserModule,
@@ -69,6 +80,10 @@ const apiConfig = new Configuration({
     AllTemplateBackComponent,
     FooterBackComponent,
     NavbarBackComponent,
+    CreateAdComponent,
+    AdListComponent,
+    EditAdComponent,
+    ComplaintComponent,
     SidebarBackComponent,
     CompanyComponent,
     AllTemplateFrontComponent,
@@ -86,6 +101,7 @@ const apiConfig = new Configuration({
     OrderCreateComponent,
     PaymentFormComponent
     ApiModule.forRoot(() => apiConfig),
+
   ],
   providers: [
     {

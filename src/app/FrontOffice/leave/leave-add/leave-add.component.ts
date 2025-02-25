@@ -1,18 +1,18 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { HeaderFrontComponent } from '../../header-front/header-front.component';
+import { FooterFrontComponent } from '../../footer-front/footer-front.component';
 import { Leave, LeaveControllerService } from 'src/app/openapi';
-import { HeaderFrontComponent } from '../header-front/header-front.component';
-import { FooterFrontComponent } from '../footer-front/footer-front.component';
 
 @Component({
-  selector: 'app-leave',
+  selector: 'app-leave-add',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, HeaderFrontComponent, FooterFrontComponent],
-  templateUrl: './leave.component.html',
-  styleUrls: ['./leave.component.css']
+  templateUrl: './leave-add.component.html',
+  styleUrl: './leave-add.component.css'
 })
-export class LeaveComponent implements OnInit {
+export class LeaveAddComponent implements OnInit {
   leaveForm!: FormGroup;
   leaves: Leave[] = []; // Store all leaves
   selectedLeave: Leave | null = null; // Stocke le congé en cours d'édition

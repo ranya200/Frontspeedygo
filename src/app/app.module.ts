@@ -19,9 +19,11 @@ import { RouterModule } from '@angular/router';
 import { KeycloakAngularModule, KeycloakService } from 'keycloak-angular';
 import { AuthService } from './services/auth.service';
 import {NgOptimizedImage} from "@angular/common";
-import { LeaveComponent } from './FrontOffice/leave/leave.component';
 import { HttpClientModule } from '@angular/common/http';
 import { PromotionComponent } from './FrontOffice/promotion/promotion.component';
+import { LeaveAddComponent } from './FrontOffice/leave/leave-add/leave-add.component';
+import { LeaveslistComponent } from './FrontOffice/leave/leaveslist/leaveslist.component';
+import { LeaveEditComponent } from './FrontOffice/leave/leave-edit/leave-edit.component';
 
 
 export function initializeKeycloak(authService: AuthService) {
@@ -46,11 +48,13 @@ export function initializeKeycloak(authService: AuthService) {
     SidebarBackComponent,
     NavbarBackComponent,
     FooterBackComponent,
-    LeaveComponent,
     HeaderFrontComponent,
     FooterFrontComponent,
     HttpClientModule ,
     PromotionComponent,
+    LeaveAddComponent,
+    LeaveslistComponent,
+    LeaveEditComponent,
 
   ],
   providers: [

@@ -5,11 +5,36 @@
 /tmp
 /out-tsc
 /bazel-out
+/coverage
+/build
+target/
+.mvn/
+.gradle/
 
-# Node
+# Node dependencies
 /node_modules
 npm-debug.log
 yarn-error.log
+pnpm-lock.yaml
+package-lock.json
+yarn.lock
+
+# Angular cache
+/.angular/
+.angular/cache/
+
+# Environment files (prevent exposing API keys)
+src/environments/environment*.ts
+
+# Logs
+*.log
+testem.log
+libpeerconnection.log
+
+# Linter and formatter reports
+.eslintcache
+.prettierignore
+.prettiercache
 
 # IDEs and editors
 .idea/
@@ -19,23 +44,18 @@ yarn-error.log
 *.launch
 .settings/
 *.sublime-workspace
-
-# Visual Studio Code
+*.iml
 .vscode/
 !.vscode/settings.json
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
-.history/*
+.history/
 
 # Miscellaneous
-/.angular/cache
 .sass-cache/
-/connect.lock
-/coverage
-/libpeerconnection.log
-testem.log
-/typings
+connect.lock
+typings/
 
 # System files
 .DS_Store

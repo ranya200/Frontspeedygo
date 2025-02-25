@@ -4,7 +4,7 @@ import { Component } from '@angular/core';
   selector: 'app-header-front',
   templateUrl: './header-front.component.html',
   styleUrl: './header-front.component.css',
-  standalone: false
+  standalone: true
 })
 export class HeaderFrontComponent {
 

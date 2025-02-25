@@ -3,6 +3,10 @@ import { RouterModule, Routes } from '@angular/router';
 import { authGuard } from './guards/auth.guard';
 import {AllTemplateFrontComponent} from "./FrontOffice/all-template-front/all-template-front.component";
 import {AllTemplateBackComponent} from "./BackOffice/all-template-back/all-template-back.component";
+
+import { CarpoolingComponent } from './FrontOffice/carpooling/carpooling.component';
+import { CompanyComponent } from './BackOffice/company/company.component';
+
 import {ProductListComponent} from "./FrontOffice/Product/product-list/product-list.component";
 import { ProductCreateComponent } from './FrontOffice/Product/product-create/product-create.component';
 import { ProductEditComponent } from './FrontOffice/Product/product-edit/product-edit.component';
@@ -18,8 +22,11 @@ const routes: Routes = [
   { path: 'edit-product/:id', component: ProductEditComponent },
   { path: 'create-order', component: OrderCreateComponent },
   { path: 'payment' , component: PaymentFormComponent },
+  { path: 'carpooling', component: CarpoolingComponent },
+  { path: 'company', component: CompanyComponent },
   { path: 'admin', component: AllTemplateBackComponent, canActivate: [authGuard] },
   { path: '**', redirectTo: '' },
+  
 ];
 
 @NgModule({

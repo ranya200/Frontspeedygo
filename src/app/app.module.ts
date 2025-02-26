@@ -22,14 +22,7 @@ import {NgOptimizedImage} from "@angular/common";
 
 // Import du module généré par OpenAPI (vérifiez le chemin d'accès)
 import { ApiModule , Configuration } from './openapi';
-import { ProductListComponent } from "./FrontOffice/Product/product-list/product-list.component";
-import { ProductCreateComponent } from './FrontOffice/Product/product-create/product-create.component';
-import { ProductEditComponent } from './FrontOffice/Product/product-edit/product-edit.component';
 
-import { ReactiveFormsModule } from '@angular/forms';
-import {OrderCreateComponent} from "./FrontOffice/Order/order-create/order-create.component";
-import {PaymentFormComponent} from "./FrontOffice/payment/payment-form/payment-form.component";
-import {ProductDetailComponent} from "./FrontOffice/Product/product-detail/product-detail.component";
 
 export function initializeKeycloak(authService: AuthService) {
   return () => authService.init();
@@ -47,7 +40,6 @@ const apiConfig = new Configuration({
   imports: [
     BrowserModule,
     AppRoutingModule,
-    ReactiveFormsModule,
     KeycloakAngularModule, // ✅ Keycloak Integration
     FormsModule,
     RouterModule,
@@ -56,16 +48,12 @@ const apiConfig = new Configuration({
     SidebarBackComponent,
     NavbarBackComponent,
     FooterBackComponent,
-    ProductListComponent,
-    ProductCreateComponent,
-    ProductDetailComponent,
-    ProductEditComponent,
+
     HttpClientModule,
     AllTemplateFrontComponent,
     HeaderFrontComponent,
     FooterFrontComponent,
-    OrderCreateComponent,
-    PaymentFormComponent,
+
     // Configuration du module API pour pointer vers l'URL racine de votre backend
     ApiModule.forRoot(() => apiConfig)
   ],

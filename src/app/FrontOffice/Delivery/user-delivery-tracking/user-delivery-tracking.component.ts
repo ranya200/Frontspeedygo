@@ -22,8 +22,16 @@ export class UserDeliveryTrackingComponent implements OnInit {
 
   loadUserDeliveries(userId: string): void {
     this.deliveryService.getDeliveriesForUser(userId).subscribe({
-      next: (data: Delivery[]) => this.deliveries = data,
-      error: (error) => console.error('Error fetching user deliveries', error)
+      next:  async (response) => {
+        if (response instanceof Blob) {
+          const text = await response.text(); // Convertir Blob en texte
+          this.deliveries = JSON.parse(text); // Convertir en JSON
+        } else {
+          this.deliveries = response; // Déjà un tableau JSON
+        }
+        console.log("Données reçues :", this.deliveries);
+      },
+      error: (err) => console.error('Erreur lors de la récupération des congés', err)
     });
   }
 }

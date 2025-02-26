@@ -21,11 +21,16 @@ export class FastpostListComponent implements OnInit {
 
   loadFastPosts(): void {
     this.fastPostService.getFastPosts().subscribe({
-      next: (data: FastPost[]) => {
-        console.log('Rapid posts retrieved:', data);
-        this.fastPosts = data;
+      next:  async (response) => {
+        if (response instanceof Blob) {
+          const text = await response.text(); // Convertir Blob en texte
+          this.fastPosts = JSON.parse(text); // Convertir en JSON
+        } else {
+          this.fastPosts = response; // Déjà un tableau JSON
+        }
+        console.log("Données reçues :", this.fastPosts);
       },
-      error: (error) => console.error('Error fetching rapid posts', error)
+      error: (err) => console.error('Erreur lors de la récupération des congés', err)
     });
   }
 

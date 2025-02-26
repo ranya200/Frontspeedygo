@@ -45,7 +45,7 @@ export class VehicleFormDelivaryComponent implements OnInit {
       fabricationDate: ['', Validators.required],
       fuelType: ['', Validators.required],
       imageFileName: [''], // This will hold the Base64 string
-      vehicleStatus: [Vehicle.VehicleStatusEnum.InServer, Validators.required],
+      //vehicleStatus: [Vehicle.VehicleStatusEnum.InServer, Validators.required],
       vehicleType: [Vehicle.VehicleTypeEnum.Car, Validators.required]
     });
     this.vehicleId = this.route.snapshot.params['id'];

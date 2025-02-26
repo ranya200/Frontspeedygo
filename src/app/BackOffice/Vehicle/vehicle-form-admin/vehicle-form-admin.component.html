@@ -42,12 +42,7 @@
           <label for="imageFileName">Image File Name</label>
           <input id="imageFileName" formControlName="imageFileName" class="form-control">
         </div>
-        <div class="form-group mb-3">
-          <label for="vehicleStatus">Status</label>
-          <select id="vehicleStatus" formControlName="vehicleStatus" class="form-control">
-            <option *ngFor="let status of vehicleStatuses" [value]="status">{{ status }}</option>
-          </select>
-        </div>
+
         <div class="form-group mb-3">
           <label for="vehicleType">Type</label>
           <select id="vehicleType" formControlName="vehicleType" class="form-control">

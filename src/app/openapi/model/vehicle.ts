@@ -25,11 +25,13 @@ export interface Vehicle {
     vehicleType?: Vehicle.VehicleTypeEnum;
 }
 export namespace Vehicle {
-    export type VehicleStatusEnum = 'inServer' | 'underRepair' | 'outOfService';
+    export type VehicleStatusEnum = 'inServer' | 'underRepair' | 'outOfService' | 'accepted' | 'rejected';
     export const VehicleStatusEnum = {
         InServer: 'inServer' as VehicleStatusEnum,
         UnderRepair: 'underRepair' as VehicleStatusEnum,
-        OutOfService: 'outOfService' as VehicleStatusEnum
+        OutOfService: 'outOfService' as VehicleStatusEnum,
+        Accepted: 'accepted' as VehicleStatusEnum,
+        Rejected: 'rejected' as VehicleStatusEnum
     };
     export type VehicleTypeEnum = 'car' | 'van' | 'motoCycle';
     export const VehicleTypeEnum = {

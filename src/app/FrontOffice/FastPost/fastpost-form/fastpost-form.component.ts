@@ -27,7 +27,7 @@ export class FastpostFormComponent implements OnInit {
       receiverAddress: ['', Validators.required],
       receiverTelNbr: ['', Validators.required],
       packageWeight: ['', Validators.required],
-      packageSize: ['', Validators.required]
+      //packageSize: ['', Validators.required]
     });
   }
 
@@ -38,7 +38,7 @@ export class FastpostFormComponent implements OnInit {
         next: (response: any) => {
           console.log('Fast post created', response);
           alert('Fast post submitted successfully!');
-          this.router.navigate(['/fastposts']);
+          this.router.navigate(['/']);
         },
         error: (err) => {
           console.error('Error submitting fast post', err);

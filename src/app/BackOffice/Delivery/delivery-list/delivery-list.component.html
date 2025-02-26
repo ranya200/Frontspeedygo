@@ -1,0 +1,49 @@
+<app-navbar-back></app-navbar-back>
+<app-sidebar-back></app-sidebar-back>
+
+<div class="container mt-4">
+  <div class="row">
+    <!-- The offset adds left space -->
+    <div class="offset-md-2 col-md-10">
+      <h2 class="mb-3">Deliveries List</h2>
+      <div class="table-responsive">
+        <table class="table table-striped table-hover">
+          <thead class="table-dark">
+          <tr>
+            <th>Receiver Name</th>
+            <th>Address</th>
+            <th>Telephone</th>
+            <th>Package Weight</th>
+            <th>Package Size</th>
+            <th>Actions</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let delivery of deliveries">
+            <td>{{ delivery.receiverName }}</td>
+            <td>{{ delivery.receiverAddress }}</td>
+            <td>{{ delivery.receiverTelNbr }}</td>
+            <td>{{ delivery.packageWeight }}</td>
+            <td>{{ delivery.packageSize }}</td>
+            <td>{{ delivery.deliveryStatus }}</td>
+            <td>
+
+              <!-- Show the status in the Actions column -->
+            <a
+              class="btn btn-sm btn-info"
+              [routerLink]="['/deliveries/edit',  delivery.idD ]"
+            >
+              <span *ngIf="delivery.deliveryStatus === 'accepted'">
+                  Accepted
+                </span>
+              <span *ngIf="delivery.deliveryStatus === 'refused'">
+                  Rejected
+                </span>
+            </a>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

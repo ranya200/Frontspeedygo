@@ -17,7 +17,7 @@ export class DeliveryAssignmentComponent implements OnInit {
   deliveryForm!: FormGroup;
 
   // Build arrays using the enums from the generated Delivery model.
-  deliveryStatuses: string[] = Object.values(Delivery.DeliveryStatusEnum);
+  deliveryStatuses: string[] = ['Pending','InRoad','Done'];
   pamentStatuses: string[] = Object.values(Delivery.PamentStatusEnum);
 
   constructor(
@@ -45,15 +45,26 @@ export class DeliveryAssignmentComponent implements OnInit {
   onSubmit(): void {
     if (this.deliveryForm.valid) {
       const delivery: Delivery = this.deliveryForm.value;
+
+      // Debugging: Check the form values before sending
+      console.log("Submitting delivery:", delivery);
+
       this.deliveryService.addDelivery(delivery).subscribe({
-        next: () => {
-          alert('Delivery assigned successfully!');
+        next: (response: any) => {
+          console.log('Delivery created successfully!', response);
+          alert('Delivery submitted successfully!');
           this.router.navigate(['/deliveries']);
         },
-        error: (err) => console.error('Error assigning delivery', err)
+        error: (err) => {
+          console.error('Error submitting delivery:', err);
+        }
       });
+
     } else {
-      console.error("Form is invalid");
+      console.error("Form is invalid", this.deliveryForm.errors);
+      alert("Please fill in all required fields.");
     }
   }
+
+
 }

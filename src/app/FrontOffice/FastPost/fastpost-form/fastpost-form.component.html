@@ -1,4 +1,10 @@
 <app-header-front></app-header-front>
+
+<div class="text-center text-white">
+              <span class="heading-xxs letter-spacing-xl">
+                Your ride, your comfort, your choice with SpeedyGo!
+              </span>
+</div>
 <div class="container">
   <h2>Submit Fast Post</h2>
   <form [formGroup]="fastPostForm" (ngSubmit)="onSubmit()">
@@ -18,10 +24,7 @@
       <label for="packageWeight">Package Weight</label>
       <input id="packageWeight" type="number" step="0.1" formControlName="packageWeight" class="form-control">
     </div>
-    <div class="form-group">
-      <label for="packageSize">Package Size</label>
-      <input id="packageSize" type="number" step="0.1" formControlName="packageSize" class="form-control">
-    </div>
+
     <button type="submit" class="btn btn-primary">Submit Fast Post</button>
   </form>
 </div>

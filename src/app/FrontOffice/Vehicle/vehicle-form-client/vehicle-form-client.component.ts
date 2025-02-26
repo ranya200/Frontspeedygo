@@ -39,7 +39,7 @@ export class VehicleFormClientComponent implements OnInit {
       fuelType: ['', Validators.required],
       image: ['', Validators.required],
 // Set defaults for fields not shown in the UI:
-      vehicleStatus: ['inServer'], // default value
+      //vehicleStatus: ['inServer'], // default value
       vehicleType: ['car']         // default value
     });
   }

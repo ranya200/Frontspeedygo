@@ -49,7 +49,7 @@ export class VehicleFormAdminComponent implements OnInit {
       fabricationDate: ['', Validators.required],
       fuelType: ['', Validators.required],
       imageFileName: [''], // This will hold the Base64 string
-      vehicleStatus: [Vehicle.VehicleStatusEnum.InServer, Validators.required],
+      //vehicleStatus: [Vehicle.VehicleStatusEnum.InServer, Validators.required],
       vehicleType: [Vehicle.VehicleTypeEnum.Car, Validators.required]
     });
     this.vehicleId = this.route.snapshot.params['id'];
@@ -77,23 +77,22 @@ export class VehicleFormAdminComponent implements OnInit {
   onSubmit(): void {
     if (this.vehicleForm.valid) {
       const vehicle: Vehicle = this.vehicleForm.value;
-      if (this.vehicleId) {
-        this.vehicleService.addVehicle(vehicle).subscribe(
-          () => {
-            alert('Vehicle updated successfully!');
-            this.router.navigate(['/vehicles']);
-          }
-        );
-      } else {
-        this.vehicleService.addVehicle(vehicle).subscribe(
-          () => {
-            alert('Vehicle added successfully!');
-            this.router.navigate(['/vehicles']);
-          }
-        );
-      }
+      this.vehicleService.addVehicle(vehicle).subscribe({
+        next: (response: any) => {
+          console.log('Vehicle created', response);
+          alert('Vehicle submitted successfully!');
+          this.router.navigate(['/vehicles']);
+        },
+        error: (err) => {
+          console.error('Error submitting vehicle', err);
+        }
+      });
+    } else {
+      console.error("Form is invalid");
     }
   }
+
+
 }
 
 

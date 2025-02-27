@@ -23,10 +23,12 @@ import { CarpoolingComponent } from './FrontOffice/carpooling/carpooling.compone
 
 
 
+
 import { ProductListComponent } from "./FrontOffice/Product/product-list/product-list.component";
 import { ProductCreateComponent } from './FrontOffice/Product/product-create/product-create.component';
 import { ProductEditComponent } from './FrontOffice/Product/product-edit/product-edit.component';
 import { ProductDetailComponent } from "./FrontOffice/Product/product-detail/product-detail.component";
+
 
 
 // Order & Payment Components
@@ -36,21 +38,23 @@ import { PaymentFormComponent } from "./FrontOffice/payment/payment-form/payment
 // Modules
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
-import { CommonModule } from '@angular/common';
 import { KeycloakAngularModule, KeycloakService } from 'keycloak-angular';
 
-import { CreateAdComponent } from './FrontOffice/Ad/create-ad/create-ad.component';
+import { AuthService } from './services/auth.service';
+import {CommonModule, NgOptimizedImage} from "@angular/common";
 
+// Import du module généré par OpenAPI (vérifiez le chemin d'accès)
+import { ApiModule , Configuration } from './openapi';
+import { CreateAdComponent } from './FrontOffice/Ad/create-ad/create-ad.component';
 import { AdListComponent } from './FrontOffice/Ad/ad-list/ad-list.component';
 import { EditAdComponent } from './FrontOffice/Ad/ad-edit/ad-edit.component';
 import { ComplaintComponent } from './FrontOffice/complaint/complaint.component';
 
-import { NgOptimizedImage } from "@angular/common";
-import { ApiModule, Configuration } from './openapi';
 
 
-// Services
-import { AuthService } from './services/auth.service';
+
+
+
 
 export function initializeKeycloak(authService: AuthService) {
   return () => authService.init();
@@ -58,14 +62,14 @@ export function initializeKeycloak(authService: AuthService) {
 
 const apiConfig = new Configuration({
   basePath: 'http://localhost:8089/speedygo',
-  credentials: {} 
+
+  credentials: {}  // Si aucune authentification n'est utilisée, un objet vide suffit.
+
 });
 
 @NgModule({
   declarations: [
     AppComponent
- 
-
   ],
   imports: [
     BrowserModule,
@@ -100,8 +104,7 @@ const apiConfig = new Configuration({
     ProductDetailComponent,
     OrderCreateComponent,
     PaymentFormComponent
-    ApiModule.forRoot(() => apiConfig),
-
+    ApiModule.forRoot(() => apiConfig)
   ],
   providers: [
     {

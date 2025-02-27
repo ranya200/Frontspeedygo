@@ -10,7 +10,6 @@ import { FooterFrontComponent} from "../footer-front/footer-front.component";
   imports: [
     HeaderFrontComponent,
     FooterFrontComponent
-
   ]
 })
 export class AllTemplateFrontComponent {

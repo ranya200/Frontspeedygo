@@ -7,8 +7,6 @@ import { CommonModule } from '@angular/common';
   imports: [CommonModule],
   templateUrl: './header-front.component.html',
   styleUrls: ['./header-front.component.css']
-
-
 })
 export class HeaderFrontComponent {
 

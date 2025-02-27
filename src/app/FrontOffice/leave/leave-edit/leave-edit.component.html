@@ -1,0 +1,33 @@
+<app-header-front></app-header-front>
+
+<h2>Modifier la Demande de Congé</h2>
+<form [formGroup]="leaveForm" (ngSubmit)="updateLeave()">
+  <div class="form-group">
+    <label for="startDate">Date de début</label>
+    <input id="startDate" type="date" formControlName="startDate" class="form-control" required>
+  </div>
+
+  <div class="form-group">
+    <label for="endDate">Date de fin</label>
+    <input id="endDate" type="date" formControlName="endDate" class="form-control" required>
+  </div>
+
+  <div class="form-group">
+    <label for="reason">Motif</label>
+    <textarea id="reason" formControlName="reason" class="form-control" required></textarea>
+  </div>
+
+  <div class="form-group">
+    <label for="status">Statut</label>
+    <select id="status" formControlName="status" class="form-control">
+      <option value="PENDING">En attente</option>
+      <option value="APPROVED">Approuvé</option>
+      <option value="REJECTED">Rejeté</option>
+    </select>
+  </div>
+
+  <button type="submit" class="btn btn-primary" [disabled]="leaveForm.invalid">Mettre à Jour</button>
+  <button type="button" class="btn btn-secondary" (click)="cancelEdit()">Annuler</button>
+</form>
+
+<app-footer-front></app-footer-front>

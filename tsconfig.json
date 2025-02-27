@@ -2,7 +2,7 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
-    "types": ["node", "keycloak-js", "jasmine"],
+    "types": ["node", "jasmine"],
     "skipLibCheck": true,
     "baseUrl": "./",
     "outDir": "./dist/out-tsc",

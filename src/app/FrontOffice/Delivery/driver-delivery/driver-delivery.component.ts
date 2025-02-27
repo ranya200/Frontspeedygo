@@ -49,44 +49,44 @@ export class DriverDeliveryComponent implements OnInit {
   }
 
   // Method to accept the delivery
-  acceptDelivery(delivery: Delivery): void {
-    if (confirm(`Are you sure you want to accept this delivery? ${delivery.idD}`)) {
-      if (delivery.idD != null) {
-        if (delivery.driverId != null) {
-          this.deliveryService.acceptDelivery(delivery.idD, delivery.driverId).subscribe({
-            next: () => {
-              alert('Delivery accepted!');
-              // After accepting, you might want to reload the deliveries or update the UI.
-              this.loadDeliveriesForDriver(this.driverId);
-            },
-            error: (err) => {
-              console.error('Error accepting delivery:', err);
-              alert('Error accepting delivery.');
-            }
-          });
-        }
-      }
-    }
-  }
+ // acceptDelivery(delivery: Delivery): void {
+  //  if (confirm(`Are you sure you want to accept this delivery? ${delivery.idD}`)) {
+  //    if (delivery.idD != null) {
+  //      if (delivery.driverId != null) {
+  //        this.deliveryService.acceptDelivery(delivery.idD, delivery.driverId).subscribe({
+//            next: () => {
+  //         alert('Delivery accepted!');
+  //            // After accepting, you might want to reload the deliveries or update the UI.
+    //          this.loadDeliveriesForDriver(this.driverId);
+  //          },
+//     error: (err) => {
+  //       console.error('Error accepting delivery:', err);
+  //        alert('Error accepting delivery.');
+  //      }
+  //    });
+  //     }
+  //   }
+  // }
+  //}
 
   // Method to refuse the delivery
-  refuseDelivery(delivery: Delivery): void {
-    if (confirm(`Are you sure you want to refuse this delivery? ${delivery.idD}`)) {
-      if (delivery.idD != null) {
-        if (delivery.driverId != null) {
-          this.deliveryService.rejectDelivery(delivery.idD, delivery.driverId).subscribe({
-            next: () => {
-              alert('Delivery refused!');
-              // After refusing, you might want to reload the deliveries or update the UI.
-              this.loadDeliveriesForDriver(this.driverId);
-            },
-            error: (err) => {
-              console.error('Error refusing delivery:', err);
-              alert('Error refusing delivery.');
-            }
-          });
-        }
-      }
-    }
-  }
+//  refuseDelivery(delivery: Delivery): void {
+//    if (confirm(`Are you sure you want to refuse this delivery? ${delivery.idD}`)) {
+//      if (delivery.idD != null) {
+//        if (delivery.driverId != null) {
+//          this.deliveryService.rejectDelivery(delivery.idD, delivery.driverId).subscribe({
+ //           next: () => {
+  //            alert('Delivery refused!');
+   //           // After refusing, you might want to reload the deliveries or update the UI.
+     //         this.loadDeliveriesForDriver(this.driverId);
+   //         },
+  //          error: (err) => {
+  //            console.error('Error refusing delivery:', err);
+   //           alert('Error refusing delivery.');
+     //       }
+       //   });
+      //  }
+     // }
+  //  }
+ // }
 }

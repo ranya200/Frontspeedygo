@@ -12,13 +12,13 @@ import { FooterFrontComponent } from './FrontOffice/footer-front/footer-front.co
 import { HeaderFrontComponent } from './FrontOffice/header-front/header-front.component';
 import { SidebarBackComponent} from "./BackOffice/sidebar-back/sidebar-back.component";
 
-import { FormsModule } from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { RouterModule, Routes  } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
 
 import { KeycloakAngularModule, KeycloakService } from 'keycloak-angular';
 import { AuthService } from './services/auth.service';
-import {NgOptimizedImage} from "@angular/common";
+import {CommonModule, NgOptimizedImage} from "@angular/common";
 
 // Import du module généré par OpenAPI (vérifiez le chemin d'accès)
 import { ApiModule , Configuration } from './openapi';
@@ -39,6 +39,7 @@ const apiConfig = new Configuration({
   ],
   imports: [
     BrowserModule,
+    CommonModule,
     AppRoutingModule,
     KeycloakAngularModule, // ✅ Keycloak Integration
     FormsModule,
@@ -48,7 +49,7 @@ const apiConfig = new Configuration({
     SidebarBackComponent,
     NavbarBackComponent,
     FooterBackComponent,
-
+    ReactiveFormsModule,
     HttpClientModule,
     AllTemplateFrontComponent,
     HeaderFrontComponent,

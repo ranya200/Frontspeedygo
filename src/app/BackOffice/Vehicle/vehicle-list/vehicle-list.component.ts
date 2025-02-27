@@ -28,40 +28,83 @@ export class VehicleListComponent implements OnInit {
 
   loadVehicles(): void {
     this.vehicleService.getVehicles().subscribe({
-      next:  async (response) => {
-        if (response instanceof Blob) {
-          const text = await response.text(); // Convertir Blob en texte
-          this.vehicles = JSON.parse(text); // Convertir en JSON
-        } else {
-          this.vehicles = response; // Déjà un tableau JSON
+      next: async (response) => {
+        try {
+          if (response instanceof Blob) {
+            const text = await response.text();
+            this.vehicles = JSON.parse(text);
+          } else {
+            this.vehicles = response;
+          }
+          console.log("🚗 Vehicles Loaded:", this.vehicles); // Debugging API Response
+        } catch (error) {
+          console.error("❌ Error parsing vehicle data:", error);
         }
-        console.log("Données reçues :", this.vehicles);
       },
-      error: (err) => console.error('Erreur lors de la récupération des congés', err)
+      error: (err) => console.error("❌ Error fetching vehicles:", err),
     });
   }
 
 
-  acceptVehicle(vehicle: Vehicle): void {
-    vehicle.vehicleStatus = 'accepted'; // Assuming the backend expects a string like 'accepted'
-    this.vehicleService.acceptVehicle(vehicle.idV!).subscribe({
-      next: () => {
-        alert('Vehicle accepted successfully!');
-        this.loadVehicles();
-      },
-      error: (error) => console.error('Error accepting vehicle', error)
-    });
-  }
 
-  rejectVehicle(vehicle: Vehicle): void {
-    if (confirm('Are you sure you want to reject this vehicle?')) {
-      this.vehicleService.rejectVehicle(vehicle.idV!).subscribe({
+  //acceptVehicle(vehicle: Vehicle): void {
+    ///vehicle.vehicleStatus = 'accepted'; // Assuming the backend expects a string like 'accepted'
+    //this.vehicleService.acceptVehicle(vehicle.idV!).subscribe({
+     // next: () => {
+     //   alert('Vehicle accepted successfully!');
+      //  this.loadVehicles();
+     // },
+      //error: (error) => console.error('Error accepting vehicle', error)
+    //});
+  //}
+
+  //rejectVehicle(vehicle: Vehicle): void {
+  //  if (confirm('Are you sure you want to reject this vehicle?')) {
+    //  this.vehicleService.rejectVehicle(vehicle.idV!).subscribe({
+      //  next: () => {
+        //  alert('Vehicle rejected successfully!');
+      //    this.loadVehicles();
+    //    },
+      //  error: (error) => console.error('Error rejecting vehicle', error)
+//});
+  //  }
+  //}
+
+  /**
+   * Update the approval status of a vehicle
+   * @param vehicleId - ID of the vehicle
+   * @param approved - true = Approve, false = Reject
+   */
+  updateStatus(vehicleId: string | undefined, approved: boolean): void {
+    if (typeof vehicleId === "string") {
+      this.vehicleService.updateVehicleStatus(vehicleId, approved).subscribe({
         next: () => {
-          alert('Vehicle rejected successfully!');
-          this.loadVehicles();
+          const index = this.vehicles.findIndex(v => v.idV === vehicleId);
+          if (index !== -1) {
+            this.vehicles[index].vehicleStatusD = approved ? 'APPROVED' : 'REJECTED';
+          }
+          console.log(`✅ Vehicle ${vehicleId} status updated to ${approved ? 'APPROVED' : 'REJECTED'}`);
         },
-        error: (error) => console.error('Error rejecting vehicle', error)
+        error: (err) => console.error("❌ Error updating vehicle status:", err),
       });
+    }
+  }
+
+  /**
+   * Delete a vehicle
+   * @param vehicleId - ID of the vehicle to delete
+   */
+  deleteVehicle(vehicleId: string | undefined): void {
+    if (confirm("Are you sure you want to delete this vehicle?")) {
+      if (typeof vehicleId === "string") {
+        this.vehicleService.removeVehicle(vehicleId).subscribe({
+          next: () => {
+            this.vehicles = this.vehicles.filter(v => v.idV !== vehicleId);
+            console.log(`🗑️ Vehicle ${vehicleId} deleted successfully.`);
+          },
+          error: (err) => console.error("❌ Error deleting vehicle:", err),
+        });
+      }
     }
   }
 

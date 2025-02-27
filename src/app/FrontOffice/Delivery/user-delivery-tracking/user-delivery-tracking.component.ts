@@ -13,6 +13,7 @@ import { FooterFrontComponent } from '../../footer-front/footer-front.component'
 export class UserDeliveryTrackingComponent implements OnInit {
   deliveries: Delivery[] = [];
 
+
   constructor(private deliveryService: DeliveryControllerService) {}
 
   ngOnInit(): void {

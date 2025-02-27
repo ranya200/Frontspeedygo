@@ -9,27 +9,21 @@
     <table class="table table-striped table-hover">
       <thead class="table-dark">
       <tr>
-        <th>ID</th>
         <th>Receiver Name</th>
         <th>Address</th>
         <th>Telephone</th>
-        <th>Package Weight</th>
-        <th>Package Size</th>
-        <th>Actions</th>
+        <th>Package Weight with KG</th>
+
       </tr>
       </thead>
       <tbody>
       <tr *ngFor="let fastPost of fastPosts">
-        <td>{{ fastPost.idF }}</td>
         <td>{{ fastPost.receiverName }}</td>
         <td>{{ fastPost.receiverAddress }}</td>
         <td>{{ fastPost.receiverTelNbr }}</td>
         <td>{{ fastPost.packageWeight }}</td>
-        <td>{{ fastPost.packageSize }}</td>
-        <td>
-          <button class="btn btn-success btn-sm me-2" (click)="acceptFastPost(fastPost)">Accept</button>
-          <button class="btn btn-danger btn-sm" (click)="rejectFastPost(fastPost)">Reject</button>
-        </td>
+
+
       </tr>
       </tbody>
     </table>

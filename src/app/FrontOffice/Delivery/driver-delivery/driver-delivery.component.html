@@ -26,9 +26,9 @@
         <td>{{ delivery.pamentStatus }}</td>
         <td>
           <!-- Show Accept/Refuse buttons only if the delivery is Pending -->
-          <button
+         <!-- <button
             class="btn btn-success btn-sm me-2"
-            (click)="acceptDelivery(delivery)"
+           (click)="acceptDelivery(delivery)"
             *ngIf="delivery.deliveryStatus === 'accepted'">
             Accept
           </button>
@@ -37,11 +37,11 @@
             (click)="refuseDelivery(delivery)"
             *ngIf="delivery.deliveryStatus === 'accepted'">
             Refuse
-          </button>
+          </button>-->
           <!-- Optionally display a message if the delivery is already accepted/refused -->
-          <span *ngIf="delivery.deliveryStatus !== 'accepted'">
+         <!-- <span *ngIf="delivery.deliveryStatus !== 'accepted'">
               {{ delivery.deliveryStatus }}
-            </span>
+            </span>-->
         </td>
       </tr>
       </tbody>

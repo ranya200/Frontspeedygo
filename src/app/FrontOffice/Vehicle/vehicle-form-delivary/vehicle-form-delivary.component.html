@@ -34,33 +34,38 @@
       <label for="fuelType">Fuel Type</label>
       <input id="fuelType" formControlName="fuelType" class="form-control">
     </div>
-
-    <!-- File input for image selection -->
+    <!-- File Input for Image -->
     <div class="form-group mb-3">
-      <label for="vehicleImage">registration document</label>
-      <input
-        type="file"
-        id="vehicleImage"
-        class="form-control"
-        (change)="onFileSelected($event)">
+      <label for="image">registration document</label>
+      <input type="file" id="image" class="form-control" (change)="onFileSelected($event)">
     </div>
 
-    <!-- Optional image preview -->
-    <!-- Optional image preview -->
-    <div *ngIf="vehicleForm.get('imageFileName')?.value" class="mt-3">
-      <img
-        [src]="vehicleForm.get('imageFileName')?.value"
-        alt="Selected Image"
-        style="max-width: 200px; border: 1px solid #ccc;">
-    </div>
-
+    <!-- Removed vehicleStatus and vehicleType inputs -->
+    <!-- Vehicle Status Dropdown -->
     <div class="form-group mb-3">
-      <label for="vehicleType">Type</label>
-      <select id="vehicleType" formControlName="vehicleType" class="form-control">
-        <option *ngFor="let type of vehicleTypes" [value]="type">{{ type }}</option>
+      <label for="vehicleStatus">Vehicle Status</label>
+      <select id="vehicleStatus" formControlName="vehicleStatus" class="form-control">
+        <option value="" disabled selected>-- Select Vehicle Status --</option>
+        <option *ngFor="let status of vehicleStatuses" [value]="status">
+          {{ status }}
+        </option>
       </select>
     </div>
-    <button type="submit" class="btn btn-primary">{{ vehicleId ? 'Update' : 'Add' }}</button>
+
+    <!-- Vehicle Type Dropdown -->
+    <div class="form-group mb-3">
+      <label for="vehicleType">Vehicle Type</label>
+      <select id="vehicleType" formControlName="vehicleType" class="form-control">
+        <option value="" disabled selected>-- Select Vehicle Type --</option>
+        <option *ngFor="let type of vehicleTypes" [value]="type">
+          {{ type }}
+        </option>
+      </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary">
+      {{ vehicleForm.value.id ? 'Update' : 'Add' }}
+    </button>
   </form>
 </div>
 

@@ -44,27 +44,32 @@ export class DeliveryAssignmentComponent implements OnInit {
 
   onSubmit(): void {
     if (this.deliveryForm.valid) {
-      const delivery: Delivery = this.deliveryForm.value;
+      const delivery: Delivery = {
+        ...this.deliveryForm.value,
+        driverId: this.deliveryForm.value.driverId || null, // ✅ Ensure valid value
+        userId: this.deliveryForm.value.userId || null
+      };
 
-      // Debugging: Check the form values before sending
-      console.log("Submitting delivery:", delivery);
+      console.log("📌 Debugging Submitted Delivery:", delivery);
 
       this.deliveryService.addDelivery(delivery).subscribe({
         next: (response: any) => {
-          console.log('Delivery created successfully!', response);
-          alert('Delivery submitted successfully!');
-          this.router.navigate(['/deliveries']);
+          console.log("✅ Delivery created successfully!", response);
+          alert("🚀 Delivery submitted successfully!");
+          this.router.navigate(["/deliveries"]);
         },
         error: (err) => {
-          console.error('Error submitting delivery:', err);
+          console.error("❌ Error submitting delivery:", err);
         }
       });
 
     } else {
-      console.error("Form is invalid", this.deliveryForm.errors);
-      alert("Please fill in all required fields.");
+      console.error("❌ Form is invalid:", this.deliveryForm.errors);
+      alert("⚠️ Please fill in all required fields.");
     }
   }
+
+
 
 
 }

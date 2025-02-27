@@ -2,30 +2,53 @@
 
 <div class="container mt-4">
   <div class="text-center text-white">
-              <span class="heading-xxs letter-spacing-xl">
-                Your ride, your comfort, your choice with SpeedyGo!
-              </span>
+    <span class="heading-xxs letter-spacing-xl">
+      Your ride, your comfort, your choice with SpeedyGo!
+    </span>
   </div>
+
   <h2 class="mb-3">My Deliveries</h2>
-  <div class="table-responsive">
-    <table class="table table-striped table-hover">
-      <thead class="table-dark">
-      <tr>
 
-        <th>Estimated Delivery Time</th>
-        <th>Delivery Status</th>
-        <th>Payment Status</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr *ngFor="let delivery of deliveries">
+  <!-- Deliveries Cards Container -->
+  <div class="row">
+    <div class="col-md-4 mb-4" *ngFor="let delivery of deliveries">
+      <div class="card shadow-lg border-0">
+        <div class="card-body">
+          <h5 class="card-title text-primary">
+            📦 Delivery #{{ delivery.idD }}
+          </h5>
 
-        <td>{{ delivery.estimatedDeliveryTime | date:'short' }}</td>
-        <td>{{ delivery.deliveryStatus }}</td>
-        <td>{{ delivery.pamentStatus }}</td>
-      </tr>
-      </tbody>
-    </table>
+          <p class="card-text">
+            <strong>Estimated Time:</strong>
+            {{ delivery.estimatedDeliveryTime | date:'short' }}
+          </p>
+
+          <p class="card-text">
+            <strong>Delivary Status:</strong>
+            <span class="badge"
+                  [ngClass]="{
+                    'bg-success': delivery.deliveryStatus === 'Pending',
+                    'bg-warning': delivery.deliveryStatus === 'InRoad',
+                    'bg-danger': delivery.deliveryStatus === 'Done'
+
+                  }">
+              {{ delivery.deliveryStatus }}
+            </span>
+          </p>
+
+          <p class="card-text">
+            <strong>Payment Status:</strong>
+            <span class="badge"
+                  [ngClass]="{
+                    'bg-success': delivery.pamentStatus === 'PAID',
+                    'bg-danger': delivery.pamentStatus === 'UNPAID'
+                  }">
+              {{ delivery.pamentStatus }}
+            </span>
+          </p>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 

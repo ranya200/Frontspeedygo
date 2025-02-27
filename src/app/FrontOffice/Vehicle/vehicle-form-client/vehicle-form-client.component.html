@@ -39,7 +39,29 @@
       <label for="image">registration document</label>
       <input type="file" id="image" class="form-control" (change)="onFileSelected($event)">
     </div>
+
     <!-- Removed vehicleStatus and vehicleType inputs -->
+    <!-- Vehicle Status Dropdown -->
+    <div class="form-group mb-3">
+      <label for="vehicleStatus">Vehicle Status</label>
+      <select id="vehicleStatus" formControlName="vehicleStatus" class="form-control">
+        <option value="" disabled selected>-- Select Vehicle Status --</option>
+        <option *ngFor="let status of vehicleStatuses" [value]="status">
+          {{ status }}
+        </option>
+      </select>
+    </div>
+
+    <!-- Vehicle Type Dropdown -->
+    <div class="form-group mb-3">
+      <label for="vehicleType">Vehicle Type</label>
+      <select id="vehicleType" formControlName="vehicleType" class="form-control">
+        <option value="" disabled selected>-- Select Vehicle Type --</option>
+        <option *ngFor="let type of vehicleTypes" [value]="type">
+          {{ type }}
+        </option>
+      </select>
+    </div>
 
     <button type="submit" class="btn btn-primary">
       {{ vehicleForm.value.id ? 'Update' : 'Add' }}

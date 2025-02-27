@@ -1,0 +1,32 @@
+<app-header-front></app-header-front>
+
+<h2>Liste des demandes de congé</h2>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Date de début</th>
+      <th>Date de fin</th>
+      <th>Motif</th>
+      <th>Statut</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let leave of leaves">
+      <td>{{ leave.startDate }}</td>
+      <td>{{ leave.endDate }}</td>
+      <td>{{ leave.reason }}</td>
+      <td>{{ leave.status }}</td>
+      <td>
+        <!-- ✅ Approve Button (Visible only if leave is PENDING) -->
+        <button *ngIf="leave.status === 'PENDING'" class="btn btn-success" (click)="approveLeave(leave)">Approuver</button>
+        
+        <!-- ❌ Reject Button (Visible only if leave is PENDING) -->
+        <button *ngIf="leave.status === 'PENDING'" class="btn btn-danger" (click)="rejectLeave(leave)">Rejeter</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<app-footer-front></app-footer-front>

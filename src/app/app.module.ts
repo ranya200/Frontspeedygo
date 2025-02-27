@@ -51,6 +51,7 @@ import { ApiModule, Configuration } from './openapi';
 
 // Services
 import { AuthService } from './services/auth.service';
+import { LeaveadminComponent } from './BackOffice/leave/leaveadmin/leaveadmin.component';
 
 export function initializeKeycloak(authService: AuthService) {
   return () => authService.init();
@@ -99,7 +100,8 @@ const apiConfig = new Configuration({
     ProductEditComponent,
     ProductDetailComponent,
     OrderCreateComponent,
-    PaymentFormComponent
+    PaymentFormComponent,
+    LeaveadminComponent,
     ApiModule.forRoot(() => apiConfig),
 
   ],

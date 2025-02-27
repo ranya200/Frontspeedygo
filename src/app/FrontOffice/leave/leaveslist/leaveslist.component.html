@@ -1,5 +1,5 @@
 <app-header-front></app-header-front>
-
+<button class="btn btn-success mb-3" [routerLink]="['/leaveadd']">Ajouter</button>
 <h2>Liste des demandes de congé</h2>
   <table class="table">
     <thead>
@@ -18,8 +18,8 @@
         <td>{{ leave.reason }}</td>
         <td>{{ leave.status }}</td>
         <td>
-            <button class="btn btn-warning" (click)="editLeave(leave.id!)">Modifier</button>
-            <button class="btn btn-danger" (click)="deleteLeave(leave.id!)">Supprimer</button>
+            <button *ngIf="leave.status === 'PENDING'" class="btn btn-warning" (click)="editLeave(leave.id!)">Modifier</button>
+            <button *ngIf="leave.status === 'PENDING'" class="btn btn-danger" (click)="deleteLeave(leave.id!)">Supprimer</button>
           </td>
       </tr>
     </tbody>

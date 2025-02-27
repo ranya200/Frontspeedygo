@@ -4,11 +4,12 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { HeaderFrontComponent } from '../../header-front/header-front.component';
 import { FooterFrontComponent } from '../../footer-front/footer-front.component';
 import { Leave, LeaveControllerService } from 'src/app/openapi';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-leave-add',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, HeaderFrontComponent, FooterFrontComponent],
+  imports: [CommonModule, ReactiveFormsModule, HeaderFrontComponent, FooterFrontComponent, RouterModule],
   templateUrl: './leave-add.component.html',
   styleUrl: './leave-add.component.css'
 })

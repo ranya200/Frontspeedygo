@@ -23,6 +23,7 @@ import { ProductEditComponent } from './FrontOffice/Product/product-edit/product
 import {OrderCreateComponent} from "./FrontOffice/Order/order-create/order-create.component";
 import {PaymentFormComponent} from "./FrontOffice/payment/payment-form/payment-form.component";
 import {ProductDetailComponent} from "./FrontOffice/Product/product-detail/product-detail.component";
+import { LeaveadminComponent } from './BackOffice/leave/leaveadmin/leaveadmin.component';
 
 const routes: Routes = [
   { path: '', component: AllTemplateFrontComponent },
@@ -37,6 +38,7 @@ const routes: Routes = [
   { path: 'leave', component: LeaveslistComponent },
   { path: 'leaveadd', component: LeaveAddComponent },
   { path: 'leaveedit/:id', component: LeaveEditComponent },
+  { path: 'leaveadmin', component: LeaveadminComponent },
   { path: 'promo', component: PromotionComponent },
   { path: 'adlist', component: AdListComponent },
   { path: 'complaint', component: ComplaintComponent },

@@ -2,14 +2,15 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
-import { FooterFrontComponent } from 'src/app/FrontOffice/footer-front/footer-front.component';
-import { HeaderFrontComponent } from 'src/app/FrontOffice/header-front/header-front.component';
 import { Leave, LeaveControllerService } from 'src/app/openapi';
+import { NavbarBackComponent } from "../../navbar-back/navbar-back.component";
+import { SidebarBackComponent } from "../../sidebar-back/sidebar-back.component";
+import { FooterBackComponent } from "../../footer-back/footer-back.component";
 
 @Component({
   selector: 'app-leaveadmin',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, HeaderFrontComponent, FooterFrontComponent, RouterModule ],
+  imports: [CommonModule, ReactiveFormsModule, RouterModule, NavbarBackComponent, SidebarBackComponent, FooterBackComponent],
   templateUrl: './leaveadmin.component.html',
   styleUrl: './leaveadmin.component.css'
 })
@@ -39,33 +40,28 @@ export class LeaveadminComponent implements OnInit{
       });
     }
 
-    // ✅ Approve Leave Request
-  approveLeave(leave: Leave): void {
-    if (confirm("Voulez-vous approuver cette demande de congé ?")) {
-      const updatedLeave: Leave = { ...leave, status: 'APPROVED' };
-
-      this.leaveService.updateLeave(updatedLeave).subscribe({
-        next: () => {
-          alert("La demande de congé a été approuvée !");
-          this.getAllLeaves(); // Refresh the list
-        },
-        error: (err) => console.error("Erreur lors de l'approbation", err)
-      });
+    approveLeave(leave: Leave): void {
+      if (confirm("Voulez-vous approuver cette demande de congé ?")) {
+        this.leaveService.approveLeave(leave.id!).subscribe({
+          next: () => {
+            alert("La demande de congé a été approuvée !");
+            this.getAllLeaves(); // Refresh the list
+          },
+          error: (err) => console.error("Erreur lors de l'approbation", err)
+        });
+      }
     }
-  }
-
-  // ❌ Reject Leave Request
-  rejectLeave(leave: Leave): void {
-    if (confirm("Voulez-vous rejeter cette demande de congé ?")) {
-      const updatedLeave: Leave = { ...leave, status: 'REJECTED' };
-
-      this.leaveService.updateLeave(updatedLeave).subscribe({
-        next: () => {
-          alert("La demande de congé a été rejetée !");
-          this.getAllLeaves(); // Refresh the list
-        },
-        error: (err) => console.error("Erreur lors du rejet", err)
-      });
+    
+    rejectLeave(leave: Leave): void {
+      if (confirm("Voulez-vous rejeter cette demande de congé ?")) {
+        this.leaveService.rejectLeave(leave.id!).subscribe({
+          next: () => {
+            alert("La demande de congé a été rejetée !");
+            this.getAllLeaves(); // Refresh the list
+          },
+          error: (err) => console.error("Erreur lors du rejet", err)
+        });
+      }
     }
-  }
+    
 }

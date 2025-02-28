@@ -9,7 +9,6 @@ import { EditAdComponent } from './FrontOffice/Ad/ad-edit/ad-edit.component';
 import { ComplaintComponent } from './FrontOffice/complaint/complaint.component';
 
 
-import { PromotionComponent } from './FrontOffice/promotion/promotion.component';
 import { LeaveAddComponent } from './FrontOffice/leave/leave-add/leave-add.component';
 import { LeaveslistComponent } from './FrontOffice/leave/leaveslist/leaveslist.component';
 import { LeaveEditComponent } from './FrontOffice/leave/leave-edit/leave-edit.component';
@@ -24,6 +23,9 @@ import {OrderCreateComponent} from "./FrontOffice/Order/order-create/order-creat
 import {PaymentFormComponent} from "./FrontOffice/payment/payment-form/payment-form.component";
 import {ProductDetailComponent} from "./FrontOffice/Product/product-detail/product-detail.component";
 import { LeaveadminComponent } from './BackOffice/leave/leaveadmin/leaveadmin.component';
+import { PromotionlistComponent } from './FrontOffice/promotion/promotionlist/promotionlist.component';
+import { PromotionaddComponent } from './FrontOffice/promotion/promotionadd/promotionadd.component';
+import { PromotioneditComponent } from './FrontOffice/promotion/promotionedit/promotionedit.component';
 
 const routes: Routes = [
   { path: '', component: AllTemplateFrontComponent },
@@ -39,7 +41,9 @@ const routes: Routes = [
   { path: 'leaveadd', component: LeaveAddComponent },
   { path: 'leaveedit/:id', component: LeaveEditComponent },
   { path: 'leaveadmin', component: LeaveadminComponent },
-  { path: 'promo', component: PromotionComponent },
+  { path: 'promo', component: PromotionlistComponent },
+  { path: 'promoadd', component: PromotionaddComponent },
+  { path: 'promoedit/:id', component: PromotioneditComponent },
   { path: 'adlist', component: AdListComponent },
   { path: 'complaint', component: ComplaintComponent },
   { path: 'editad/:id', component: EditAdComponent },  // Modified to accept an 'id' parameter

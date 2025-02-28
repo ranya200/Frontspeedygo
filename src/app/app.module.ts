@@ -15,7 +15,6 @@ import { CompanyComponent } from './BackOffice/company/company.component';
 import { AllTemplateFrontComponent } from './FrontOffice/all-template-front/all-template-front.component';
 import { FooterFrontComponent } from './FrontOffice/footer-front/footer-front.component';
 import { HeaderFrontComponent } from './FrontOffice/header-front/header-front.component';
-import { PromotionComponent } from './FrontOffice/promotion/promotion.component';
 import { LeaveAddComponent } from './FrontOffice/leave/leave-add/leave-add.component';
 import { LeaveslistComponent } from './FrontOffice/leave/leaveslist/leaveslist.component';
 import { LeaveEditComponent } from './FrontOffice/leave/leave-edit/leave-edit.component';
@@ -52,6 +51,9 @@ import { ApiModule, Configuration } from './openapi';
 // Services
 import { AuthService } from './services/auth.service';
 import { LeaveadminComponent } from './BackOffice/leave/leaveadmin/leaveadmin.component';
+import { PromotionaddComponent } from './FrontOffice/promotion/promotionadd/promotionadd.component';
+import { PromotioneditComponent } from './FrontOffice/promotion/promotionedit/promotionedit.component';
+import { PromotionlistComponent } from './FrontOffice/promotion/promotionlist/promotionlist.component';
 
 export function initializeKeycloak(authService: AuthService) {
   return () => authService.init();
@@ -90,7 +92,6 @@ const apiConfig = new Configuration({
     AllTemplateFrontComponent,
     HeaderFrontComponent,
     FooterFrontComponent,
-    PromotionComponent,
     LeaveAddComponent,
     LeaveslistComponent,
     LeaveEditComponent,
@@ -102,6 +103,9 @@ const apiConfig = new Configuration({
     OrderCreateComponent,
     PaymentFormComponent,
     LeaveadminComponent,
+    PromotionaddComponent,
+    PromotioneditComponent,
+    PromotionlistComponent,
     ApiModule.forRoot(() => apiConfig),
 
   ],

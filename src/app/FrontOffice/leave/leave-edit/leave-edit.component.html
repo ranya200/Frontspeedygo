@@ -1,33 +1,42 @@
 <app-header-front></app-header-front>
 
-<h2>Modifier la Demande de Congé</h2>
-<form [formGroup]="leaveForm" (ngSubmit)="updateLeave()">
-  <div class="form-group">
-    <label for="startDate">Date de début</label>
-    <input id="startDate" type="date" formControlName="startDate" class="form-control" required>
-  </div>
+<div class="container mt-4">
+  <div class="card shadow-lg p-4">
+    <h2 class="text-primary text-center mb-4">Modify Leave Request</h2>
 
-  <div class="form-group">
-    <label for="endDate">Date de fin</label>
-    <input id="endDate" type="date" formControlName="endDate" class="form-control" required>
-  </div>
+    <form [formGroup]="leaveForm" (ngSubmit)="updateLeave()">
+      
+      <!-- Start Date -->
+      <div class="form-group mb-3">
+        <label for="startDate" class="form-label fw-bold">Start Date</label>
+        <input id="startDate" type="date" formControlName="startDate" class="form-control rounded" required>
+      </div>
 
-  <div class="form-group">
-    <label for="reason">Motif</label>
-    <textarea id="reason" formControlName="reason" class="form-control" required></textarea>
-  </div>
+      <!-- End Date -->
+      <div class="form-group mb-3">
+        <label for="endDate" class="form-label fw-bold">End Date</label>
+        <input id="endDate" type="date" formControlName="endDate" class="form-control rounded" required>
+      </div>
 
-  <div class="form-group">
-    <label for="status">Statut</label>
-    <select id="status" formControlName="status" class="form-control">
-      <option value="PENDING">En attente</option>
-      <option value="APPROVED">Approuvé</option>
-      <option value="REJECTED">Rejeté</option>
-    </select>
-  </div>
+      <!-- Reason for Leave -->
+      <div class="form-group mb-3">
+        <label for="reason" class="form-label fw-bold">Reason</label>
+        <textarea id="reason" formControlName="reason" class="form-control rounded" rows="4" required></textarea>
+      </div>
 
-  <button type="submit" class="btn btn-primary" [disabled]="leaveForm.invalid">Mettre à Jour</button>
-  <button type="button" class="btn btn-secondary" (click)="cancelEdit()">Annuler</button>
-</form>
+      <!-- Submit & Cancel Buttons -->
+      <div class="d-flex justify-content-center gap-3">
+        <button type="submit" class="btn btn-primary btn-lg px-4" [disabled]="leaveForm.invalid">
+          <i class="fas fa-save"></i> Update
+        </button>
+        <button type="button" class="btn btn-secondary btn-lg px-4" (click)="cancelEdit()">
+          <i class="fas fa-times"></i> Cancel
+        </button>
+      </div>
+
+    </form>
+
+  </div>
+</div>
 
 <app-footer-front></app-footer-front>

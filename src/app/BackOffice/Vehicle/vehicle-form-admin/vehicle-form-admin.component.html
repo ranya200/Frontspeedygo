@@ -1,0 +1,92 @@
+<app-navbar-back></app-navbar-back>
+
+<!-- Sidebar Component -->
+<app-sidebar-back></app-sidebar-back>
+
+<div class="container mt-4">
+  <div class="row">
+    <div class="offset-md-2 col-md-10">
+      <div class="container">
+        <form [formGroup]="vehicleForm" (ngSubmit)="onSubmit()">
+          <!-- Brand -->
+          <div class="form-group mb-3">
+            <label for="brand">Brand</label>
+            <input id="brand" formControlName="brand" class="form-control" required>
+          </div>
+
+          <!-- Model -->
+          <div class="form-group mb-3">
+            <label for="model">Model</label>
+            <input id="model" formControlName="model" class="form-control" required>
+          </div>
+
+          <!-- Capacity -->
+          <div class="form-group mb-3">
+            <label for="capacity">Capacity</label>
+            <input id="capacity" type="number" formControlName="capacity" class="form-control" required>
+          </div>
+
+          <!-- License Plate -->
+          <div class="form-group mb-3">
+            <label for="licensePlate">License Plate</label>
+            <input id="licensePlate" formControlName="licensePlate" class="form-control" required>
+          </div>
+
+          <!-- VIN -->
+          <div class="form-group mb-3">
+            <label for="vin">VIN</label>
+            <input id="vin" formControlName="vin" class="form-control">
+          </div>
+
+          <!-- Fabrication Date -->
+          <div class="form-group mb-3">
+            <label for="fabricationDate">Fabrication Date</label>
+            <input id="fabricationDate" type="date" formControlName="fabricationDate" class="form-control">
+          </div>
+
+          <!-- Fuel Type -->
+          <div class="form-group mb-3">
+            <label for="fuelType">Fuel Type</label>
+            <input id="fuelType" formControlName="fuelType" class="form-control">
+          </div>
+
+          <!-- Registration Document Upload -->
+          <div class="form-group mb-3">
+            <label for="image">Registration Document</label>
+            <input type="file" id="image" class="form-control" (change)="onFileSelected($event)" accept="image/*">
+          </div>
+
+          <!-- Vehicle Status Dropdown -->
+          <div class="form-group mb-3">
+            <label for="vehicleStatus">Vehicle Status</label>
+            <select id="vehicleStatus" formControlName="vehicleStatus" class="form-control">
+              <option value="" disabled selected>-- Select Vehicle Status --</option>
+              <option *ngFor="let status of vehicleStatuses" [value]="status">
+                {{ status }}
+              </option>
+            </select>
+          </div>
+
+          <!-- Vehicle Type Dropdown -->
+          <div class="form-group mb-3">
+            <label for="vehicleType">Vehicle Type</label>
+            <select id="vehicleType" formControlName="vehicleType" class="form-control">
+              <option value="" disabled selected>-- Select Vehicle Type --</option>
+              <option *ngFor="let type of vehicleTypes" [value]="type">
+                {{ type }}
+              </option>
+            </select>
+          </div>
+
+
+
+
+          <!-- Submit Button -->
+          <button type="submit" class="btn btn-primary">
+            {{ vehicleForm.value.id ? 'Update' : 'Add' }}
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

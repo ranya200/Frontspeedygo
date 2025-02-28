@@ -64,8 +64,6 @@ const apiConfig = new Configuration({
 @NgModule({
   declarations: [
     AppComponent
-
-
   ],
   imports: [
     BrowserModule,

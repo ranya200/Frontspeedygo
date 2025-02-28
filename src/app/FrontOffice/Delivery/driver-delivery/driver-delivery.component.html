@@ -1,0 +1,52 @@
+<app-header-front></app-header-front>
+
+<div class="container mt-4">
+  <div class="text-center text-white">
+              <span class="heading-xxs letter-spacing-xl">
+                Your ride, your comfort, your choice with SpeedyGo!
+              </span>
+  </div>
+  <h2 class="mb-3">My Deliveries</h2>
+  <div class="table-responsive">
+    <table class="table table-striped table-hover">
+      <thead class="table-dark">
+      <tr>
+
+        <th>Estimated Delivery Time</th>
+        <th>Delivery Status</th>
+        <th>Payment Status</th>
+        <th>Actions</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let delivery of deliveries">
+
+        <td>{{ delivery.estimatedDeliveryTime | date:'short' }}</td>
+
+        <td>{{ delivery.pamentStatus }}</td>
+        <td>
+          <!-- Show Accept/Refuse buttons only if the delivery is Pending -->
+         <!-- <button
+            class="btn btn-success btn-sm me-2"
+           (click)="acceptDelivery(delivery)"
+            *ngIf="delivery.deliveryStatus === 'accepted'">
+            Accept
+          </button>
+          <button
+            class="btn btn-danger btn-sm"
+            (click)="refuseDelivery(delivery)"
+            *ngIf="delivery.deliveryStatus === 'accepted'">
+            Refuse
+          </button>-->
+          <!-- Optionally display a message if the delivery is already accepted/refused -->
+         <!-- <span *ngIf="delivery.deliveryStatus !== 'accepted'">
+              {{ delivery.deliveryStatus }}
+            </span>-->
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<app-footer-front></app-footer-front>

@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { KeycloakService } from 'keycloak-angular';
-
+import { Router } from '@angular/router';
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  constructor(private keycloak: KeycloakService) {}
+  constructor(private keycloak: KeycloakService, private router: Router) {}
 
   async init() {
     try {
@@ -42,8 +42,12 @@ export class AuthService {
     await this.keycloak.login();
   }
 
-  logout() {
-    console.log('Logging out...');
-    this.keycloak.logout();
+  async logout() {
+    try {
+      console.log('Déconnexion en cours...');
+      await this.keycloak.logout('http://localhost:4200'); // Redirige après logout
+    } catch (error) {
+      console.error('Erreur lors de la déconnexion:', error);
+    }
   }
 }

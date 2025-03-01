@@ -2016,10 +2016,19 @@
             <i class="fe fe-search"></i>
           </a>
         </li>
-        <li class="nav-item ms-lg-n4">
-          <a class="nav-link" href="#">
-            <i class="fe fe-user"></i>
+        <li class="nav-item dropdown" *ngIf="isLoggedIn">
+          <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="fe fe-user"></i> {{ userProfile?.name }}
           </a>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+            <li><a class="dropdown-item" href="#">Nom : {{ userProfile?.name }}</a></li>
+            <li><a class="dropdown-item" href="#">Email : {{ userProfile?.email }}</a></li>
+            <li *ngFor="let role of userRoles">
+              <a class="dropdown-item" href="#">Rôle : {{ role }}</a>
+            </li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="#" (click)="logout()">Déconnexion</a></li>
+          </ul>
         </li>
         <li class="nav-item ms-lg-n4">
           <a class="nav-link" href="#">
@@ -2033,15 +2042,13 @@
                 </span>
           </a>
         </li>
-        <li class="nav-item ms-lg-n4">
-          <a class="nav-link" href="#" (click)="logout()">
-            <i class="fe fe-log-out"></i>
+        <li class="nav-item ms-lg-n4" *ngIf="!isLoggedIn">
+          <a class="nav-link" href="#" (click)="login()">
+            <i class="fe fe-log-in"></i> Connexion
           </a>
         </li>
       </ul>
-
     </div>
-
   </div>
 </nav>
 

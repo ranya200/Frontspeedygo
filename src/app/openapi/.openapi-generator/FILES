@@ -15,6 +15,7 @@ api/orderController.service.ts
 api/paymentController.service.ts
 api/productController.service.ts
 api/promotionController.service.ts
+api/userController.service.ts
 api/vehicleController.service.ts
 configuration.ts
 encoder.ts
@@ -35,5 +36,6 @@ model/orderItem.ts
 model/payment.ts
 model/product.ts
 model/promotion.ts
+model/user.ts
 model/vehicle.ts
 variables.ts

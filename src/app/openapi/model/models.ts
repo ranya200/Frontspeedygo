@@ -12,4 +12,5 @@ export * from './orderItem';
 export * from './payment';
 export * from './product';
 export * from './promotion';
+export * from './user';
 export * from './vehicle';

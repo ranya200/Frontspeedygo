@@ -6,7 +6,7 @@ import {HttpClient} from "@angular/common/http";
   providedIn: 'root',
 })
 export class AuthService {
-  private apiUrl = 'http://localhost:8089/api/user/me'; // URL backend
+  //private apiUrl = 'http://localhost:8089/api/user/me'; // URL backend
 
   constructor(private keycloak: KeycloakService, private router: Router, private http: HttpClient) {}
 
@@ -86,10 +86,5 @@ export class AuthService {
     return token?.realm_access?.roles || [];
   }
 
-  async getBackendUser() {
-    if (!(await this.keycloak.isLoggedIn())) {
-      return null;
-    }
-    return this.http.get(this.apiUrl).toPromise();
-  }
+
 }

@@ -15,6 +15,7 @@ import { OrderControllerService } from './api/orderController.service';
 import { PaymentControllerService } from './api/paymentController.service';
 import { ProductControllerService } from './api/productController.service';
 import { PromotionControllerService } from './api/promotionController.service';
+import { UserControllerService } from './api/userController.service';
 import { VehicleControllerService } from './api/vehicleController.service';
 
 @NgModule({

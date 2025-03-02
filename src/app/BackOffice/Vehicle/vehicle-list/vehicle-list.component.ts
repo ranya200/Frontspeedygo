@@ -3,24 +3,27 @@ import { VehicleControllerService, Vehicle } from '../../../openapi';
 import { CommonModule, NgForOf } from '@angular/common';
 import {NavbarBackComponent} from "../../navbar-back/navbar-back.component";
 import {SidebarBackComponent} from "../../sidebar-back/sidebar-back.component";
-import {RouterLink} from "@angular/router";
+import {Router, RouterLink} from "@angular/router";
+import {FormBuilder} from "@angular/forms";
 
 @Component({
   selector: 'app-vehicle-list',
+  standalone: true,
   imports: [
     CommonModule,
-    NgForOf,
-    NavbarBackComponent,
-    SidebarBackComponent,
     RouterLink,
+    NavbarBackComponent,
+    SidebarBackComponent
   ],
   templateUrl: './vehicle-list.component.html',
   styleUrls: ['./vehicle-list.component.css']
 })
 export class VehicleListComponent implements OnInit {
   vehicles: Vehicle[] = [];
+  errorMessage: string = '';
 
-  constructor(private vehicleService: VehicleControllerService) {}
+  constructor(private fb: FormBuilder, private vehicleService: VehicleControllerService, private router: Router) {
+  }
 
   ngOnInit(): void {
     this.loadVehicles();
@@ -45,27 +48,50 @@ export class VehicleListComponent implements OnInit {
     });
   }
 
+  approveVehicle(vehicule: Vehicle): void {
+    if (confirm("whould you accept this vehicule add  ?")) {
+      this.vehicleService.approveVehicle(vehicule.idV!).subscribe({
+        next: () => {
+          alert("The add is accepted !");
+          this.loadVehicles(); // Refresh the list
+        },
+        error: (err) => console.error("Error", err)
+      });
+    }
+  }
+
+  rejectVehicle(vehicule: Vehicle): void {
+    if (confirm("whould you reject this vehicule add?")) {
+      this.vehicleService.rejectVehicle(vehicule.idV!).subscribe({
+        next: () => {
+          alert("The add is rejected !");
+          this.loadVehicles(); // Refresh the list
+        },
+        error: (err) => console.error("Error", err)
+      });
+    }
+  }
 
 
   //acceptVehicle(vehicle: Vehicle): void {
-    ///vehicle.vehicleStatus = 'accepted'; // Assuming the backend expects a string like 'accepted'
-    //this.vehicleService.acceptVehicle(vehicle.idV!).subscribe({
-     // next: () => {
-     //   alert('Vehicle accepted successfully!');
-      //  this.loadVehicles();
-     // },
-      //error: (error) => console.error('Error accepting vehicle', error)
-    //});
+  ///vehicle.vehicleStatus = 'accepted'; // Assuming the backend expects a string like 'accepted'
+  //this.vehicleService.acceptVehicle(vehicle.idV!).subscribe({
+  // next: () => {
+  //   alert('Vehicle accepted successfully!');
+  //  this.loadVehicles();
+  // },
+  //error: (error) => console.error('Error accepting vehicle', error)
+  //});
   //}
 
   //rejectVehicle(vehicle: Vehicle): void {
   //  if (confirm('Are you sure you want to reject this vehicle?')) {
-    //  this.vehicleService.rejectVehicle(vehicle.idV!).subscribe({
-      //  next: () => {
-        //  alert('Vehicle rejected successfully!');
-      //    this.loadVehicles();
-    //    },
-      //  error: (error) => console.error('Error rejecting vehicle', error)
+  //  this.vehicleService.rejectVehicle(vehicle.idV!).subscribe({
+  //  next: () => {
+  //  alert('Vehicle rejected successfully!');
+  //    this.loadVehicles();
+  //    },
+  //  error: (error) => console.error('Error rejecting vehicle', error)
 //});
   //  }
   //}
@@ -75,20 +101,7 @@ export class VehicleListComponent implements OnInit {
    * @param vehicleId - ID of the vehicle
    * @param approved - true = Approve, false = Reject
    */
-  updateStatus(vehicleId: string | undefined, approved: boolean): void {
-    if (typeof vehicleId === "string") {
-      this.vehicleService.updateVehicleStatus(vehicleId, approved).subscribe({
-        next: () => {
-          const index = this.vehicles.findIndex(v => v.idV === vehicleId);
-          if (index !== -1) {
-            this.vehicles[index].vehicleStatusD = approved ? 'APPROVED' : 'REJECTED';
-          }
-          console.log(`✅ Vehicle ${vehicleId} status updated to ${approved ? 'APPROVED' : 'REJECTED'}`);
-        },
-        error: (err) => console.error("❌ Error updating vehicle status:", err),
-      });
-    }
-  }
+
 
   /**
    * Delete a vehicle
@@ -108,4 +121,11 @@ export class VehicleListComponent implements OnInit {
     }
   }
 
+  editProduct(id: string): void {
+    // Redirection vers le composant d'édition
+    this.router.navigate(['/edit-vehicle', id]);
+  }
+
 }
+
+

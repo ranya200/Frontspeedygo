@@ -11,6 +11,7 @@ import {SidebarBackComponent} from "../../sidebar-back/sidebar-back.component";
   selector: 'app-delivery-assignment',
   imports: [CommonModule, ReactiveFormsModule, NgForOf, NavbarBackComponent, SidebarBackComponent],
   templateUrl: './delivery-assignment.component.html',
+  standalone: true,
   styleUrls: ['./delivery-assignment.component.css']
 })
 export class DeliveryAssignmentComponent implements OnInit {
@@ -19,6 +20,8 @@ export class DeliveryAssignmentComponent implements OnInit {
   // Build arrays using the enums from the generated Delivery model.
   deliveryStatuses: string[] = ['Pending','InRoad','Done'];
   pamentStatuses: string[] = Object.values(Delivery.PamentStatusEnum);
+  status  = ['PENDING', 'APPROVED', 'REJECTED'];
+  deliveries: any[] = [];
 
   constructor(
     private fb: FormBuilder,
@@ -37,32 +40,35 @@ export class DeliveryAssignmentComponent implements OnInit {
       estimatedDeliveryTime: ['', Validators.required],
       // Optionally include userId control if needed
       userId: [''],
-      pamentStatus: [Delivery.PamentStatusEnum.Unpaid, Validators.required]
+      pamentStatus: [Delivery.PamentStatusEnum.Unpaid, Validators.required],
+      status: ['pending']
     });
   }
 
 
   onSubmit(): void {
     if (this.deliveryForm.valid) {
-      const delivery: Delivery = {
+      const newDelivery = {
         ...this.deliveryForm.value,
-        driverId: this.deliveryForm.value.driverId || null, // ✅ Ensure valid value
+        idD: null, // 🚀 Ensure MongoDB generates a new ID
+        driverId: this.deliveryForm.value.driverId || null,
         userId: this.deliveryForm.value.userId || null
       };
 
-      console.log("📌 Debugging Submitted Delivery:", delivery);
+      console.log("📌 Debugging Submitted Delivery:", JSON.stringify(newDelivery, null, 2));
 
-      this.deliveryService.addDelivery(delivery).subscribe({
+      this.deliveryService.addDelivery(newDelivery).subscribe({
         next: (response: any) => {
           console.log("✅ Delivery created successfully!", response);
+          this.router.navigate(['/deliveries']);
           alert("🚀 Delivery submitted successfully!");
-          this.router.navigate(["/deliveries"]);
+          this.deliveries = [...this.deliveries, response]; // Append new delivery
+          this.deliveryForm.reset(); // Clear form after adding
         },
         error: (err) => {
           console.error("❌ Error submitting delivery:", err);
         }
       });
-
     } else {
       console.error("❌ Form is invalid:", this.deliveryForm.errors);
       alert("⚠️ Please fill in all required fields.");

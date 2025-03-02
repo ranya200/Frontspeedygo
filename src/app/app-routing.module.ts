@@ -40,6 +40,7 @@ import {FastpostFormComponent} from "./FrontOffice/FastPost/fastpost-form/fastpo
 import {FastpostListComponent} from "./BackOffice/FastPost/fastpost-list/fastpost-list.component";
 import {VehicleEditComponent} from "./BackOffice/Vehicle/vehicle-edit/vehicle-edit.component";
 import {DeliveryListComponent} from "./BackOffice/Delivery/delivery-list/delivery-list.component";
+import {FastpostEditComponent} from "./BackOffice/FastPost/fastpost-edit/fastpost-edit.component";
 
 const routes: Routes = [
   { path: '', component: AllTemplateFrontComponent },
@@ -73,6 +74,7 @@ const routes: Routes = [
   // FastPost Routes
   { path: 'fastposts/new', component: FastpostFormComponent },
   { path: 'fastposts', component: FastpostListComponent },
+  { path: 'fastposts/edit/:id', component: FastpostEditComponent },
 
   { path: 'admin', component: AllTemplateBackComponent, canActivate: [authGuard] },
   { path: '**', redirectTo: '' },

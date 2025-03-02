@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { DeliveryControllerService, Delivery } from '../../../openapi';
+import {ActivatedRoute, Router, RouterLink} from '@angular/router';
+import {DeliveryControllerService, Delivery, FastPost} from '../../../openapi';
 import { DatePipe, NgForOf } from '@angular/common';
 import { HeaderFrontComponent } from '../../header-front/header-front.component';
 import { FooterFrontComponent } from '../../footer-front/footer-front.component';
@@ -8,8 +8,9 @@ import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-driver-delivery',
-  imports: [CommonModule, DatePipe, NgForOf, HeaderFrontComponent, FooterFrontComponent],
+  imports: [CommonModule, DatePipe, NgForOf, HeaderFrontComponent, FooterFrontComponent, RouterLink],
   templateUrl: './driver-delivery.component.html',
+  standalone: true,
   styleUrls: ['./driver-delivery.component.css']
 })
 export class DriverDeliveryComponent implements OnInit {
@@ -48,45 +49,41 @@ export class DriverDeliveryComponent implements OnInit {
     });
   }
 
-  // Method to accept the delivery
- // acceptDelivery(delivery: Delivery): void {
-  //  if (confirm(`Are you sure you want to accept this delivery? ${delivery.idD}`)) {
-  //    if (delivery.idD != null) {
-  //      if (delivery.driverId != null) {
-  //        this.deliveryService.acceptDelivery(delivery.idD, delivery.driverId).subscribe({
-//            next: () => {
-  //         alert('Delivery accepted!');
-  //            // After accepting, you might want to reload the deliveries or update the UI.
-    //          this.loadDeliveriesForDriver(this.driverId);
-  //          },
-//     error: (err) => {
-  //       console.error('Error accepting delivery:', err);
-  //        alert('Error accepting delivery.');
-  //      }
-  //    });
-  //     }
-  //   }
-  // }
-  //}
+  approveDelivery(delivery :Delivery): void {
+    if (confirm("whould you accept this Delivery  ?")) {
+      this.deliveryService.approveDelivery(delivery.idD!).subscribe({
+        next: () => {
+          alert("The delivery is accepted !");
+          this.loadDeliveriesForDriver(this.driverId); // Refresh the list
+        },
+        error: (err) => console.error("Error", err)
+      });
+    }
+  }
 
-  // Method to refuse the delivery
-//  refuseDelivery(delivery: Delivery): void {
-//    if (confirm(`Are you sure you want to refuse this delivery? ${delivery.idD}`)) {
-//      if (delivery.idD != null) {
-//        if (delivery.driverId != null) {
-//          this.deliveryService.rejectDelivery(delivery.idD, delivery.driverId).subscribe({
- //           next: () => {
-  //            alert('Delivery refused!');
-   //           // After refusing, you might want to reload the deliveries or update the UI.
-     //         this.loadDeliveriesForDriver(this.driverId);
-   //         },
-  //          error: (err) => {
-  //            console.error('Error refusing delivery:', err);
-   //           alert('Error refusing delivery.');
-     //       }
-       //   });
-      //  }
-     // }
-  //  }
- // }
+  rejectDelivery(delivery :Delivery): void {
+    if (confirm("whould you accept this Delivery  ?")) {
+      this.deliveryService.rejectDelivery(delivery.idD!).subscribe({
+        next: () => {
+          alert("The delivery is rejected !");
+          this.loadDeliveriesForDriver(this.driverId); // Refresh the list
+        },
+        error: (err) => console.error("Error", err)
+      });
+    }
+  }
+
+  deleteDelivery(driverId: string | undefined): void {
+    if (confirm("Are you sure you want to delete this delivery ?")) {
+      if (typeof driverId === "string") {
+        this.deliveryService.removeDelivery(driverId).subscribe({
+          next: () => {
+            this.deliveries = this.deliveries.filter(d => d.idD !== driverId);
+            console.log(`🗑️ Vehicle ${driverId} deleted successfully.`);
+          },
+          error: (err) => console.error("❌ Error deleting this request:", err),
+        });
+      }
+    }
+  }
 }

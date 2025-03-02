@@ -13,7 +13,9 @@
         <th>Address</th>
         <th>Telephone</th>
         <th>Package Weight with KG</th>
+        <th>Status</th>
 
+        <th class="text-center">Actions</th>
       </tr>
       </thead>
       <tbody>
@@ -22,6 +24,37 @@
         <td>{{ fastPost.receiverAddress }}</td>
         <td>{{ fastPost.receiverTelNbr }}</td>
         <td>{{ fastPost.packageWeight }}</td>
+        <td>
+              <span
+                class="badge"
+                [ngClass]="{
+                  'bg-warning text-dark': fastPost.fastPostStatus === 'PENDING',
+                  'bg-success': fastPost.fastPostStatus === 'APPROVED',
+                  'bg-danger': fastPost.fastPostStatus === 'REJECTED'
+                }">{{fastPost.fastPostStatus}}
+              </span>
+        </td>
+        <td class="text-center">
+          <!-- ✅ Approve Button (Visible only if leave is PENDING) -->
+          <button *ngIf="fastPost.fastPostStatus === 'PENDING'" class="btn btn-success btn-sm me-2" (click)="approveFastPost(fastPost)">
+            <i class="fas fa-check-circle"></i> Approve
+          </button>
+
+          <!-- ❌ Reject Button (Visible only if leave is PENDING) -->
+          <button *ngIf="fastPost.fastPostStatus === 'PENDING'" class="btn btn-danger btn-sm" (click)="rejectFastPost(fastPost)">
+            <i class="fas fa-times-circle"></i> Reject
+          </button>
+
+          <!-- Edit Button -->
+          <a class="btn btn-sm btn-info me-2" [routerLink]="['/fastposts/edit', fastPost.idF]">
+            <i class="bi bi-pencil"></i> Edit
+          </a>
+
+          <!-- Delete Button -->
+          <button class="btn btn-sm btn-danger" (click)="deleteFastPost(fastPost.idF)">
+            <i class="bi bi-trash"></i> Delete
+          </button>
+        </td>
 
 
       </tr>

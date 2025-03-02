@@ -1,26 +1,35 @@
 <app-header-front></app-header-front>
 
-<div class="text-center text-white">
-              <span class="heading-xxs letter-spacing-xl">
-                Your ride, your comfort, your choice with SpeedyGo!
-              </span>
+<div class="py-3 bg-primary bg-pattern mb-4">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <div class="text-center text-white">
+                    <span class="heading-xxs letter-spacing-xl">
+                        Your ride, your comfort, your choice with SpeedyGo!
+                    </span>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
-<div class="container">
-  <h2>Submit Fast Post</h2>
+<div class="container mt-4">
+  <div class="card shadow-lg p-4">
+    <h2 class="text-primary text-center mb-4"> Submit Fast Post</h2>
   <form [formGroup]="fastPostForm" (ngSubmit)="onSubmit()">
-    <div class="form-group">
+    <div class="form-group mb-3">
       <label for="receiverName">Receiver Name</label>
       <input id="receiverName" formControlName="receiverName" class="form-control">
     </div>
-    <div class="form-group">
+    <div class="form-group mb-3">
       <label for="receiverAddress">Receiver Address</label>
       <input id="receiverAddress" formControlName="receiverAddress" class="form-control">
     </div>
-    <div class="form-group">
+    <div class="form-group mb-3">
       <label for="receiverTelNbr">Receiver Tel Number</label>
       <input id="receiverTelNbr" type="number" formControlName="receiverTelNbr" class="form-control">
     </div>
-    <div class="form-group">
+    <div class="form-group mb-3">
       <label for="packageWeight">Package Weight With Kg</label>
       <input id="packageWeight" type="number" step="0.1" formControlName="packageWeight" class="form-control">
     </div>

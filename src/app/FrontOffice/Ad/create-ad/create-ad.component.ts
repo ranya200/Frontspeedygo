@@ -22,7 +22,6 @@ export class CreateAdComponent implements OnInit {
       title: ['', Validators.required],
       description: ['', [Validators.required, Validators.minLength(5)]],
       image: [''],
-      video: [''],
       category: [''],
       startDate: ['', Validators.required],
       endDate: ['', Validators.required],
@@ -30,14 +29,16 @@ export class CreateAdComponent implements OnInit {
     });
   }
 
+
+
   onSubmit(): void {
     if (this.adForm.valid) {
-      const formValue = this.adForm.value;
-      const adRequest: Ad = {
+      const adRequest = this.adForm.value;
+      /*const adRequest: Ad = {
         ...formValue,
         startDate: new Date(formValue.startDate).toISOString(),
         endDate: new Date(formValue.endDate).toISOString()
-      };
+      };*/
       this.adService.createAd(adRequest).subscribe({
         next: () => alert('Annonce soumise avec succès !'),
         error: (err) => {

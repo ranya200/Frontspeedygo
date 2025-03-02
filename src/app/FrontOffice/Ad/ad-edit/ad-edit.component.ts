@@ -27,7 +27,6 @@ export class EditAdComponent implements OnInit {
       title: ['', Validators.required],
       description: ['', [Validators.required, Validators.minLength(5)]],
       image: [''],
-      video: [''],
       category: [''],
       startDate: ['', Validators.required],
       endDate: ['', Validators.required],
@@ -55,7 +54,6 @@ export class EditAdComponent implements OnInit {
           title: ad.title,
           description: ad.description,
           image: ad.image,
-          video: ad.video,
           category: ad.category,
           startDate: ad.startDate?.split('T')[0], // Safe access with optional chaining
           endDate: ad.endDate?.split('T')[0],    // Safe access with optional chaining

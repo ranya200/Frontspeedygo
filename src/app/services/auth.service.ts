@@ -1,11 +1,14 @@
 import { Injectable } from '@angular/core';
 import { KeycloakService } from 'keycloak-angular';
 import { Router } from '@angular/router';
+import {HttpClient} from "@angular/common/http";
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  constructor(private keycloak: KeycloakService, private router: Router) {}
+  private apiUrl = 'http://localhost:8089/api/user/me'; // URL backend
+
+  constructor(private keycloak: KeycloakService, private router: Router, private http: HttpClient) {}
 
   async init() {
     try {
@@ -81,5 +84,12 @@ export class AuthService {
     }
     const token = this.keycloak.getKeycloakInstance().tokenParsed;
     return token?.realm_access?.roles || [];
+  }
+
+  async getBackendUser() {
+    if (!(await this.keycloak.isLoggedIn())) {
+      return null;
+    }
+    return this.http.get(this.apiUrl).toPromise();
   }
 }

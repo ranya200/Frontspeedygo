@@ -67,7 +67,7 @@ const routes: Routes = [
   { path: 'crad', component: CreateAdComponent },
   // Vehicle Routes
   { path: 'vehicles', component: VehicleListComponent },
-  { path: 'vehicles/new', component: VehicleFormClientComponent },
+  { path: 'vehicles/new', component: VehicleFormClientComponent, canActivate: [adminGuard] },
   { path: 'admin/vehicles/new', component: VehicleFormAdminComponent },
   { path: 'edit-vehicle/:id', component: VehicleEditComponent },
   { path: 'driver/vehicles/new', component: VehicleFormDelivaryComponent },

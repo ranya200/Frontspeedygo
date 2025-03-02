@@ -17,9 +17,11 @@ export class HeaderFrontComponent {
   constructor(private authService: AuthService) {}
 
   async ngOnInit() {
-    this.isLoggedIn = await this.authService.isLoggedIn(); // Vérifier si l'utilisateur est connecté
+    this.isLoggedIn = await this.authService.isLoggedIn();
 
     if (this.isLoggedIn) {
+      //this.userProfile = await this.authService.getBackendUser(); // Récupère depuis le backend
+      //this.userRoles = this.userProfile ? [this.userProfile.role] : [];
       this.userProfile = await this.authService.getUserProfile();
       this.userRoles = await this.authService.getUserRoles();
     }

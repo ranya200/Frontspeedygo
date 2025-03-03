@@ -9,19 +9,34 @@
          <h2 class="mb-3">List Of Vehicules</h2>
       <div class="table-responsive">
     <!-- The offset adds left space -->
+        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 15px;">
+          <label for="search">Rechercher par marque</label>
+          <input
+            id="search"
+            type="text"
+            [(ngModel)]="searchTerm"
+            placeholder="Entrez une marque..."
+            style="padding: 8px; border: 1px solid #ccc; border-radius: 5px; font-size: 16px;"
+          />
+          <button (click)="search()"
+                  style="padding: 8px 12px; background-color: #ff6b5b; color: white; border: none; border-radius: 5px; cursor: pointer;">
+            Search
+          </button>
+        </div>
 
 
-  <!-- Add Vehicle Button (for admin) -->
-  <div class="mb-3">
-    <a class="btn btn-primary" routerLink="/admin/vehicles/new">
+
+        <!-- Add Vehicle Button (for admin) -->
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <a class="btn btn-success px-4 py-2" routerLink="/admin/vehicles/new">
       <i class="bi bi-plus-circle"></i> Add Vehicle
     </a>
+    <!-- Right Side: Dashboard Button -->
+    <a class="btn btn-danger px-4 py-2" routerLink="/admin">
+      <i class="bi bi-speedometer2"></i> Dashboard
+    </a>
   </div>
-        <div class="mb-3">
-            <a class="btn btn-primary" routerLink="/admin">
-                <i class="bi bi-plus-circle"></i> Dashbord
-            </a>
-        </div>
+
 
   <!-- Vehicle List Table -->
   <div class="table-responsive">

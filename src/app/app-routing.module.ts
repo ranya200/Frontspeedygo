@@ -41,6 +41,7 @@ import {FastpostListComponent} from "./BackOffice/FastPost/fastpost-list/fastpos
 import {VehicleEditComponent} from "./BackOffice/Vehicle/vehicle-edit/vehicle-edit.component";
 import {DeliveryListComponent} from "./BackOffice/Delivery/delivery-list/delivery-list.component";
 import {FastpostEditComponent} from "./BackOffice/FastPost/fastpost-edit/fastpost-edit.component";
+import {DeliveryEditComponent} from "./BackOffice/Delivery/delivery-edit/delivery-edit.component";
 
 const routes: Routes = [
   { path: '', component: AllTemplateFrontComponent },
@@ -71,6 +72,7 @@ const routes: Routes = [
   { path: 'deliveries', component: DeliveryListComponent },
   { path: 'deliveries/driver', component: DriverDeliveryComponent },
   { path: 'deliveries/user', component: UserDeliveryTrackingComponent },
+  { path: 'deliveries/edit/:id', component: DeliveryEditComponent },
   // FastPost Routes
   { path: 'fastposts/new', component: FastpostFormComponent },
   { path: 'fastposts', component: FastpostListComponent },

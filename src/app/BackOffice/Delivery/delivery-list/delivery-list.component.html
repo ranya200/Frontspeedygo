@@ -1,10 +1,25 @@
 <app-navbar-back></app-navbar-back>
+
 <app-sidebar-back></app-sidebar-back>
 
 <div class="container mt-4">
   <div class="row">
     <div class="offset-md-2 col-md-10">
       <h2 class="mb-3 text-primary">🚚 Deliveries List</h2>
+
+      <!-- The offset adds left space -->
+      <div class="search-container">
+        <label for="pamentStatus" class="search-label">Filtrer par statut de paiement:</label>
+
+        <select id="pamentStatus" [(ngModel)]="searchPamentStatus" class="search-select">
+          <option *ngFor="let status of pamentStatuses" [value]="status">{{ status }}</option>
+        </select>
+
+        <button (click)="search()" class="search-btn">
+          🔍 Search
+        </button>
+      </div>
+
 
       <!-- Add Button -->
       <div class="d-flex justify-content-between align-items-center mb-3">
@@ -14,7 +29,7 @@
         </a>
 
         <!-- Right Side: Dashboard Button -->
-        <a class="btn btn-danger px-4 py-2" routerLink="/dashboard">
+        <a class="btn btn-danger px-4 py-2" routerLink="/admin">
           <i class="bi bi-speedometer2"></i> Dashboard
         </a>
       </div>
@@ -58,6 +73,9 @@
               </span>
             </td>
             <td>
+              <a class="btn btn-sm btn-info me-2" [routerLink]="['/deliveries/edit', delivery.idD]">
+                <i class="bi bi-pencil"></i> Edit
+              </a>
               <!-- Delete Button -->
               <button class="btn btn-sm btn-danger" (click)="deleteDelivery(delivery.idD)">
                 <i class="bi bi-trash"></i> Delete

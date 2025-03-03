@@ -43,6 +43,7 @@ export class DeliveryAssignmentComponent implements OnInit {
       pamentStatus: [Delivery.PamentStatusEnum.Unpaid, Validators.required],
       status: ['pending']
     });
+
   }
 
 

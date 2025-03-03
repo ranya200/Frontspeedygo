@@ -8,8 +8,8 @@ import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-driver-delivery',
-  imports: [CommonModule, DatePipe, NgForOf, HeaderFrontComponent, FooterFrontComponent, RouterLink],
-  templateUrl: './driver-delivery.component.html',
+  imports: [CommonModule],
+  templateUrl: './/src/app/FrontOffice/Delivery/driver-delivery/driver-delivery.component.html',
   standalone: true,
   styleUrls: ['./driver-delivery.component.css']
 })

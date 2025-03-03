@@ -1,0 +1,64 @@
+<app-navbar-back></app-navbar-back>
+
+<app-sidebar-back></app-sidebar-back>
+
+<div class="container mt-4">
+  <div class="card shadow-lg p-4">
+    <h2 class="text-primary text-center mb-4">Modify Delivery</h2>
+
+    <!-- 🚚 Delivery Edit Form -->
+    <form [formGroup]="deliveryForm" (ngSubmit)="onSubmit()">
+
+      <!-- Driver ID -->
+      <div class="form-group mb-3">
+        <label for="driverId" class="form-label fw-bold">Driver ID</label>
+        <input type="text" id="driverId" class="form-control rounded" formControlName="driverId" required>
+      </div>
+
+      <!-- Estimated Delivery Time -->
+      <div class="mb-3">
+        <label for="estimatedDeliveryTime" class="form-label">Estimated Delivery Time</label>
+        <input type="datetime-local" id="estimatedDeliveryTime" class="form-control" formControlName="estimatedDeliveryTime" required>
+      </div>
+
+      <!-- Delivery Status Dropdown -->
+      <div class="form-group mb-3">
+        <label for="deliveryStatus" class="form-label">Delivery Status</label>
+        <select id="deliveryStatus" formControlName="deliveryStatus" class="form-control">
+          <option value="" disabled selected>-- Select Delivery Status --</option>
+          <option *ngFor="let status of deliveryStatuses" [value]="status">{{ status }}</option>
+        </select>
+      </div>
+
+      <!-- Payment Status Dropdown -->
+      <div class="form-group mb-3">
+        <label for="pamentStatus" class="form-label">Payment Status</label>
+        <select id="pamentStatus" formControlName="pamentStatus" class="form-control">
+          <option value="" disabled selected>-- Select Payment Status --</option>
+          <option *ngFor="let pstatus of pamentStatuses" [value]="pstatus">{{ pstatus }}</option>
+        </select>
+      </div>
+
+      <!-- Status Dropdown -->
+      <div class="form-group mb-3">
+        <label for="status" class="form-label">Status</label>
+        <select id="status" formControlName="status" class="form-control">
+          <option value="" disabled selected>-- Select Status --</option>
+          <option *ngFor="let s of status" [value]="s">{{ s }}</option>
+        </select>
+      </div>
+
+      <!-- 🚀 Action Buttons -->
+      <div class="d-flex justify-content-center gap-3">
+        <button type="submit" class="btn btn-primary btn-lg px-4">
+          <i class="fas fa-save"></i> Update
+        </button>
+
+        <button type="button" class="btn btn-secondary btn-lg px-4" (click)="cancelEdit()">
+          <i class="fas fa-times"></i> Cancel
+        </button>
+      </div>
+
+    </form>
+  </div>
+</div>

@@ -4,7 +4,7 @@ import { CommonModule, NgForOf } from '@angular/common';
 import {NavbarBackComponent} from "../../navbar-back/navbar-back.component";
 import {SidebarBackComponent} from "../../sidebar-back/sidebar-back.component";
 import {Router, RouterLink} from "@angular/router";
-import {FormBuilder} from "@angular/forms";
+import {FormBuilder, FormsModule} from "@angular/forms";
 
 @Component({
   selector: 'app-vehicle-list',
@@ -13,7 +13,8 @@ import {FormBuilder} from "@angular/forms";
     CommonModule,
     RouterLink,
     NavbarBackComponent,
-    SidebarBackComponent
+    SidebarBackComponent,
+    FormsModule
   ],
   templateUrl: './vehicle-list.component.html',
   styleUrls: ['./vehicle-list.component.css']
@@ -21,6 +22,7 @@ import {FormBuilder} from "@angular/forms";
 export class VehicleListComponent implements OnInit {
   vehicles: Vehicle[] = [];
   errorMessage: string = '';
+  searchTerm: string = '';
 
   constructor(private fb: FormBuilder, private vehicleService: VehicleControllerService, private router: Router) {
   }
@@ -125,6 +127,31 @@ export class VehicleListComponent implements OnInit {
     // Redirection vers le composant d'édition
     this.router.navigate(['/edit-vehicle', id]);
   }
+
+  search() {
+    console.log("Search button clicked! Searching for:", this.searchTerm);
+
+    if (this.searchTerm.trim()) {
+      this.vehicleService.searchVehicles(this.searchTerm).subscribe(
+        (data: any) => {
+          console.log("Received data type:", typeof data);
+
+          if (data instanceof Blob) {
+            console.error("❌ ERROR: Received Blob instead of JSON! Backend issue.");
+            return;
+          }
+
+          console.log("✅ Vehicles received:", data);
+          this.vehicles = data; // Store received vehicles
+        },
+        error => {
+          console.error("❌ API Error:", error);
+        }
+      );
+    }
+  }
+
+
 
 }
 

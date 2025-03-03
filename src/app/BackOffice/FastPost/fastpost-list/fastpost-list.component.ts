@@ -4,16 +4,18 @@ import { CommonModule, NgForOf } from '@angular/common';
 import {NavbarBackComponent} from "../../navbar-back/navbar-back.component";
 import {SidebarBackComponent} from "../../sidebar-back/sidebar-back.component";
 import {RouterLink} from "@angular/router";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 
 @Component({
   selector: 'app-fastpost-list',
-  imports: [CommonModule, NgForOf, NavbarBackComponent, SidebarBackComponent, RouterLink],
+  imports: [CommonModule, NgForOf, NavbarBackComponent, SidebarBackComponent, RouterLink, ReactiveFormsModule, FormsModule],
   templateUrl: './fastpost-list.component.html',
   standalone: true,
   styleUrls: ['./fastpost-list.component.css']
 })
 export class FastpostListComponent implements OnInit {
   fastPosts: FastPost[] = [];
+  searchTerm: string = '';
 
   constructor(private fastPostService: FastPostControllerService) {}
 
@@ -76,4 +78,8 @@ export class FastpostListComponent implements OnInit {
       }
     }
   }
+
+
+
+
 }

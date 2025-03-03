@@ -4,6 +4,12 @@ import { NavbarBackComponent } from "../../navbar-back/navbar-back.component";
 import { SidebarBackComponent } from "../../sidebar-back/sidebar-back.component";
 import {NgClass, NgForOf, NgIf} from "@angular/common";
 import { RouterLink } from "@angular/router";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+
+enum PamentStatus {
+  PAID = "PAID",
+  UNPAID = "UNPAID",
+}
 
 @Component({
   selector: "app-delivery-list",
@@ -11,16 +17,21 @@ import { RouterLink } from "@angular/router";
   styleUrls: ['./delivery-list.component.css'],
   standalone: true,
   imports: [
-    NavbarBackComponent,
     SidebarBackComponent,
+    NavbarBackComponent,
     NgForOf,
     RouterLink,
     NgClass,
-    NgIf
+    NgIf,
+    ReactiveFormsModule,
+    FormsModule
   ]
 })
 export class DeliveryListComponent implements OnInit {
   deliveries: any[] = [];
+  fastPostStatus = ['PENDING', 'APPROVED', 'REJECTED'];
+  searchPamentStatus: PamentStatus = PamentStatus.PAID;
+  pamentStatuses = Object.values(PamentStatus);
 
   constructor(private deliveryService: DeliveryControllerService) {}
 
@@ -72,6 +83,32 @@ export class DeliveryListComponent implements OnInit {
       });
     }
   }
+  search() {
+    console.log("🔍 Searching for pamentStatus:", this.searchPamentStatus);
 
+    this.deliveryService.searchDeliveries(this.searchPamentStatus).subscribe(
+      (data: any) => {
+        console.log("✅ Received response:", data);
+
+        if (data instanceof Blob) {
+          console.error("❌ ERROR: Received Blob instead of JSON! Possible backend issue.");
+          return;
+        }
+
+        if (!Array.isArray(data)) {
+          console.error("❌ ERROR: Unexpected response format! Expected an array.");
+          return;
+        }
+
+        this.deliveries = data;
+      },
+      error => {
+        console.error("❌ API Error:", error);
+        if (error.status === 400) {
+          console.error("❌ Backend rejected the request. Possible enum conversion issue.");
+        }
+      }
+    );
+  }
 
 }

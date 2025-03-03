@@ -385,9 +385,10 @@
         <label class="visually-hidden" for="modalSearchCategories">Categories:</label>
         <select class="form-select" id="modalSearchCategories">
           <option selected>All Categories</option>
-          <option>Women</option>
-          <option>Men</option>
-          <option>Kids</option>
+          <option>CLOTHES</option>
+          <option>FOOD</option>
+          <option>ELECTRONICS</option>
+          <option>FRAGILEITEM</option>
         </select>
       </div>
       <div class="input-group input-group-merge">
@@ -407,92 +408,6 @@
     <!-- Heading -->
     <p>Search Results:</p>
 
-    <!-- Items -->
-    <div class="row align-items-center position-relative mb-5">
-      <div class="col-4 col-md-3">
-
-        <!-- Image -->
-        <img class="img-fluid" src="assets/FrontOffice/images/products/product-5.jpg" alt="...">
-
-      </div>
-      <div class="col position-static">
-
-        <!-- Text -->
-        <p class="mb-0 fw-bold">
-          <a class="stretched-link text-body" href="#">Leather mid-heel Sandals</a> <br>
-          <span class="text-muted">$129.00</span>
-        </p>
-
-      </div>
-    </div>
-    <div class="row align-items-center position-relative mb-5">
-      <div class="col-4 col-md-3">
-
-        <!-- Image -->
-        <img class="img-fluid" src="assets/FrontOffice/images/products/product-6.jpg" alt="...">
-
-      </div>
-      <div class="col position-static">
-
-        <!-- Text -->
-        <p class="mb-0 fw-bold">
-          <a class="stretched-link text-body" href="#">Cotton floral print Dress</a> <br>
-          <span class="text-muted">$40.00</span>
-        </p>
-
-      </div>
-    </div>
-    <div class="row align-items-center position-relative mb-5">
-      <div class="col-4 col-md-3">
-
-        <!-- Image -->
-        <img class="img-fluid" src="assets/FrontOffice/images/products/product-7.jpg" alt="...">
-
-      </div>
-      <div class="col position-static">
-
-        <!-- Text -->
-        <p class="mb-0 fw-bold">
-          <a class="stretched-link text-body" href="#">Leather Sneakers</a> <br>
-          <span class="text-primary">$85.00</span>
-        </p>
-
-      </div>
-    </div>
-    <div class="row align-items-center position-relative mb-5">
-      <div class="col-4 col-md-3">
-
-        <!-- Image -->
-        <img class="img-fluid" src="assets/FrontOffice/images/products/product-8.jpg" alt="...">
-
-      </div>
-      <div class="col position-static">
-
-        <!-- Text -->
-        <p class="mb-0 fw-bold">
-          <a class="stretched-link text-body" href="#">Cropped cotton Top</a> <br>
-          <span class="text-muted">$29.00</span>
-        </p>
-
-      </div>
-    </div>
-    <div class="row align-items-center position-relative mb-5">
-      <div class="col-4 col-md-3">
-
-        <!-- Image -->
-        <img class="img-fluid" src="assets/FrontOffice/images/products/product-9.jpg" alt="...">
-
-      </div>
-      <div class="col position-static">
-
-        <!-- Text -->
-        <p class="mb-0 fw-bold">
-          <a class="stretched-link text-body" href="#">Floral print midi Dress</a> <br>
-          <span class="text-muted">$50.00</span>
-        </p>
-
-      </div>
-    </div>
 
     <!-- Button -->
     <a class="btn btn-link px-0 text-reset" href="#">
@@ -1530,7 +1445,7 @@
 
     <!-- Brand -->
     <a class="navbar-brand" href="#">
-      Shopper.
+      SpeedyGo.
     </a>
 
     <!-- Toggler -->
@@ -1780,7 +1695,7 @@
         <li class="nav-item dropdown">
 
           <!-- Toggle -->
-          <a class="nav-link" data-bs-toggle="dropdown" href="#">Shop</a>
+          <a class="nav-link" data-bs-toggle="dropdown" href="#">Shooop</a>
 
           <!-- Menu -->
           <div class="dropdown-menu" style="min-width: 650px;">
@@ -2035,7 +1950,6 @@
 
             <li><a class="dropdown-item" href="#" (click)="logout()">Logout</a></li>
           </ul>
-
         </li>
         <li class="nav-item ms-lg-n4">
           <a class="nav-link" href="#">
@@ -2053,18 +1967,6 @@
           <a class="nav-link" href="#" (click)="login()">
             <i class="fe fe-log-in"></i> Connexion
           </a>
-        </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            <i class="fe fe-user"></i>
-          </a>
-          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-            <li><a class="dropdown-item" href="#">Nom : {{ userProfile?.name }}</a></li>
-            <li><a class="dropdown-item" href="#">Email : {{ userProfile?.email }}</a></li>
-            <li><a class="dropdown-item" href="#">Rôle : {{ userRoles }}</a></li>
-            <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="#" (click)="logout()">Déconnexion</a></li>
-          </ul>
         </li>
       </ul>
     </div>

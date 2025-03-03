@@ -13,5 +13,5 @@ export const adminGuard: CanActivateFn = async (
 
   console.log('Admin Guard: User roles:', userRoles);
 
-  return isAuthenticated && userRoles.includes('admins') ? true : router.parseUrl('/');
+  return isAuthenticated && userRoles.includes('ADMIN') ? true : router.parseUrl('/');
 };

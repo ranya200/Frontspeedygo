@@ -23,7 +23,7 @@ export class HeaderFrontComponent {
       //this.userProfile = await this.authService.getBackendUser(); // Récupère depuis le backend
       //this.userRoles = this.userProfile ? [this.userProfile.role] : [];
       this.userProfile = await this.authService.getUserProfile();
-      this.userRoles = await this.authService.getUserRoles();
+      //this.userRoles = await this.authService.getUserRoles();
     }
   }
 
@@ -33,4 +33,12 @@ export class HeaderFrontComponent {
   login() {
     this.authService.login();
   }
+  // 🔹 Redirige vers l'interface de modification du profil Keycloak
+  editProfile() {
+    const keycloakUrl = 'http://localhost:8085/realms/SpeedyGo/account';
+    const redirectUri = encodeURIComponent('http://localhost:4200'); // Redirection vers l'application
+    window.location.href = `${keycloakUrl}?referrer=speedygo-frontend&referrer_uri=${redirectUri}`;
+  }
+
+
 }

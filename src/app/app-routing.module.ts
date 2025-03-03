@@ -43,27 +43,33 @@ import {DeliveryListComponent} from "./BackOffice/Delivery/delivery-list/deliver
 import {FastpostEditComponent} from "./BackOffice/FastPost/fastpost-edit/fastpost-edit.component";
 import {DeliveryEditComponent} from "./BackOffice/Delivery/delivery-edit/delivery-edit.component";
 
+import { adminGuard } from './guards/admin.guard';
+import { clientGuard } from './guards/client.guard';
+import { driverGuard } from './guards/driver.guard';
+import { visitorGuard } from './guards/visitor.guard';
+import { partnerGuard } from './guards/partner.guard';
+
 const routes: Routes = [
-  { path: '', component: AllTemplateFrontComponent },
-  { path: 'product', component: ProductListComponent },
-  { path: 'create-product', component: ProductCreateComponent },
-  { path: 'product-detail/:id', component: ProductDetailComponent },
-  { path: 'edit-product/:id', component: ProductEditComponent },
+  { path: '', component: AllTemplateFrontComponent},
+  { path: 'product', component: ProductListComponent , canActivate: [clientGuard]},
+  { path: 'create-product', component: ProductCreateComponent , canActivate: [partnerGuard]},
+  { path: 'product-detail/:id', component: ProductDetailComponent},
+  { path: 'edit-product/:id', component: ProductEditComponent},
   { path: 'create-order', component: OrderCreateComponent },
-  { path: 'payment' , component: PaymentFormComponent },
-  { path: 'carpooling', component: CarpoolingComponent },
+  { path: 'payment' , component: PaymentFormComponent},
+  { path: 'carpooling', component: CarpoolingComponent},
   { path: 'company', component: CompanyComponent },
-  { path: 'leave', component: LeaveslistComponent },
-  { path: 'leaveadd', component: LeaveAddComponent },
-  { path: 'leaveedit/:id', component: LeaveEditComponent },
-  { path: 'promo', component: PromotionComponent },
-  { path: 'adlist', component: AdListComponent },
-  { path: 'complaint', component: ComplaintComponent },
+  { path: 'leave', component: LeaveslistComponent},
+  { path: 'leaveadd', component: LeaveAddComponent , canActivate: [driverGuard]},
+  { path: 'leaveedit/:id', component: LeaveEditComponent},
+  { path: 'promo', component: PromotionComponent},
+  { path: 'adlist', component: AdListComponent},
+  { path: 'complaint', component: ComplaintComponent},
   { path: 'editad/:id', component: EditAdComponent },  // Modified to accept an 'id' parameter
   { path: 'crad', component: CreateAdComponent },
   // Vehicle Routes
   { path: 'vehicles', component: VehicleListComponent },
-  { path: 'vehicles/new', component: VehicleFormClientComponent },
+  { path: 'vehicles/new', component: VehicleFormClientComponent, canActivate: [adminGuard] },
   { path: 'admin/vehicles/new', component: VehicleFormAdminComponent },
   { path: 'edit-vehicle/:id', component: VehicleEditComponent },
   { path: 'driver/vehicles/new', component: VehicleFormDelivaryComponent },
@@ -78,7 +84,7 @@ const routes: Routes = [
   { path: 'fastposts', component: FastpostListComponent },
   { path: 'fastposts/edit/:id', component: FastpostEditComponent },
 
-  { path: 'admin', component: AllTemplateBackComponent, canActivate: [authGuard] },
+  { path: 'admin', component: AllTemplateBackComponent, canActivate: [adminGuard] },
   { path: '**', redirectTo: '' },
 
 ];

@@ -65,7 +65,7 @@
   }
   
   .btn {
-    background-color: #007bff;
+    background-color: #ff6600;
     color: white;
     border: none;
     padding: 10px 15px;
@@ -190,7 +190,7 @@
 
   
 .book-btn {
-  background-color: #007bff;
+  background-color: #ff6600;
   color: white;
   border: none;
   padding: 10px 15px;
@@ -340,3 +340,15 @@
   background-color: #218838;
 }
 
+/* Error Messages */
+.error-msg {
+  color: red;
+  font-size: 14px;
+  margin-top: 5px;
+  text-align: left;
+}
+
+button[disabled] {
+  background-color: gray !important;
+  cursor: not-allowed;
+}

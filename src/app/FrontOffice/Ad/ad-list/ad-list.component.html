@@ -1,25 +1,32 @@
 <!-- ad-list.component.html -->
 <app-header-front></app-header-front>
-<h1 class="ads-title">Advertisements</h1> <!-- Title for the advertisement section -->
 
-<div class="ads-container">
+<h1 class="text-center my-4">Advertisements</h1> <!-- Title for the advertisement section -->
 
-  <div *ngIf="ads.length === 0" class="no-ads">
-    No ads available.
-  </div>
+<div class="container">
+  <div class="row">
+    <!-- No ads message -->
+    <div *ngIf="ads.length === 0" class="col-12 text-center">
+      No ads available.
+    </div>
 
-  <div *ngFor="let ad of ads" class="ad-card">
-    <img [src]="ad.image" alt="Ad Image" onerror="this.src='assets/default-image.png';" class="ad-image">
-    <div class="ad-content">
-      <h3>{{ ad.title }}</h3>
-      <p>{{ ad.description }}</p>
-      <div class="ad-details">
-        <span>Start: {{ ad.startDate | date:'mediumDate' }}</span>
-        <span>End: {{ ad.endDate | date:'mediumDate' }}</span>
-      </div>
-      <div class="ad-actions">
-        <button [routerLink]="['/editad', ad.id]" *ngIf="allowEdit">Modifier</button>
-        <button (click)="ad.id ? deleteAd(ad.id) : null">Supprimer</button>
+    <!-- Ads cards -->
+    <div *ngFor="let ad of ads" class="col-md-4 mb-4">
+      <div class="card h-100">
+        <img [src]="ad.image || 'assets/default-image.png'" alt="Ad Image" class="card-img-top">
+        <div class="card-body">
+          <h5 class="card-title">{{ ad.title }}</h5>
+          <p class="card-text">{{ ad.description }}</p>
+          <div class="text-muted">
+            <small>Start: {{ ad.startDate | date:'mediumDate' }}</small><br>
+            <small>End: {{ ad.endDate | date:'mediumDate' }}</small>
+          </div>
+        </div>
+        <div class="card-footer">
+          <button class="btn btn-primary" [routerLink]="['/editad', ad.id]" *ngIf="allowEdit">Modifier</button>
+          <button class="btn btn-danger" (click)="ad.id ? deleteAd(ad.id) : null">Supprimer</button>
+          <button class="btn btn-info" *ngIf="ad.id" (click)="goToAdDetails(ad.id)">View Details</button>
+        </div>
       </div>
     </div>
   </div>

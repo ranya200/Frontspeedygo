@@ -28,6 +28,7 @@ import { ComplaintEditComponent } from './FrontOffice/complaint/complaint-edit/c
 import { ComplaintDetailsComponent } from './FrontOffice/complaint/complaint-details/complaint-details.component';
 import { ComplaintAdminComponent } from './BackOffice/complaint/complaint-admin/complaint-admin.component';
 import { ComplaintAdminopenComponent } from './BackOffice/complaint/complaint-adminopen/complaint-adminopen.component';
+import { AdDetailsComponent } from './FrontOffice/Ad/ad-details/ad-details.component';
 
 const routes: Routes = [
   { path: '', component: AllTemplateFrontComponent },
@@ -43,7 +44,6 @@ const routes: Routes = [
   { path: 'leaveadd', component: LeaveAddComponent },
   { path: 'leaveedit/:id', component: LeaveEditComponent },
   { path: 'promo', component: PromotionComponent },
-  { path: 'adlist', component: AdListComponent },
   { path: 'complaint', component: ComplaintListComponent },
   { path: 'complaintadd', component: ComplaintAddComponent },
   { path: 'complaintedit/:id', component: ComplaintEditComponent },
@@ -52,6 +52,9 @@ const routes: Routes = [
   { path: 'admin/complaint/:id', component: ComplaintAdminopenComponent },
   { path: 'editad/:id', component: EditAdComponent },  // Modified to accept an 'id' parameter
   { path: 'crad', component: CreateAdComponent },
+  { path: 'adlist', component: AdListComponent },
+  { path: 'show-ad', component: AdDetailsComponent},
+  { path: 'ad-details/:id', component: AdDetailsComponent },
 
   { path: 'admin', component: AllTemplateBackComponent, canActivate: [authGuard] },
   { path: '**', redirectTo: '' },

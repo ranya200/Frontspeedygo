@@ -1,96 +1,81 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { Ad, AdControllerService } from 'src/app/openapi';
 import { FooterFrontComponent } from '../../footer-front/footer-front.component';
 import { HeaderFrontComponent } from '../../header-front/header-front.component';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-edit-ad',
-  imports: [CommonModule, ReactiveFormsModule, FooterFrontComponent, HeaderFrontComponent, RouterModule],
+  standalone: true,
+  imports: [CommonModule, FooterFrontComponent, HeaderFrontComponent, ReactiveFormsModule],
   templateUrl: './ad-edit.component.html',
   styleUrls: ['./ad-edit.component.css']
 })
 export class EditAdComponent implements OnInit {
-  adForm: FormGroup;
-  adId: string = '';
-
+  adForm!: FormGroup;
+  adId!: string;
 
   constructor(
-    private fb: FormBuilder,
+    private fb: FormBuilder, 
     private adService: AdControllerService,
-    private route: ActivatedRoute,
-    private router: Router
-  ) {
+    private router: Router,
+    private route: ActivatedRoute
+  ) {}
+
+  ngOnInit(): void {
+    this.adId = this.route.snapshot.paramMap.get('id')!; // Get ID from URL
+
     this.adForm = this.fb.group({
-      title: ['', Validators.required],
-      description: ['', [Validators.required, Validators.minLength(5)]],
+      title: ['', [Validators.required, Validators.minLength(5)]],
+      description: ['', [Validators.required, Validators.minLength(10)]],
       image: [''],
       category: [''],
       startDate: ['', Validators.required],
       endDate: ['', Validators.required],
       status: ['']
     });
-    this.adId = '';
+
+    this.loadAdData();
   }
 
-  ngOnInit(): void {
-    this.route.params.subscribe(params => {
-      this.adId = params['id'];
-      this.loadAdDetails();
-    });
-  }
-
-  loadAdDetails(): void {
-    if (!this.adId) {
-      alert('Ad ID is missing');
-      return;
-    }
-
+  loadAdData(): void {
     this.adService.getAdById(this.adId).subscribe({
-      next: (ad: Ad) => {
-        this.adForm.patchValue({
-          title: ad.title,
-          description: ad.description,
-          image: ad.image,
-          category: ad.category,
-          startDate: ad.startDate?.split('T')[0], // Safe access with optional chaining
-          endDate: ad.endDate?.split('T')[0],    // Safe access with optional chaining
-          status: ad.status
-        });
+      next: async (response) => {
+        if (response instanceof Blob) {
+          const text = await response.text(); // Convert Blob to text
+          const complaint = JSON.parse(text); // Convert text to JSON
+          this.adForm.patchValue(complaint); // Populate the form
+        } else {
+          this.adForm.patchValue(response); // Directly populate if already JSON
+        }
+        console.log("Complaint data received for modification:", response);
       },
-      error: (err) => {
-        console.error('Error fetching ad details:', err.message || err);
-
-        alert('Failed to load advertisement details.');
-      }
+      error: (err) => console.error('Error retrieving complaint data', err)
     });
   }
 
-  onSubmit(): void {
+  updateAd(): void {
     if (this.adForm.valid) {
-      console.log('Updated Ad:', this.adForm.value); // Log the updated ad details
-      console.log('Ad ID:', this.adId); // Log the ad ID being updated
-
-      console.log('Ad ID:', this.adId); // Log the ad ID being updated
-
       const updatedAd: Ad = {
-
         ...this.adForm.value,
-        id: this.adId, // Ensure the ad ID is included for the update
+        id: this.adId  // Include the ad ID for the backend to identify the record
       };
-
       this.adService.updateAd(updatedAd).subscribe({
         next: () => {
-          console.log('Ad updated successfully');
-          this.router.navigate(['/ads']); // Navigate back to the ad list or dashboard
+          alert('Ad updated successfully!');
+          this.router.navigate(['/ads']); // Navigate back to the ad listing
         },
         error: (err) => {
-          console.error('Error updating ad', err);
-          alert('Failed to update advertisement.');
+          console.error("Error updating ad", err);
+          alert('Failed to update ad.');
         }
       });
     }
+  }
+
+  cancelEdit(): void {
+    this.router.navigate(['/ads']); // Navigation on cancel
   }
 }

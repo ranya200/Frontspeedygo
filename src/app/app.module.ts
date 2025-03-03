@@ -58,14 +58,12 @@ export function initializeKeycloak(authService: AuthService) {
 
 const apiConfig = new Configuration({
   basePath: 'http://localhost:8089/speedygo',
-  credentials: {} 
+  credentials: {}
 });
 
 @NgModule({
   declarations: [
     AppComponent
- 
-
   ],
   imports: [
     BrowserModule,
@@ -75,7 +73,7 @@ const apiConfig = new Configuration({
     RouterModule,
     CommonModule,
     HttpClientModule,
-    KeycloakAngularModule, 
+    KeycloakAngularModule,
     NgOptimizedImage,
     AllTemplateBackComponent,
     FooterBackComponent,
@@ -100,8 +98,7 @@ const apiConfig = new Configuration({
     ProductDetailComponent,
     OrderCreateComponent,
     PaymentFormComponent,
-    ApiModule.forRoot(() => apiConfig),
-
+    ApiModule.forRoot(() => apiConfig)
   ],
   providers: [
     {

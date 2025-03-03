@@ -1,0 +1,131 @@
+/* ✅ General Styling */
+
+
+
+/* ✅ Page Title */
+h2 {
+  font-weight: bold;
+  color: #2c3e50;
+  margin-bottom: 20px;
+}
+
+/* ✅ Add Button */
+.btn-success {
+  font-size: 18px;
+  padding: 10px 20px;
+  border-radius: 8px;
+}
+
+/* ✅ Table Styling */
+.table {
+  background: #ffffff;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.table th {
+  background: #2c3e50;
+  color: white;
+  text-transform: uppercase;
+  font-size: 14px;
+  padding: 12px;
+  text-align: center;
+}
+
+.table td {
+  padding: 12px;
+  font-size: 14px;
+  vertical-align: middle;
+  text-align: center;
+
+}
+
+/* ✅ Status Badge Colors */
+.badge {
+  font-size: 14px;
+  padding: 5px 10px;
+  border-radius: 12px;
+}
+
+.bg-warning.text-dark {
+  background-color: #ffc107 !important;
+  color: #000 !important;
+}
+
+.bg-success {
+  background-color: #28a745 !important;
+}
+
+.bg-danger {
+  background-color: #dc3545 !important;
+}
+
+/* ✅ Action Buttons */
+.btn-sm {
+  font-size: 14px;
+  padding: 6px 10px;
+  border-radius: 8px;
+
+}
+
+/* ✅ Hover Effect for Action Buttons */
+.btn-warning:hover {
+  background-color: #f39c12;
+  border-color: #e67e22;
+  font-size: 18px;
+  padding: 10px 20px;
+  border-radius: 8px;
+}
+
+.btn-danger:hover {
+  background-color: #c0392b;
+  border-color: #a93226;
+  font-size: 18px;
+  padding: 10px 20px;
+  border-radius: 8px;
+}
+
+/* ✅ Responsive Table */
+@media (max-width: 768px) {
+  .table {
+    font-size: 12px;
+  }
+
+  .btn-sm {
+    font-size: 12px;
+    padding: 5px;
+  }
+}
+.search-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.search-label {
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.search-select {
+  padding: 8px;
+  font-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.search-btn {
+  padding: 8px 12px;
+  background-color: #c0392b;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.search-btn:hover {
+  background-color: #0056b3;
+}

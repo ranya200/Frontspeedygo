@@ -26,7 +26,7 @@ export class FastpostFormComponent implements OnInit {
     this.fastPostForm = this.fb.group({
       receiverName: ['', Validators.required],
       receiverAddress: ['', Validators.required],
-      receiverTelNbr: ['', Validators.required, Validators.pattern('^[0-9]+$')],
+      receiverTelNbr: ['', Validators.required],
       packageWeight: ['', Validators.required],
       fastPostStatus: ['PENDING']
       //packageSize: ['', Validators.required]

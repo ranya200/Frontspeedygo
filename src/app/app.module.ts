@@ -43,7 +43,6 @@ import { CreateAdComponent } from './FrontOffice/Ad/create-ad/create-ad.componen
 
 import { AdListComponent } from './FrontOffice/Ad/ad-list/ad-list.component';
 import { EditAdComponent } from './FrontOffice/Ad/ad-edit/ad-edit.component';
-import { ComplaintComponent } from './FrontOffice/complaint/complaint.component';
 
 import { NgOptimizedImage } from "@angular/common";
 import { ApiModule, Configuration } from './openapi';
@@ -51,6 +50,13 @@ import { ApiModule, Configuration } from './openapi';
 
 // Services
 import { AuthService } from './services/auth.service';
+import { ComplaintAddComponent } from './FrontOffice/complaint/complaint-add/complaint-add.component';
+import { ComplaintEditComponent } from './FrontOffice/complaint/complaint-edit/complaint-edit.component';
+import { ComplaintListComponent } from './FrontOffice/complaint/complaint-list/complaint-list.component';
+import { ComplaintDetailsComponent } from './FrontOffice/complaint/complaint-details/complaint-details.component';
+import { ComplaintAdminComponent } from './BackOffice/complaint/complaint-admin/complaint-admin.component';
+import { ComplaintAdminopenComponent } from './BackOffice/complaint/complaint-adminopen/complaint-adminopen.component';
+import { AdDetailsComponent } from './FrontOffice/Ad/ad-details/ad-details.component';
 
 export function initializeKeycloak(authService: AuthService) {
   return () => authService.init();
@@ -81,7 +87,6 @@ const apiConfig = new Configuration({
     CreateAdComponent,
     AdListComponent,
     EditAdComponent,
-    ComplaintComponent,
     SidebarBackComponent,
     CompanyComponent,
     AllTemplateFrontComponent,
@@ -98,6 +103,13 @@ const apiConfig = new Configuration({
     ProductDetailComponent,
     OrderCreateComponent,
     PaymentFormComponent,
+    ComplaintAddComponent,
+    ComplaintEditComponent,
+    ComplaintListComponent,
+    ComplaintDetailsComponent,
+    ComplaintAdminComponent,
+    ComplaintAdminopenComponent,
+    AdDetailsComponent,
     ApiModule.forRoot(() => apiConfig)
   ],
   providers: [

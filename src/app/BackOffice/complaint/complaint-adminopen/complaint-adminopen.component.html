@@ -1,0 +1,66 @@
+<app-navbar-back></app-navbar-back>
+
+<div class="d-flex">
+  <!-- Sidebar -->
+  <app-sidebar-back class="sidebar"></app-sidebar-back>
+
+  <!-- Main Content -->
+  <div class="content-container flex-grow-1 p-4">
+    <div *ngIf="complaint" class="card shadow-lg p-4">
+      <h2 class="text-primary text-center mb-4">
+        <i class="fas fa-exclamation-circle"></i> Complaint Details
+      </h2>
+
+      <div class="mb-3">
+        <strong>Title:</strong>
+        <p class="border rounded p-3 bg-light">{{ complaint.title }}</p>
+      </div>
+
+      <div class="mb-3">
+        <strong>Description:</strong>
+        <p class="border rounded p-3 bg-light">{{ complaint.description }}</p>
+      </div>
+
+      <div class="mb-3">
+        <strong>Category:</strong>
+        <p class="border rounded p-3 bg-light">{{ complaint.category }}</p>
+      </div>
+
+      <div class="mb-3">
+        <strong>Status:</strong>
+        <span class="badge"
+          [ngClass]="{
+            'bg-warning text-dark': complaint.status === 'PENDING',
+            'bg-primary': complaint.status === 'OPENED',
+            'bg-success': complaint.status === 'TREATED'
+          }">
+          {{ complaint.status }}
+        </span>
+      </div>
+
+      <div class="text-center mt-4 d-flex justify-content-center gap-3">
+        <!-- ✅ Open Complaint (Only if Pending) -->
+        <button *ngIf="complaint.status === 'PENDING'" class="btn btn-primary btn-lg px-4" (click)="openComplaint(complaint.id!)">
+          <i class="fas fa-folder-open"></i> Open Complaint
+        </button>
+
+        <!-- ✅ Mark as Treated (Only if Opened) -->
+        <button *ngIf="complaint.status === 'OPENED'" class="btn btn-success btn-lg px-4" (click)="treatComplaint(complaint.id!)">
+          <i class="fas fa-check-circle"></i> Mark as Treated
+        </button>
+
+        <!-- ❌ Delete Complaint -->
+        <button class="btn btn-danger btn-lg px-4" (click)="deleteComplaint(complaint.id!)">
+          <i class="fas fa-trash"></i> Delete
+        </button>
+
+        <!-- 🔙 Return Button -->
+        <a class="btn btn-secondary btn-lg px-4" [routerLink]="['/admin/complaints']">
+          <i class="fas fa-arrow-left"></i> Return
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-footer-back></app-footer-back>

@@ -1,44 +1,62 @@
 <app-header-front></app-header-front>
 
-<div class="container mt-4">
-  <div class="text-center text-white">
-    <span class="heading-xxs letter-spacing-xl">
-      Your ride, your comfort, your choice with SpeedyGo!
-    </span>
+<!-- Banner -->
+<div class="py-3 bg-primary bg-pattern mb-4">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <div class="text-center text-white">
+          <span class="heading-xxs letter-spacing-xl">
+            🚀 Your ride, your comfort, your choice with SpeedyGo!
+          </span>
+        </div>
+      </div>
+    </div>
   </div>
+</div>
 
-  <h2 class="mb-3">My Deliveries</h2>
+<!-- Title -->
+<h2 class="mb-4 text-center text-primary">🚚 My Deliveries</h2>
 
-  <!-- Deliveries Cards Container -->
+<!-- Deliveries Cards Container -->
+<div class="container">
   <div class="row">
     <div class="col-md-4 mb-4" *ngFor="let delivery of deliveries">
       <div class="card shadow-lg border-0">
-        <div class="card-body">
-          <h5 class="card-title text-primary">
+
+        <!-- Card Header with Delivery ID -->
+        <div class="card-header bg-light">
+          <h5 class="text-primary text-center">
             📦 Delivery #{{ delivery.idD }}
           </h5>
+        </div>
 
+        <!-- Card Body -->
+        <div class="card-body">
+
+          <!-- Estimated Time -->
           <p class="card-text">
-            <strong>Estimated Time:</strong>
+            <strong>📅 Estimated Time:</strong>
             {{ delivery.estimatedDeliveryTime | date:'short' }}
           </p>
 
+          <!-- Delivery Status -->
           <p class="card-text">
-            <strong>Delivary Status:</strong>
-            <span class="badge"
+            <strong>🚦 Delivery Status:</strong>
+            <span class="badge text-white"
                   [ngClass]="{
-                    'bg-success': delivery.deliveryStatus === 'Pending',
-                    'bg-warning': delivery.deliveryStatus === 'InRoad',
-                    'bg-danger': delivery.deliveryStatus === 'Done'
-
+                    'bg-warning': delivery.deliveryStatus === 'Pending',
+                    'bg-primary': delivery.deliveryStatus === 'InRoad',
+                    'bg-success': delivery.deliveryStatus === 'Done'
                   }">
               {{ delivery.deliveryStatus }}
             </span>
           </p>
 
+          <!-- Payment Status -->
           <p class="card-text">
-            <strong>Payment Status:</strong>
-            <span class="badge"
+            <strong>💳 Payment Status:</strong>
+            <span class="badge text-white"
                   [ngClass]="{
                     'bg-success': delivery.pamentStatus === 'PAID',
                     'bg-danger': delivery.pamentStatus === 'UNPAID'
@@ -46,10 +64,20 @@
               {{ delivery.pamentStatus }}
             </span>
           </p>
+
         </div>
+
+        <!-- Card Footer with Action Button -->
+        <div class="card-footer text-center">
+          <button class="btn btn-primary btn-sm">
+            📜 View Details
+          </button>
+        </div>
+
       </div>
     </div>
   </div>
 </div>
 
 <app-footer-front></app-footer-front>
+

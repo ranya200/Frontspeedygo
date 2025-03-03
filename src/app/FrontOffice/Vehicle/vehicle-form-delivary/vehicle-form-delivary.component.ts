@@ -82,7 +82,7 @@ export class VehicleFormDelivaryComponent implements OnInit {
 
       const image: Blob = this.selectedFile;
 
-      this.vehicleService.addVehicle(vehicle).subscribe({
+      this.vehicleService.addVehicle( vehicle , image).subscribe({
         next: (data) => {
           console.log('✅ Vehicle created', data);
           this.router.navigate(['/vehicles']);

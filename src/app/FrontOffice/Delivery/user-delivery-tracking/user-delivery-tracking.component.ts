@@ -8,6 +8,7 @@ import { FooterFrontComponent } from '../../footer-front/footer-front.component'
   selector: 'app-user-delivery-tracking',
   imports: [CommonModule, DatePipe, NgForOf, HeaderFrontComponent, FooterFrontComponent],
   templateUrl: './user-delivery-tracking.component.html',
+  standalone: true,
   styleUrls: ['./user-delivery-tracking.component.css']
 })
 export class UserDeliveryTrackingComponent implements OnInit {

@@ -10,6 +10,7 @@ import { FooterFrontComponent } from '../../footer-front/footer-front.component'
   selector: 'app-fastpost-form',
   imports: [CommonModule, ReactiveFormsModule, HeaderFrontComponent, FooterFrontComponent],
   templateUrl: './fastpost-form.component.html',
+  standalone: true,
   styleUrls: ['./fastpost-form.component.css']
 })
 export class FastpostFormComponent implements OnInit {
@@ -25,8 +26,9 @@ export class FastpostFormComponent implements OnInit {
     this.fastPostForm = this.fb.group({
       receiverName: ['', Validators.required],
       receiverAddress: ['', Validators.required],
-      receiverTelNbr: ['', Validators.required],
+      receiverTelNbr: ['', Validators.required, Validators.pattern('^[0-9]+$')],
       packageWeight: ['', Validators.required],
+      fastPostStatus: ['PENDING']
       //packageSize: ['', Validators.required]
     });
   }

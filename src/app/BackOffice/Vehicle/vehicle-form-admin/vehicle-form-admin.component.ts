@@ -29,6 +29,7 @@ export class VehicleFormAdminComponent implements OnInit {
 
   // List of vehicle types
   vehicleTypes = ['car', 'van', 'motoCycle'];
+  vehicleStatusD = ['PENDING', 'APPROVED', 'REJECTED'];
 
 
   constructor(
@@ -51,21 +52,22 @@ export class VehicleFormAdminComponent implements OnInit {
 // Set defaults for fields not shown in the UI:
       vehicleStatus: ['', Validators.required],
       vehicleType: ['', Validators.required],        // default value
-      vehicleStatusD: ['PENDING'] // ✅ Ensure this is set by default
+      vehicleStatusD: ['', Validators.required] // ✅ Ensure this is set by default
     });
     console.log("🚗 Vehicle Statuses:", this.vehicleStatuses);
     console.log("🚙 Vehicle Types:", this.vehicleTypes);
+    console.log("🚙 Vehicle Status:", this.vehicleStatusD);
 
   }
   ngAfterViewInit(): void {
     console.log("🚗 Debugging: Vehicle Statuses in View:", this.vehicleStatuses);
     console.log("🚙 Debugging: Vehicle Types in View:", this.vehicleTypes);
+    console.log("🚙 Debugging: Vehicle Status:", this.vehicleStatusD);
   }
-
   onFileSelected(event: any): void {
     if (event.target.files && event.target.files.length > 0) {
       this.selectedFile = event.target.files[0];
-      // Optionally update the form control with the file name
+      // Met à jour le contrôle "image" avec le nom du fichier
       this.vehicleForm.patchValue({ image: this.selectedFile.name });
     }
   }
@@ -86,7 +88,7 @@ export class VehicleFormAdminComponent implements OnInit {
 
       const image: Blob = this.selectedFile;
 
-      this.vehicleService.addVehicle(vehicle).subscribe({
+      this.vehicleService.addVehicle( vehicle,  image).subscribe({
         next: (data) => {
           console.log('✅ Vehicle created', data);
           this.router.navigate(['/vehicles']);

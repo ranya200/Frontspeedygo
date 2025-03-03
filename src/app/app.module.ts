@@ -79,7 +79,7 @@ const apiConfig = new Configuration({
     RouterModule,
     CommonModule,
     HttpClientModule,
-    KeycloakAngularModule, 
+    KeycloakAngularModule,
     NgOptimizedImage,
     AllTemplateBackComponent,
     FooterBackComponent,
@@ -103,7 +103,7 @@ const apiConfig = new Configuration({
     ProductEditComponent,
     ProductDetailComponent,
     OrderCreateComponent,
-    PaymentFormComponent
+    PaymentFormComponent,
     ApiModule.forRoot(() => apiConfig)
   ],
   providers: [

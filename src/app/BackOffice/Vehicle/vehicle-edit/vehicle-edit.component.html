@@ -1,74 +1,100 @@
 <app-navbar-back></app-navbar-back>
 
-<!-- Sidebar Component -->
 <app-sidebar-back></app-sidebar-back>
 
 <div class="container mt-4">
-  <div class="row">
-    <div class="offset-md-2 col-md-10">
-      <h2 class="mb-3">Edit Vehicle</h2>
+  <div class="card shadow-lg p-4">
+    <h2 class="text-primary text-center mb-4">Modify Add Request</h2>
 
-      <!-- 🚀 Show Loading Indicator -->
-      <div *ngIf="isLoading" class="alert alert-info">
-        Loading vehicle details...
+    <!-- 🚗 Vehicle Edit Form -->
+    <form [formGroup]="vehicleForm" (ngSubmit)="onSubmit()">
+
+      <!-- Brand -->
+      <div class="form-group mb-3">
+        <label for="brand" class="form-label fw-bold">Brand</label>
+        <input type="text" id="brand" class="form-control rounded" formControlName="brand" readonly>
       </div>
 
-      <!-- 🚗 Vehicle Edit Form -->
-      <form [formGroup]="vehicleForm" (ngSubmit)="updateVehicle()" *ngIf="!isLoading">
+      <!-- Model -->
+      <div class="mb-3">
+        <label for="model" class="form-label">Model</label>
+        <input type="text" id="model" class="form-control" formControlName="model" readonly>
+      </div>
 
-        <div class="mb-3">
-          <label for="brand" class="form-label">Brand</label>
-          <input type="text" id="brand" class="form-control" formControlName="brand" />
-        </div>
+      <!-- Capacity -->
+      <div class="mb-3">
+        <label for="capacity" class="form-label">Capacity</label>
+        <input type="text" id="capacity" class="form-control" formControlName="capacity" readonly>
+      </div>
 
-        <div class="mb-3">
-          <label for="model" class="form-label">Model</label>
-          <input type="text" id="model" class="form-control" formControlName="model" />
-        </div>
+      <!-- License Plate -->
+      <div class="mb-3">
+        <label for="licensePlate" class="form-label">License Plate</label>
+        <input type="text" id="licensePlate" class="form-control" formControlName="licensePlate" readonly>
+      </div>
 
-        <div class="mb-3">
-          <label for="capacity" class="form-label">Capacity</label>
-          <input type="text" id="capacity" class="form-control" formControlName="capacity" />
-        </div>
+      <!-- VIN -->
+      <div class="mb-3">
+        <label for="vin" class="form-label">VIN</label>
+        <input type="text" id="vin" class="form-control" formControlName="vin" readonly>
+      </div>
 
-        <div class="mb-3">
-          <label for="licensePlate" class="form-label">License Plate</label>
-          <input type="text" id="licensePlate" class="form-control" formControlName="licensePlate" />
-        </div>
+      <!-- Fabrication Date -->
+      <div class="mb-3">
+        <label for="fabricationDate" class="form-label">Fabrication Date</label>
+        <input type="date" id="fabricationDate" class="form-control" formControlName="fabricationDate" readonly>
+      </div>
+
+      <!-- Fuel Type -->
+      <div class="mb-3">
+        <label for="fuelType" class="form-label">Fuel Type</label>
+        <input type="text" id="fuelType" class="form-control" formControlName="fuelType" readonly>
+      </div>
+
+      <!-- Registration Document Upload -->
+      <div class="form-group mb-3">
+        <label for="image" class="form-label">Registration Document</label>
+        <input type="file" id="image" class="form-control" (change)="onFileSelected($event)" accept="image/*">
+      </div>
+
+      <!-- Vehicle Status Dropdown -->
+      <div class="form-group mb-3">
+        <label for="vehicleStatus" class="form-label">Vehicle Status</label>
+        <select id="vehicleStatus" formControlName="vehicleStatus" class="form-control">
+          <option value="" disabled selected>-- Select Vehicle Status --</option>
+          <option *ngFor="let status of vehicleStatuses" [value]="status">{{ status }}</option>
+        </select>
+      </div>
+
+      <div class="form-group mb-3">
+        <label for="vehicleType" class="form-label">Vehicle Status</label>
+        <select id="vehicleType" formControlName="vehicleType" class="form-control" readonly >
+          <option value="" disabled selected>-- Select Vehicle Type --</option>
+          <option *ngFor="let type of vehicleTypes" [value]="type">{{ type }}</option>
+        </select>
+      </div>
+
+      <div class="form-group mb-3">
+        <label for="vehicleStatusD" class="form-label">Vehicle Status</label>
+        <select id="vehicleStatusD" formControlName="vehicleStatusD" class="form-control">
+          <option value="" disabled selected>-- Select Vehicle add Status --</option>
+          <option *ngFor="let addstatus of vehicleStatusD" [value]="addstatus">{{ addstatus }}</option>
+        </select>
+      </div>
 
 
 
-        <div class="mb-3">
-          <label for="fuelType" class="form-label">Fuel Type</label>
-          <input type="text" id="fuelType" class="form-control" formControlName="fuelType" />
-        </div>
+      <!-- 🚀 Action Buttons -->
+      <div class="d-flex justify-content-center gap-3">
+        <button type="submit" class="btn btn-primary btn-lg px-4">
+          <i class="fas fa-save"></i> Update
+        </button>
 
-        <div class="mb-3">
-          <label for="fabricationDate" class="form-label">Fabrication Date</label>
-          <input type="date" id="fabricationDate" class="form-control" formControlName="fabricationDate" />
-        </div>
-        <!-- Vehicle Status Dropdown -->
-        <div class="form-group mb-3">
-          <label for="vehicleStatus">Vehicle Status</label>
-          <select id="vehicleStatus" formControlName="vehicleStatus" class="form-control">
-            <option value="" disabled selected>-- Select Vehicle Status --</option>
-            <option *ngFor="let status of vehicleStatuses" [value]="status">
-              {{ status }}
-            </option>
-          </select>
-        </div>
+        <button type="button" class="btn btn-secondary btn-lg px-4" (click)="cancelEdit()">
+          <i class="fas fa-times"></i> Cancel
+        </button>
+      </div>
 
-        <!-- 🚀 Action Buttons -->
-        <div class="mb-3 d-flex justify-content-between">
-          <button type="submit" class="btn btn-primary">
-            <i class="bi bi-save"></i> Update Vehicle
-          </button>
-          <button type="button" class="btn btn-danger" (click)="deleteVehicle()">
-            <i class="bi bi-trash"></i> Delete Vehicle
-          </button>
-        </div>
-
-      </form>
-    </div>
+    </form>
   </div>
 </div>

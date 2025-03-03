@@ -99,7 +99,7 @@ const apiConfig = new Configuration({
     ProductEditComponent,
     ProductDetailComponent,
     OrderCreateComponent,
-    PaymentFormComponent
+    PaymentFormComponent,
     ApiModule.forRoot(() => apiConfig),
 
   ],

@@ -142,7 +142,7 @@ h2 {
 
 /* Buttons */
 .btn {
-    background-color: #007bff;
+    background-color: #ff6600;
     color: white;
     padding: 10px;
     border-radius: 5px;
@@ -265,12 +265,12 @@ h2 {
 
 /* Submit & Cancel Buttons */
 .btn {
-    background-color: #007bff;
+    background-color: #ff6600;
     color: white;
 }
 
 .btn:hover {
-    background-color: #0056b3;
+    background-color: #ff6600;
 }
 
 .cancel-btn {
@@ -377,7 +377,7 @@ h2 {
   }
   
   .btn {
-    background-color: #007bff;
+    background-color: #ff6600;
     color: white;
     border: none;
     padding: 10px 15px;
@@ -585,4 +585,30 @@ h2 {
 
 .suggest-btn:hover {
   background-color: #218838;
+}
+
+.error-msg {
+  color: red;
+  font-size: 14px;
+  margin-top: 5px;
+  text-align: left;
+}
+
+button[disabled] {
+  background-color: gray !important;
+  cursor: not-allowed;
+}
+/* Info Note for Editing */
+.edit-note {
+  text-align: center;
+  font-size: 14px;
+  color: #555;
+  background: #f8f9fa;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 15px;
+  border-left: 4px solid #007bff;
+  width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
 }

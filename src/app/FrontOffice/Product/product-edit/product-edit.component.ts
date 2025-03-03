@@ -12,6 +12,7 @@ import {FooterFrontComponent} from "../../footer-front/footer-front.component";
   selector: 'app-product-edit',
   templateUrl: './product-edit.component.html',
   styleUrls: ['./product-edit.component.css'],
+  standalone: true,
   imports: [CommonModule, ReactiveFormsModule, HeaderFrontComponent, FooterFrontComponent]
 })
 export class ProductEditComponent implements OnInit {

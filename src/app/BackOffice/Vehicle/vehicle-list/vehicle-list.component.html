@@ -1,32 +1,61 @@
 <app-navbar-back></app-navbar-back>
-
-<!-- Sidebar Component -->
 <app-sidebar-back></app-sidebar-back>
-
 <div class="container mt-4">
-  <div class="row">
-    <!-- The offset adds left space -->
-    <div class="offset-md-2 col-md-10">
-  <h2 class="mb-3">Vehicles</h2>
+  <!-- Sidebar (Fixed on the Left) -->
 
-  <!-- Add Vehicle Button (for admin) -->
-  <div class="mb-3">
-    <a class="btn btn-primary" routerLink="/admin/vehicles/new">
+
+  <div class="row">
+    <div class="offset-md-2 col-md-10">
+         <h2 class="mb-3">List Of Vehicules</h2>
+      <div class="table-responsive">
+    <!-- The offset adds left space -->
+        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 15px;">
+          <label for="search">Rechercher par marque</label>
+          <input
+            id="search"
+            type="text"
+            [(ngModel)]="searchTerm"
+            placeholder="Entrez une marque..."
+            style="padding: 8px; border: 1px solid #ccc; border-radius: 5px; font-size: 16px;"
+          />
+          <button (click)="search()"
+                  style="padding: 8px 12px; background-color: #ff6b5b; color: white; border: none; border-radius: 5px; cursor: pointer;">
+            Search
+          </button>
+        </div>
+
+
+
+        <!-- Add Vehicle Button (for admin) -->
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <a class="btn btn-success px-4 py-2" routerLink="/admin/vehicles/new">
       <i class="bi bi-plus-circle"></i> Add Vehicle
+    </a>
+    <!-- Right Side: Dashboard Button -->
+    <a class="btn btn-danger px-4 py-2" routerLink="/admin">
+      <i class="bi bi-speedometer2"></i> Dashboard
     </a>
   </div>
 
+
   <!-- Vehicle List Table -->
   <div class="table-responsive">
-    <table class="table table-striped table-hover align-middle">
+    <table class="table table-bordered table-hover shadow-sm">
       <thead class="table-dark">
       <tr>
         <th>Brand</th>
         <th>Model</th>
         <th>Capacity</th>
         <th>License Plate</th>
+        <th>Vin</th>
+        <th>fabrication Date</th>
+        <th>fuel Type</th>
+        <th>image File Name</th>
         <th>Vehicle Status</th>
-        <th>Actions</th>
+        <th>vehicle Type</th>
+        <th>Status</th>
+
+        <th class="text-center">Actions</th>
       </tr>
       </thead>
       <tbody>
@@ -35,17 +64,33 @@
         <td>{{ vehicle.model }}</td>
         <td>{{ vehicle.capacity }}</td>
         <td>{{ vehicle.licensePlate }}</td>
-
-        <!-- Vehicle Status (User-defined) -->
+        <td>{{vehicle.vin}}</td>
+        <td>{{vehicle.fabricationDate}}</td>
+        <td>{{vehicle.fuelType}}</td>
+        <td><img *ngIf = "vehicle.imageFileName" [src]="'data:image/jpeg;base64,'+ vehicle.imageFileName" class="card-img-top" alt="{{ vehicle.brand}}" /></td>
+        <td>{{vehicle.vehicleStatus}}</td>
+        <td>{{vehicle.vehicleType}}</td>
         <td>
-          <span class="badge bg-primary">{{ vehicle.vehicleStatus }}</span>
+              <span
+                class="badge"
+                [ngClass]="{
+                  'bg-warning text-dark': vehicle.vehicleStatusD === 'PENDING',
+                  'bg-success': vehicle.vehicleStatusD === 'APPROVED',
+                  'bg-danger': vehicle.vehicleStatusD === 'REJECTED'
+                }">{{vehicle.vehicleStatusD}}
+              </span>
         </td>
 
+        <td class="text-center">
+          <!-- ✅ Approve Button (Visible only if leave is PENDING) -->
+          <button *ngIf="vehicle.vehicleStatusD === 'PENDING'" class="btn btn-success btn-sm me-2" (click)="approveVehicle(vehicle)">
+            <i class="fas fa-check-circle"></i> Approve
+          </button>
 
-
-
-
-        <td>
+          <!-- ❌ Reject Button (Visible only if leave is PENDING) -->
+          <button *ngIf="vehicle.vehicleStatusD === 'PENDING'" class="btn btn-danger btn-sm" (click)="rejectVehicle(vehicle)">
+            <i class="fas fa-times-circle"></i> Reject
+          </button>
 
         <!-- Edit Button -->
           <a class="btn btn-sm btn-info me-2" [routerLink]="['/edit-vehicle', vehicle.idV]">
@@ -64,3 +109,5 @@
 </div>
   </div>
 </div>
+ </div>
+

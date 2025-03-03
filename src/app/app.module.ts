@@ -98,8 +98,7 @@ const apiConfig = new Configuration({
     ProductDetailComponent,
     OrderCreateComponent,
     PaymentFormComponent,
-    ApiModule.forRoot(() => apiConfig),
-
+    ApiModule.forRoot(() => apiConfig)
   ],
   providers: [
     {

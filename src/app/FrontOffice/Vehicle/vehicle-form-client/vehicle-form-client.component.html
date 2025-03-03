@@ -1,10 +1,20 @@
 <app-header-front></app-header-front>
-<div class="text-center text-white">
-              <span class="heading-xxs letter-spacing-xl">
-                Your ride, your comfort, your choice with SpeedyGo!
-              </span>
+<div class="py-3 bg-primary bg-pattern mb-4">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <div class="text-center text-white">
+                    <span class="heading-xxs letter-spacing-xl">
+                        Your ride, your comfort, your choice with SpeedyGo!
+                    </span>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
-<div class="container">
+<div class="container mt-4">
+  <div class="card shadow-lg p-4">
+    <h2 class="text-primary text-center mb-4">Vehicule Add</h2>
   <form [formGroup]="vehicleForm" (ngSubmit)="onSubmit()">
     <div class="form-group mb-3">
       <label for="brand">Brand</label>
@@ -15,8 +25,8 @@
       <input id="model" formControlName="model" class="form-control">
     </div>
     <div class="form-group mb-3">
-      <label for="capacity">Capacity</label>
-      <input id="capacity" formControlName="capacity" class="form-control">
+      <label for="capacity" class="form-label fw-bold">Capacity</label>
+      <input id="capacity" type="number" formControlName="capacity" class="form-control rounded" required>
     </div>
     <div class="form-group mb-3">
       <label for="licensePlate">License Plate</label>
@@ -67,6 +77,7 @@
       {{ vehicleForm.value.id ? 'Update' : 'Add' }}
     </button>
   </form>
+</div>
 </div>
 
 <app-footer-front></app-footer-front>

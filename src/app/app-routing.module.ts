@@ -59,11 +59,10 @@ const routes: Routes = [
   { path: 'create-product', component: ProductCreateComponent , canActivate: [partnerGuard]},
   { path: 'product-detail/:id', component: ProductDetailComponent},
   { path: 'edit-product/:id', component: ProductEditComponent},
-  { path: 'create-order', component: OrderCreateComponent },
+  { path: 'create-order', component: OrderCreateComponent, canActivate: [clientGuard] },
   { path: 'payment' , component: PaymentFormComponent},
   { path: 'carpooling', component: CarpoolingComponent},
-  { path: 'company', component: CompanyComponent },
-
+  { path: 'company', component: CompanyComponent, canActivate: [adminGuard] },
   { path: 'leaveadmin', component: LeaveadminComponent },
   { path: 'promoadd', component: PromotionaddComponent },
   { path: 'promoedit/:id', component: PromotioneditComponent },

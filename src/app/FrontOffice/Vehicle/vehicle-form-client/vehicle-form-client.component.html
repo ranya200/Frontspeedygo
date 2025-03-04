@@ -1,0 +1,83 @@
+<app-header-front></app-header-front>
+<div class="py-3 bg-primary bg-pattern mb-4">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <div class="text-center text-white">
+                    <span class="heading-xxs letter-spacing-xl">
+                        Your ride, your comfort, your choice with SpeedyGo!
+                    </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container mt-4">
+  <div class="card shadow-lg p-4">
+    <h2 class="text-primary text-center mb-4">Vehicule Add</h2>
+  <form [formGroup]="vehicleForm" (ngSubmit)="onSubmit()">
+    <div class="form-group mb-3">
+      <label for="brand">Brand</label>
+      <input id="brand" formControlName="brand" class="form-control">
+    </div>
+    <div class="form-group mb-3">
+      <label for="model">Model</label>
+      <input id="model" formControlName="model" class="form-control">
+    </div>
+    <div class="form-group mb-3">
+      <label for="capacity" class="form-label fw-bold">Capacity</label>
+      <input id="capacity" type="number" formControlName="capacity" class="form-control rounded" required>
+    </div>
+    <div class="form-group mb-3">
+      <label for="licensePlate">License Plate</label>
+      <input id="licensePlate" formControlName="licensePlate" class="form-control">
+    </div>
+    <div class="form-group mb-3">
+      <label for="vin">VIN</label>
+      <input id="vin" formControlName="vin" class="form-control">
+    </div>
+    <div class="form-group mb-3">
+      <label for="fabricationDate">Fabrication Date</label>
+      <input id="fabricationDate" type="date" formControlName="fabricationDate" class="form-control">
+    </div>
+    <div class="form-group mb-3">
+      <label for="fuelType">Fuel Type</label>
+      <input id="fuelType" formControlName="fuelType" class="form-control">
+    </div>
+    <!-- File Input for Image -->
+    <div class="form-group mb-3">
+      <label for="image">registration document</label>
+      <input type="file" id="image" class="form-control" (change)="onFileSelected($event)">
+    </div>
+
+    <!-- Removed vehicleStatus and vehicleType inputs -->
+    <!-- Vehicle Status Dropdown -->
+    <div class="form-group mb-3">
+      <label for="vehicleStatus">Vehicle Status</label>
+      <select id="vehicleStatus" formControlName="vehicleStatus" class="form-control">
+        <option value="" disabled selected>-- Select Vehicle Status --</option>
+        <option *ngFor="let status of vehicleStatuses" [value]="status">
+          {{ status }}
+        </option>
+      </select>
+    </div>
+
+    <!-- Vehicle Type Dropdown -->
+    <div class="form-group mb-3">
+      <label for="vehicleType">Vehicle Type</label>
+      <select id="vehicleType" formControlName="vehicleType" class="form-control">
+        <option value="" disabled selected>-- Select Vehicle Type --</option>
+        <option *ngFor="let type of vehicleTypes" [value]="type">
+          {{ type }}
+        </option>
+      </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary">
+      {{ vehicleForm.value.id ? 'Update' : 'Add' }}
+    </button>
+  </form>
+</div>
+</div>
+
+<app-footer-front></app-footer-front>

@@ -5,9 +5,11 @@
         <h2>Company Information</h2>
         <button class="add-btn" (click)="showAddCompanyModal = true">+ Add Company</button>
     </div>
-
+    
     <div class="company-list">
+        
         <div class="company-card" *ngFor="let company of companyList" (click)="selectCompany(company)">
+            <p class="edit-note">ℹ️ Click on a company card to edit its details.</p>
             <button class="delete-btn" (click)="deleteCompany(company.id ); $event.stopPropagation()">X</button>
             <div class="card-body">
                 <p><i class="fas fa-map-marker-alt"></i> <strong>Address:</strong> {{ company.address }}</p>
@@ -25,13 +27,21 @@
                 
             </div>
             <div class="modal-body">
-                <form (submit)="updateCompany(); $event.preventDefault()">
-                    <input type="text" placeholder="Company Address" [(ngModel)]="selectedCompany.address" name="address" required />
-                    <input type="text" placeholder="Telephone" [(ngModel)]="selectedCompany.telephone" name="telephone" required />
-                    <input type="email" placeholder="Email" [(ngModel)]="selectedCompany.email" name="email" required />
-                    <button type="submit" class="btn">Update</button>
+                <form #updateCompanyForm="ngForm" (submit)="updateCompany(); $event.preventDefault()">
+                    <input type="text" placeholder="Company Address" [(ngModel)]="selectedCompany.address" name="address" required #addressUpdate="ngModel"/>
+                    <p *ngIf="addressUpdate.invalid && addressUpdate.touched" class="error-msg">Address is required</p>
+                
+                    <input type="text" placeholder="Telephone" [(ngModel)]="selectedCompany.telephone" name="telephone" required #telephoneUpdate="ngModel"/>
+                    <p *ngIf="telephoneUpdate.invalid && telephoneUpdate.touched" class="error-msg">Telephone is required</p>
+                
+                    <input type="email" placeholder="Email" [(ngModel)]="selectedCompany.email" name="email" required #emailUpdate="ngModel"/>
+                    <p *ngIf="emailUpdate.invalid && emailUpdate.touched" class="error-msg">Valid email is required</p>
+                
+                    
+                    <button type="submit" class="btn" [disabled]="updateCompanyForm.invalid">Update</button>
                     <button type="button" class="cancel-btn" (click)="selectedCompany = null">Cancel</button>
                 </form>
+                
             </div>
         </div>
     </div>
@@ -44,13 +54,21 @@
                 
             </div>
             <div class="modal-body">
-                <form (submit)="submitCompany(); $event.preventDefault()">
-                    <input type="text" placeholder="Company Address" [(ngModel)]="newCompany.address" name="address" required />
-                    <input type="text" placeholder="Telephone" [(ngModel)]="newCompany.telephone" name="telephone" required />
-                    <input type="email" placeholder="Email" [(ngModel)]="newCompany.email" name="email" required />
-                    <button type="submit" class="btn">Submit</button>
+                <form #companyForm="ngForm" (submit)="submitCompany(); $event.preventDefault()">
+                    <input type="text" placeholder="Company Address" [(ngModel)]="newCompany.address" name="address" required #addressNew="ngModel"/>
+                    <p *ngIf="addressNew.invalid && addressNew.touched" class="error-msg">Address is required</p>
+                
+                    <input type="text" placeholder="Telephone" [(ngModel)]="newCompany.telephone" name="telephone" required #telephoneNew="ngModel"/>
+                    <p *ngIf="telephoneNew.invalid && telephoneNew.touched" class="error-msg">Telephone is required</p>
+                
+                    <input type="email" placeholder="Email" [(ngModel)]="newCompany.email" name="email" required #emailNew="ngModel"/>
+                    <p *ngIf="emailNew.invalid && emailNew.touched" class="error-msg">Valid email is required</p>
+                
+                    
+                    <button type="submit" class="btn" [disabled]="companyForm.invalid">Submit</button>
                     <button type="button" class="cancel-btn" (click)="showAddCompanyModal = false">Cancel</button>
                 </form>
+                
             </div>
         </div>
     </div>
@@ -58,3 +76,4 @@
 
 <app-footer-back></app-footer-back>
 
+<app-footer-back></app-footer-back>

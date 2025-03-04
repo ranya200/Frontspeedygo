@@ -1,39 +1,70 @@
-<!-- ad-edit.component.html -->
 <app-header-front></app-header-front>
 
-<div class="edit-ad-container">
-  <h1>Edit Advertisement</h1>
-  <form [formGroup]="adForm" (ngSubmit)="onSubmit()">
-    <label for="title">Title:</label>
-    <input id="title" type="text" formControlName="title" required>
+<div class="container mt-4">
+  <div class="card shadow-lg p-4">
+    <h2 class="text-primary text-center mb-4">Modify Ad</h2>
 
-    <label for="description">Description:</label>
-    <textarea id="description" formControlName="description" required></textarea>
+    <form [formGroup]="adForm" (ngSubmit)="updateAd()">
 
-    <label for="image">Image URL:</label>
-    <input id="image" type="text" formControlName="image">
+      <!-- Ad Title -->
+      <div class="form-group mb-3">
+        <label for="title" class="form-label fw-bold">Title</label>
+        <input id="title" type="text" formControlName="title" class="form-control rounded" required>
+      </div>
 
-    <label for="video">Video URL:</label>
-    <input id="video" type="text" formControlName="video">
+      <!-- Ad Description -->
+      <div class="form-group mb-3">
+        <label for="description" class="form-label fw-bold">Description</label>
+        <textarea id="description" formControlName="description" class="form-control rounded" rows="4" required></textarea>
+      </div>
 
-    <label for="category">Category:</label>
-    <input id="category" type="text" formControlName="category">
+      <!-- Ad Image URL -->
+      <div class="form-group mb-3">
+        <label for="image" class="form-label fw-bold">Image URL</label>
+        <input id="image" type="text" formControlName="image" class="form-control rounded">
+      </div>
 
-    <label for="startDate">Start Date:</label>
-    <input id="startDate" type="date" formControlName="startDate" required>
+      <!-- Ad Category -->
+      <div class="form-group mb-3">
+        <label for="category" class="form-label fw-bold">Category</label>
+        <input id="category" type="text" formControlName="category" class="form-control rounded">
+      </div>
 
-    <label for="endDate">End Date:</label>
-    <input id="endDate" type="date" formControlName="endDate" required>
+      <!-- Ad Start Date -->
+      <div class="form-group mb-3">
+        <label for="startDate" class="form-label fw-bold">Start Date</label>
+        <input id="startDate" type="date" formControlName="startDate" class="form-control rounded" required>
+      </div>
 
-    <label for="status">Status:</label>
-    <select id="status" formControlName="status">
-      <option value="PENDING">Pending</option>
-      <option value="APPROVED">Approved</option>
-      <option value="REJECTED">Rejected</option>
-    </select>
+      <!-- Ad End Date -->
+      <div class="form-group mb-3">
+        <label for="endDate" class="form-label fw-bold">End Date</label>
+        <input id="endDate" type="date" formControlName="endDate" class="form-control rounded" required>
+      </div>
 
-    <button type="submit" [disabled]="!adForm.valid">Update Ad</button>
-  </form>
+      <!-- Ad Status -->
+      <div class="form-group mb-3">
+        <label for="status" class="form-label fw-bold">Status</label>
+        <select id="status" formControlName="status" class="form-control rounded">
+          <option value="PENDING">Pending</option>
+          <option value="APPROVED">Approved</option>
+          <option value="REJECTED">Rejected</option>
+        </select>
+      </div>
+
+      <!-- Submit & Cancel Buttons -->
+      <div class="d-flex justify-content-center gap-3">
+        <button type="submit" class="btn btn-primary btn-lg px-4" [disabled]="adForm.invalid">
+          <i class="fas fa-save"></i> Update
+        </button>
+        <button type="button" class="btn btn-secondary btn-lg px-4" (click)="cancelEdit()">
+          <i class="fas fa-times"></i> Cancel
+        </button>
+      </div>
+
+    </form>
+
+  </div>
 </div>
 
 <app-footer-front></app-footer-front>

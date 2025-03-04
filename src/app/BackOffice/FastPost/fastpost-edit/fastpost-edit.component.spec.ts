@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ComplaintComponent } from './complaint.component';
+import { FastpostEditComponent } from './fastpost-edit.component';
 
-describe('ComplaintComponent', () => {
-  let component: ComplaintComponent;
-  let fixture: ComponentFixture<ComplaintComponent>;
+describe('FastpostEditComponent', () => {
+  let component: FastpostEditComponent;
+  let fixture: ComponentFixture<FastpostEditComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ComplaintComponent]
+      imports: [FastpostEditComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(ComplaintComponent);
+    fixture = TestBed.createComponent(FastpostEditComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

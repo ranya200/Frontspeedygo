@@ -1,0 +1,62 @@
+<app-navbar-back></app-navbar-back>
+
+<div class="d-flex">
+  <!-- Sidebar (Fixed on the Left) -->
+  <div class="sidebar">
+    <app-sidebar-back></app-sidebar-back>
+  </div>
+
+  <!-- Main Content (Takes remaining space) -->
+  <div class="container mt-4 content">
+    <h2 class="text-primary text-center mb-4">Complaint Management</h2>
+
+    <div class="table-responsive">
+      <table class="table table-bordered table-hover shadow-sm">
+        <thead class="table-dark">
+          <tr>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Category</th>
+            <th>Status</th>
+            <th class="text-center">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let complaint of complaints">
+            <td>{{ complaint.title }}</td>
+            <td>{{ complaint.description }}</td>
+            <td>{{ complaint.category }}</td>
+            <td>
+              <span class="badge"
+                [ngClass]="{
+                  'bg-warning text-dark': complaint.status === 'PENDING',
+                  'bg-primary': complaint.status === 'OPENED',
+                  'bg-success': complaint.status === 'TREATED'
+                }">
+                {{ complaint.status }}
+              </span>
+            </td>
+            <td class="text-center">
+              <!-- ✅ Open Complaint (Only if Pending) -->
+              <button class="btn btn-primary btn-sm me-2" (click)="openComplaint(complaint.id!)">
+                <i class="fas fa-folder-open"></i> Open
+              </button>
+
+              <!-- ✅ Treat Complaint (Only if Opened) -->
+              <button *ngIf="complaint.status === 'OPENED'" class="btn btn-success btn-sm me-2" (click)="treatComplaint(complaint.id!)">
+                <i class="fas fa-check-circle"></i> Treat
+              </button>
+
+              <!-- ❌ Delete Complaint -->
+              <button class="btn btn-danger btn-sm" (click)="deleteComplaint(complaint.id!)">
+                <i class="fas fa-trash"></i> Delete
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<app-footer-back></app-footer-back>

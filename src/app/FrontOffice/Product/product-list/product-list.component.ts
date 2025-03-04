@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ProductControllerService, Product } from '../../../openapi';
+import { ProductControllerService, Product, PanierControllerService } from '../../../openapi';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { HeaderFrontComponent } from "../../header-front/header-front.component";
@@ -8,18 +8,22 @@ import { FooterFrontComponent } from "../../footer-front/footer-front.component"
 @Component({
   selector: 'app-product-list',
   standalone: true,
-  imports: [CommonModule, HeaderFrontComponent, FooterFrontComponent, ],
+  imports: [CommonModule, HeaderFrontComponent, FooterFrontComponent],
   templateUrl: './product-list.component.html',
   styleUrl: './product-list.component.css'
 })
 export class ProductListComponent implements OnInit {
   products: Product[] = [];
   filteredProducts: Product[] = [];
-  categories = Object.values(Product.CategoryEnum); // Extract category values
+  categories = Object.values(Product.CategoryEnum);
   selectedCategory: string = 'ALL';
   errorMessage: string = '';
 
-  constructor(private productService: ProductControllerService, public router: Router) {}
+  constructor(
+    private productService: ProductControllerService,
+    private panierService: PanierControllerService, // ✅ Inject package service
+    public router: Router
+  ) {}
 
   ngOnInit(): void {
     this.loadProducts();
@@ -29,7 +33,7 @@ export class ProductListComponent implements OnInit {
     this.productService.listProducts().subscribe({
       next: (data: Product[]) => {
         this.products = data;
-        this.filterProducts(); // Filter products after loading
+        this.filterProducts();
       },
       error: (err) => {
         console.error('Erreur de chargement', err);
@@ -44,6 +48,13 @@ export class ProductListComponent implements OnInit {
     } else {
       this.filteredProducts = this.products.filter(p => p.category === this.selectedCategory);
     }
+  }
+
+  addToPackage(product: Product): void {
+    this.panierService.addProductToPackage(product).subscribe({
+      next: () => alert('Produit ajouté au package !'),
+      error: (err) => console.error('Erreur ajout package', err)
+    });
   }
 
   deleteProduct(id: string): void {

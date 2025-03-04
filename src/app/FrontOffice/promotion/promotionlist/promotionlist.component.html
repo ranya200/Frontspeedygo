@@ -1,0 +1,59 @@
+<app-header-front></app-header-front>
+
+<div class="container mt-4">
+  <div class="d-flex justify-content-between align-items-center">
+    <h2 class="text-primary">Promotions List</h2>
+    <a class="btn btn-success btn-lg" [routerLink]="['/promoadd']">
+      <i class="fas fa-plus"></i> Add Promotion
+    </a>
+  </div>
+
+  <div class="table-responsive mt-4">
+    <table class="table table-bordered table-hover shadow-sm">
+      <thead class="table-dark">
+        <tr>
+          <th>Title</th>
+          <th>Description</th>
+          <th>Discount Type</th>
+          <th>Amount</th>
+          <th>Start Date</th>
+          <th>End Date</th>
+          <th>Status</th>
+          <th class="text-center">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let promotion of promotions">
+          <td>{{ promotion.title }}</td>
+          <td>{{ promotion.description }}</td>
+          <td>{{ promotion.discountType }}</td>
+          <td>
+            {{ promotion.discountType !== 'FREEDELIVERY' ? (promotion.discount + (promotion.discountType === 'POURCENTAGE' ? '%' : ' €')) : 'Free Delivery' }}
+          </td>
+          <td>{{ promotion.startDate | date:'dd/MM/yyyy' }}</td>
+          <td>{{ promotion.endDate | date:'dd/MM/yyyy' }}</td>
+          <td>
+            <span 
+              class="badge" 
+              [ngClass]="{
+                'bg-warning text-dark': promotion.promotionStatus === 'ACTIVE',
+                'bg-danger': promotion.promotionStatus === 'EXPIRED'
+              }">
+              {{ promotion.promotionStatus }}
+            </span>
+          </td>
+          <td class="text-center">
+            <button class="btn btn-warning btn-sm me-2" (click)="editPromotion(promotion.id!)">
+              <i class="fas fa-edit"></i> Edit
+            </button>
+            <button class="btn btn-danger btn-sm" (click)="deletePromotion(promotion.id!)">
+              <i class="fas fa-trash"></i> Delete
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<app-footer-front></app-footer-front>

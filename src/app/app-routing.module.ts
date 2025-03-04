@@ -77,9 +77,9 @@ const routes: Routes = [
   { path: 'leave', component: LeaveslistComponent},
   { path: 'leaveadd', component: LeaveAddComponent , canActivate: [driverGuard]},
   { path: 'leaveedit/:id', component: LeaveEditComponent},
-  { path: 'promo', component: PromotionComponent},
+  { path: 'promo', component: PromotionlistComponent},
   { path: 'adlist', component: AdListComponent},
-  { path: 'complaint', component: ComplaintComponent},
+  { path: 'complaint', component: ComplaintListComponent},
   { path: 'editad/:id', component: EditAdComponent },  // Modified to accept an 'id' parameter
   { path: 'crad', component: CreateAdComponent },
   // Vehicle Routes

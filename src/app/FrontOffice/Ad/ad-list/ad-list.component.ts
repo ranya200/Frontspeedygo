@@ -14,26 +14,33 @@ import { RouterModule, Router } from '@angular/router';
   styleUrls: ['./ad-list.component.css']
 })
 export class AdListComponent implements OnInit {
-  allowEdit = true;
   ads: Ad[] = []; // Array to hold the advertisements
+  categories = Object.values(Ad.CategoryEnum);
+  errorMessage: string = '';
+
 
   constructor(
     private adService: AdControllerService,
-    private router: Router  // Ensure Router is properly injected
+    public router: Router  // Ensure Router is properly injected
   ) {}
 
   ngOnInit(): void {
     this.loadAds();
   }
 
-  // Method to fetch all ads
+
   loadAds(): void {
     this.adService.getAllAds().subscribe({
-      next: (ads: Ad[]) => {
-        this.ads = ads; // Directly assigning the data assuming it's an array of Ad
-        console.log("Data received:", this.ads);
+      next: async (response) => {
+        if (response instanceof Blob) {
+          const text = await response.text(); // Convertir Blob en texte
+          this.ads = JSON.parse(text); // Convertir en JSON
+        } else {
+          this.ads = response; // Déjà un tableau JSON
+        }
+        console.log("Données reçues :", this.ads);
       },
-      error: (err) => console.error('Error fetching ads', err)
+      error: (err) => console.error('Erreur lors de la récupération des congés', err)
     });
   }
 

@@ -1,0 +1,58 @@
+<app-header-front></app-header-front>
+
+<div class="container mt-4">
+  <div class="d-flex justify-content-between align-items-center">
+    <h2 class="text-primary">Complaints List</h2>
+    <a class="btn btn-success btn-lg" [routerLink]="['/complaintadd']">
+      <i class="fas fa-plus"></i> Add Complaint
+    </a>
+  </div>
+
+  <div class="table-responsive mt-4">
+    <table class="table table-bordered table-hover shadow-sm">
+      <thead class="table-dark">
+        <tr>
+          <th>Title</th>
+          <th>Description</th>
+          <th>Category</th>
+          <th>Status</th>
+          <th class="text-center">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let complaint of complaints">
+          <td>{{ complaint.title }}</td>
+          <td>{{ complaint.description }}</td>
+          <td>{{ complaint.category }}</td>
+          <td>
+            <span 
+              class="badge" 
+              [ngClass]="{
+                'bg-warning text-dark': complaint.status === 'PENDING',
+                'bg-primary': complaint.status === 'OPENED',
+                'bg-success': complaint.status === 'TREATED'
+              }">
+              {{ complaint.status }}
+            </span>
+          </td>
+          <td class="text-center">
+            <!-- 🧐 View Details Button -->
+            <button class="btn btn-info btn-sm me-2" (click)="viewComplaint(complaint.id!)">
+              <i class="fas fa-eye"></i> View
+            </button>
+            <!-- ✏️ Edit Complaint -->
+            <button class="btn btn-warning btn-sm me-2" *ngIf="complaint.status === 'PENDING'" (click)="editComplaint(complaint.id!)">
+              <i class="fas fa-edit"></i> Edit
+            </button>
+            <!-- ❌ Delete Complaint -->
+            <button class="btn btn-danger btn-sm" *ngIf="complaint.status === 'PENDING'" (click)="deleteComplaint(complaint.id!)">
+              <i class="fas fa-trash"></i> Delete
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<app-footer-front></app-footer-front>

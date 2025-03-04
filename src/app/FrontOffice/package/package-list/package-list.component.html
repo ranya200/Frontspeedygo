@@ -1,0 +1,55 @@
+<app-header-front></app-header-front>
+
+<div class="container mt-4">
+  <h2 class="text-primary text-center mb-4">📦 Mon Package</h2>
+
+  <!-- 🛑 Error Message -->
+  <div *ngIf="errorMessage" class="alert alert-danger">
+    {{ errorMessage }}
+  </div>
+
+  <!-- ✅ Package Details -->
+  <div *ngIf="packageData" class="card shadow-lg p-4">
+    <h4 class="text-center">Produits dans le package</h4>
+
+    <div *ngIf="packageData && packageData.products && packageData.products.length > 0; else emptyPackage">
+        <table class="table table-bordered table-hover shadow-sm mt-3">
+        <thead class="table-dark">
+          <tr>
+            <th>Image</th>
+            <th>Nom</th>
+            <th>Prix</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let product of packageData.products">
+            <td>
+              <img *ngIf="product.image" [src]="'data:image/jpeg;base64,' + product.image" 
+                   class="img-thumbnail" alt="{{ product.name }}" width="60">
+            </td>
+            <td>{{ product.name }}</td>
+            <td><strong>{{ product.price }} €</strong></td>
+            <td>
+              <button (click)="removeProduct(product.id!)" class="btn btn-danger btn-sm">
+                <i class="fas fa-trash"></i> Supprimer
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- ✅ Total Price -->
+      <div class="text-end mt-3">
+        <h5 class="text-success"><strong>Total: {{ packageData.totalPrice }} €</strong></h5>
+      </div>
+    </div>
+
+    <!-- 🛑 Empty Package Message -->
+    <ng-template #emptyPackage>
+      <p class="text-center text-muted">Aucun produit dans le package.</p>
+    </ng-template>
+  </div>
+</div>
+
+<app-footer-front></app-footer-front>

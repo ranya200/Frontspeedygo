@@ -26,6 +26,7 @@ import { LeaveadminComponent } from './BackOffice/leave/leaveadmin/leaveadmin.co
 import { PromotionlistComponent } from './FrontOffice/promotion/promotionlist/promotionlist.component';
 import { PromotionaddComponent } from './FrontOffice/promotion/promotionadd/promotionadd.component';
 import { PromotioneditComponent } from './FrontOffice/promotion/promotionedit/promotionedit.component';
+import { PackageListComponent } from './FrontOffice/package/package-list/package-list.component';
 
 const routes: Routes = [
   { path: '', component: AllTemplateFrontComponent },
@@ -48,6 +49,8 @@ const routes: Routes = [
   { path: 'complaint', component: ComplaintComponent },
   { path: 'editad/:id', component: EditAdComponent },  // Modified to accept an 'id' parameter
   { path: 'crad', component: CreateAdComponent },
+  { path: 'package', component: PackageListComponent },
+
 
   { path: 'admin', component: AllTemplateBackComponent, canActivate: [authGuard] },
   { path: '**', redirectTo: '' },

@@ -12,6 +12,7 @@ import { FastPostControllerService } from './api/fastPostController.service';
 import { LeaveControllerService } from './api/leaveController.service';
 import { NotificationControllerService } from './api/notificationController.service';
 import { OrderControllerService } from './api/orderController.service';
+import { PanierControllerService } from './api/panierController.service';
 import { PaymentControllerService } from './api/paymentController.service';
 import { ProductControllerService } from './api/productController.service';
 import { PromotionControllerService } from './api/promotionController.service';

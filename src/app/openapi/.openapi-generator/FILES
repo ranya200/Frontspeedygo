@@ -12,6 +12,7 @@ api/fastPostController.service.ts
 api/leaveController.service.ts
 api/notificationController.service.ts
 api/orderController.service.ts
+api/panierController.service.ts
 api/paymentController.service.ts
 api/productController.service.ts
 api/promotionController.service.ts
@@ -32,6 +33,7 @@ model/models.ts
 model/notification.ts
 model/order.ts
 model/orderItem.ts
+model/panier.ts
 model/payment.ts
 model/product.ts
 model/promotion.ts

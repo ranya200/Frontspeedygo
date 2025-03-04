@@ -54,6 +54,7 @@ import { LeaveadminComponent } from './BackOffice/leave/leaveadmin/leaveadmin.co
 import { PromotionaddComponent } from './FrontOffice/promotion/promotionadd/promotionadd.component';
 import { PromotioneditComponent } from './FrontOffice/promotion/promotionedit/promotionedit.component';
 import { PromotionlistComponent } from './FrontOffice/promotion/promotionlist/promotionlist.component';
+import { PackageListComponent } from './FrontOffice/package/package-list/package-list.component';
 
 export function initializeKeycloak(authService: AuthService) {
   return () => authService.init();
@@ -106,6 +107,7 @@ const apiConfig = new Configuration({
     PromotionaddComponent,
     PromotioneditComponent,
     PromotionlistComponent,
+    PackageListComponent,
     ApiModule.forRoot(() => apiConfig),
 
   ],

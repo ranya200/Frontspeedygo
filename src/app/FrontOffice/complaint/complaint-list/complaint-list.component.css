@@ -1,0 +1,76 @@
+/* ✅ Table Styling */
+.table {
+    background: #ffffff;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .table th {
+    background: #2c3e50;
+    color: white;
+    text-transform: uppercase;
+    font-size: 14px;
+    padding: 12px;
+    text-align: center;
+  }
+  
+  .table td {
+    padding: 12px;
+    font-size: 14px;
+    vertical-align: middle;
+    text-align: center;
+  }
+  
+  /* ✅ Status Badge Colors */
+  .badge {
+    font-size: 14px;
+    padding: 5px 10px;
+    border-radius: 12px;
+  }
+  
+  .bg-warning.text-dark {
+    background-color: #ffc107 !important;
+    color: #000 !important;
+  }
+  
+  .bg-primary {
+    background-color: #007bff !important;
+  }
+  
+  .bg-success {
+    background-color: #28a745 !important;
+  }
+  
+  /* ✅ Action Buttons */
+  .btn-sm {
+    font-size: 14px;
+    padding: 6px 10px;
+    border-radius: 6px;
+  }
+  
+  /* ✅ Button Hover Effects */
+  .btn-warning:hover {
+    background-color: #e0a800;
+  }
+  
+  .btn-danger:hover {
+    background-color: #c0392b;
+  }
+  
+  .btn-info:hover {
+    background-color: #17a2b8;
+  }
+  
+  /* ✅ Responsive Table */
+  @media (max-width: 768px) {
+    .table {
+      font-size: 12px;
+    }
+  
+    .btn-sm {
+      font-size: 12px;
+      padding: 5px;
+    }
+  }
+  

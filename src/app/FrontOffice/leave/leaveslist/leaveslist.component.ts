@@ -4,12 +4,12 @@ import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { HeaderFrontComponent } from '../../header-front/header-front.component';
 import { FooterFrontComponent } from '../../footer-front/footer-front.component';
 import { Leave, LeaveControllerService } from 'src/app/openapi';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-leaveslist',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, HeaderFrontComponent, FooterFrontComponent],  
+  imports: [CommonModule, ReactiveFormsModule, HeaderFrontComponent, FooterFrontComponent, RouterModule ],  
   templateUrl: './leaveslist.component.html',
   styleUrl: './leaveslist.component.css'
 })

@@ -1,0 +1,47 @@
+<app-header-front></app-header-front>
+
+<div class="container mt-4">
+  <div class="card shadow-lg p-4">
+    <h2 class="text-primary text-center mb-4">Submit a Complaint</h2>
+
+    <form [formGroup]="complaintForm" (ngSubmit)="onSubmit()">
+      
+      <!-- Complaint Title -->
+      <div class="form-group mb-3">
+        <label for="title" class="form-label fw-bold">Title</label>
+        <input id="title" type="text" formControlName="title" class="form-control rounded" required>
+      </div>
+
+      <!-- Complaint Description -->
+      <div class="form-group mb-3">
+        <label for="description" class="form-label fw-bold">Description</label>
+        <textarea id="description" formControlName="description" class="form-control rounded" rows="4" required></textarea>
+      </div>
+
+      <!-- Complaint Category -->
+      <div class="form-group mb-3">
+        <label for="category" class="form-label fw-bold">Category</label>
+        <select id="category" formControlName="category" class="form-control rounded">
+          <option value="DELIVERY">Delivery</option>
+          <option value="PAYMENT">Payment</option>
+          <option value="TECHNICAL">Technical</option>
+          <option value="OTHER">Other</option>
+        </select>
+      </div>
+
+      <!-- Submit & Cancel Buttons -->
+      <div class="d-flex justify-content-center gap-3">
+        <button type="submit" class="btn btn-primary btn-lg px-4" [disabled]="complaintForm.invalid">
+          <i class="fas fa-paper-plane"></i> Submit
+        </button>
+        <button type="button" class="btn btn-secondary btn-lg px-4" [routerLink]="['/complaint']">
+          <i class="fas fa-arrow-left"></i> Cancel
+        </button>
+      </div>
+
+    </form>
+
+  </div>
+</div>
+
+<app-footer-front></app-footer-front>

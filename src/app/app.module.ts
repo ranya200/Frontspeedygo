@@ -15,7 +15,6 @@ import { CompanyComponent } from './BackOffice/company/company.component';
 import { AllTemplateFrontComponent } from './FrontOffice/all-template-front/all-template-front.component';
 import { FooterFrontComponent } from './FrontOffice/footer-front/footer-front.component';
 import { HeaderFrontComponent } from './FrontOffice/header-front/header-front.component';
-import { PromotionComponent } from './FrontOffice/promotion/promotion.component';
 import { LeaveAddComponent } from './FrontOffice/leave/leave-add/leave-add.component';
 import { LeaveslistComponent } from './FrontOffice/leave/leaveslist/leaveslist.component';
 import { LeaveEditComponent } from './FrontOffice/leave/leave-edit/leave-edit.component';
@@ -43,7 +42,6 @@ import { CreateAdComponent } from './FrontOffice/Ad/create-ad/create-ad.componen
 
 import { AdListComponent } from './FrontOffice/Ad/ad-list/ad-list.component';
 import { EditAdComponent } from './FrontOffice/Ad/ad-edit/ad-edit.component';
-import { ComplaintComponent } from './FrontOffice/complaint/complaint.component';
 
 import { NgOptimizedImage } from "@angular/common";
 import { ApiModule, Configuration } from './openapi';
@@ -51,6 +49,18 @@ import { ApiModule, Configuration } from './openapi';
 
 // Services
 import { AuthService } from './services/auth.service';
+import { LeaveadminComponent } from './BackOffice/leave/leaveadmin/leaveadmin.component';
+import { PromotionaddComponent } from './FrontOffice/promotion/promotionadd/promotionadd.component';
+import { PromotioneditComponent } from './FrontOffice/promotion/promotionedit/promotionedit.component';
+import { PromotionlistComponent } from './FrontOffice/promotion/promotionlist/promotionlist.component';
+import { PackageListComponent } from './FrontOffice/package/package-list/package-list.component';
+import { ComplaintAddComponent } from './FrontOffice/complaint/complaint-add/complaint-add.component';
+import { ComplaintEditComponent } from './FrontOffice/complaint/complaint-edit/complaint-edit.component';
+import { ComplaintListComponent } from './FrontOffice/complaint/complaint-list/complaint-list.component';
+import { ComplaintDetailsComponent } from './FrontOffice/complaint/complaint-details/complaint-details.component';
+import { ComplaintAdminComponent } from './BackOffice/complaint/complaint-admin/complaint-admin.component';
+import { ComplaintAdminopenComponent } from './BackOffice/complaint/complaint-adminopen/complaint-adminopen.component';
+import { AdDetailsComponent } from './FrontOffice/Ad/ad-details/ad-details.component';
 
 export function initializeKeycloak(authService: AuthService) {
   return () => authService.init();
@@ -81,13 +91,11 @@ const apiConfig = new Configuration({
     CreateAdComponent,
     AdListComponent,
     EditAdComponent,
-    ComplaintComponent,
     SidebarBackComponent,
     CompanyComponent,
     AllTemplateFrontComponent,
     HeaderFrontComponent,
     FooterFrontComponent,
-    PromotionComponent,
     LeaveAddComponent,
     LeaveslistComponent,
     LeaveEditComponent,
@@ -98,6 +106,18 @@ const apiConfig = new Configuration({
     ProductDetailComponent,
     OrderCreateComponent,
     PaymentFormComponent,
+    LeaveadminComponent,
+    PromotionaddComponent,
+    PromotioneditComponent,
+    PromotionlistComponent,
+    PackageListComponent,
+    ComplaintAddComponent,
+    ComplaintEditComponent,
+    ComplaintListComponent,
+    ComplaintDetailsComponent,
+    ComplaintAdminComponent,
+    ComplaintAdminopenComponent,
+    AdDetailsComponent,
     ApiModule.forRoot(() => apiConfig)
   ],
   providers: [

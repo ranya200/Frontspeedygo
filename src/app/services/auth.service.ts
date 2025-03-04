@@ -85,6 +85,4 @@ export class AuthService {
     const token = this.keycloak.getKeycloakInstance().tokenParsed;
     return token?.realm_access?.roles || [];
   }
-
-
 }

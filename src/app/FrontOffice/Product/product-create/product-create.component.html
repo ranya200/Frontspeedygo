@@ -1,39 +1,93 @@
-<!-- src/app/product-create/product-create.component.html -->
 <app-header-front></app-header-front>
-<div class="container">
-  <h2>Ajouter un produit</h2>
-  <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
-    <div class="form-group">
-      <label for="name">Nom</label>
-      <input id="name" formControlName="name" class="form-control" required>
-    </div>
-    <div class="form-group">
-      <label for="description">Description</label>
-      <textarea id="description" formControlName="description" class="form-control"></textarea>
-    </div>
-    <div class="form-group">
-      <label for="price">Prix</label>
-      <input id="price" type="number" formControlName="price" class="form-control" required>
-    </div>
-    <div class="form-group">
-      <label for="stockQuantity">Quantité en stock</label>
-      <input id="stockQuantity" type="number" formControlName="stockQuantity" class="form-control" required>
-    </div>
-    <div class="form-group">
-      <label for="category">Catégorie</label>
-      <select id="category" formControlName="category" class="form-control" required>
-        <option value="" disabled selected>Choisir une catégorie</option>
-        <option *ngFor="let cat of categories" [value]="cat">{{ cat }}</option>
-      </select>
+
+<div class="container mt-5">
+  <div class="card shadow-lg p-5">
+    <h2 class="text-center text-primary mb-4">
+      <i class="fas fa-box-open"></i> Ajouter un Produit
+    </h2>
+
+    <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
+
+      <!-- Product Name -->
+      <div class="form-group mb-3">
+        <label for="name" class="form-label fw-bold">
+          <i class="fas fa-tag"></i> Nom du Produit
+        </label>
+        <input id="name" formControlName="name" class="form-control rounded" placeholder="Entrez le nom du produit" required>
+        <div *ngIf="productForm.get('name')?.invalid && productForm.get('name')?.touched" class="text-danger">
+          Le nom est obligatoire.
+        </div>
+      </div>
+
+      <!-- Description -->
+      <div class="form-group mb-3">
+        <label for="description" class="form-label fw-bold">
+          <i class="fas fa-align-left"></i> Description
+        </label>
+        <textarea id="description" formControlName="description" class="form-control rounded" rows="3" placeholder="Ajoutez une brève description du produit"></textarea>
+      </div>
+
+      <!-- Price -->
+      <div class="form-group mb-3">
+        <label for="price" class="form-label fw-bold">
+          <i class="fas fa-euro-sign"></i> Prix (€)
+        </label>
+        <input id="price" type="number" formControlName="price" class="form-control rounded" min="0" step="0.01" placeholder="Entrez le prix" required>
+        <div *ngIf="productForm.get('price')?.invalid && productForm.get('price')?.touched" class="text-danger">
+          Veuillez entrer un prix valide.
+        </div>
+      </div>
+
+      <!-- Stock Quantity -->
+      <div class="form-group mb-3">
+        <label for="stockQuantity" class="form-label fw-bold">
+          <i class="fas fa-boxes"></i> Quantité en Stock
+        </label>
+        <input id="stockQuantity" type="number" formControlName="stockQuantity" class="form-control rounded" min="0" placeholder="Quantité disponible" required>
+        <div *ngIf="productForm.get('stockQuantity')?.invalid && productForm.get('stockQuantity')?.touched" class="text-danger">
+          Veuillez entrer une quantité valide.
+        </div>
+      </div>
+
+      <!-- Category Selection -->
+      <div class="form-group mb-3">
+        <label for="category" class="form-label fw-bold">
+          <i class="fas fa-list"></i> Catégorie
+        </label>
+        <select id="category" formControlName="category" class="form-control rounded" required>
+          <option value="" disabled selected>Choisir une catégorie</option>
+          <option *ngFor="let cat of categories" [value]="cat">{{ cat }}</option>
+        </select>
+        <div *ngIf="productForm.get('category')?.invalid && productForm.get('category')?.touched" class="text-danger">
+          Veuillez sélectionner une catégorie.
+        </div>
+      </div>
+
+      <!-- Product Image Upload -->
+      <div class="form-group mb-3">
+        <label for="image" class="form-label fw-bold">
+          <i class="fas fa-image"></i> Image du Produit
+        </label>
+        <input id="image" type="file" (change)="onFileSelected($event)" class="form-control rounded">
+        <small class="form-text text-muted">Formats acceptés : JPG, PNG.</small>
+      </div>
+
+      <!-- Submit Button -->
+      <div class="d-flex justify-content-center">
+        <button type="submit" class="btn btn-primary btn-lg px-4" [disabled]="productForm.invalid">
+          <i class="fas fa-paper-plane"></i> Ajouter Produit
+        </button>
+      </div>
+    </form>
+
+    <!-- Return Button -->
+    <div class="d-flex justify-content-center mt-3">
+      <a class="btn btn-secondary btn-lg px-4">
+        <i class="fas fa-arrow-left"></i> Retour
+      </a>
     </div>
 
-    <div class="form-group">
-      <label for="image">Image du produit</label>
-      <input id="image" type="file" (change)="onFileSelected($event)" class="form-control">
-    </div>
-
-    <button type="submit" class="btn btn-primary">Créer</button>
-  </form>
+  </div>
 </div>
 
 <app-footer-front></app-footer-front>

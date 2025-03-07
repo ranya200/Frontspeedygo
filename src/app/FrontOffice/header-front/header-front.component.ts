@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../services/auth.service';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-header-front',
@@ -14,18 +15,31 @@ export class HeaderFrontComponent {
   userRoles: string[] = [];
   isLoggedIn: boolean = false; // Variable pour gérer l'affichage des icônes
 
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService, private http: HttpClient) {}
 
   async ngOnInit() {
     this.isLoggedIn = await this.authService.isLoggedIn();
 
     if (this.isLoggedIn) {
-      //this.userProfile = await this.authService.getBackendUser(); // Récupère depuis le backend
-      //this.userRoles = this.userProfile ? [this.userProfile.role] : [];
       this.userProfile = await this.authService.getUserProfile();
-      //this.userRoles = await this.authService.getUserRoles();
+
+      // 🔹 Récupère l'utilisateur depuis le backend
+      this.http.get<any>('http://localhost:8089/speedygo/api/user/me', {
+        headers: {
+          Authorization: `Bearer ${this.authService.getToken()}`
+        }
+      }).subscribe({
+        next: (data: any) => {
+          console.log('✅ Utilisateur chargé:', data);
+        },
+        error: (err: any) => {
+          console.error('❌ Erreur de récupération utilisateur:', err);
+        }
+      });
+
     }
   }
+
 
   logout() {
     this.authService.logout();

@@ -34,6 +34,17 @@ export class CreateAdComponent implements OnInit {
 
   ngOnInit(): void {}
 
+  selectedFile!: File;
+
+
+
+  onFileSelected(event: any): void {
+    if (event.target.files && event.target.files.length > 0) {
+      this.selectedFile = event.target.files[0];
+      this.adForm.patchValue({ image: this.selectedFile.name });
+
+    }
+  }
   onSubmit(): void {
     if (this.adForm.valid) {
       const formattedData = {
@@ -41,8 +52,11 @@ export class CreateAdComponent implements OnInit {
         startDate: new Date(this.adForm.value.startDate).toISOString(), // Assurez-vous que la date est au format ISO
         endDate: new Date(this.adForm.value.endDate).toISOString()
       };
-
-      this.adService.createAd(formattedData).subscribe({
+  
+      const adJson = JSON.stringify(formattedData); // Serialize the Ad data to a JSON string
+  
+      // Utiliser la nouvelle méthode du service
+      this.adService.createAd(adJson, this.selectedFile, 'body').subscribe({
         next: () => {
           alert('Annonce soumise avec succès!');
           this.router.navigate(['/adlist']).then(() => {

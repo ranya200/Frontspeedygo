@@ -17,6 +17,9 @@
         <label for="endDate" class="form-label fw-bold">End Date</label>
         <input id="endDate" type="date" formControlName="endDate" class="form-control rounded" required>
       </div>
+      <div *ngIf="leaveForm.errors?.['dateInvalid'] && leaveForm.touched" class="alert alert-danger mt-2">
+        La date de début doit être antérieure à la date de fin.
+      </div>      
 
       <!-- Reason for Leave -->
       <div class="form-group mb-3">

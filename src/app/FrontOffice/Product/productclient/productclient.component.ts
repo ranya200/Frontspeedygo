@@ -1,18 +1,18 @@
 import { Component, OnInit } from '@angular/core';
-import { ProductControllerService, Product, PanierControllerService } from '../../../openapi';
 import { Router } from '@angular/router';
+import { PanierControllerService, Product, ProductControllerService } from 'src/app/openapi';
+import { FooterFrontComponent } from '../../footer-front/footer-front.component';
+import { HeaderFrontComponent } from '../../header-front/header-front.component';
 import { CommonModule } from '@angular/common';
-import { HeaderFrontComponent } from "../../header-front/header-front.component";
-import { FooterFrontComponent } from "../../footer-front/footer-front.component";
 
 @Component({
-  selector: 'app-product-list',
+  selector: 'app-productclient',
   standalone: true,
-  imports: [CommonModule, HeaderFrontComponent, FooterFrontComponent],
-  templateUrl: './product-list.component.html',
-  styleUrl: './product-list.component.css'
+  imports: [FooterFrontComponent, HeaderFrontComponent, CommonModule],
+  templateUrl: './productclient.component.html',
+  styleUrl: './productclient.component.css'
 })
-export class ProductListComponent implements OnInit {
+export class ProductclientComponent implements OnInit {
   products: Product[] = [];
   filteredProducts: Product[] = [];
   categories = Object.values(Product.CategoryEnum);
@@ -87,3 +87,4 @@ export class ProductListComponent implements OnInit {
     this.router.navigate(['/promoadd', id]);
   }
 }
+

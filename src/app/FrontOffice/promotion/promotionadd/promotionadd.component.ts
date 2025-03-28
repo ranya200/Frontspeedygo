@@ -4,7 +4,7 @@ import { HeaderFrontComponent } from '../../header-front/header-front.component'
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Promotion, PromotionControllerService } from 'src/app/openapi';
 import { CommonModule } from '@angular/common';
-import { Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-promotionadd',
@@ -16,10 +16,16 @@ import { Router, RouterLink } from '@angular/router';
 export class PromotionaddComponent implements OnInit {
 
   promotionForm!: FormGroup;
-  promotions: Promotion[] = []; // Store all promotions
+  promotions: Promotion[] = [];
+  productId!: string; // Store the ID from the URL
 
 
-    constructor(private fb: FormBuilder, private promotionService: PromotionControllerService, private router: Router) { }
+
+    constructor(private fb: FormBuilder,
+       private promotionService: PromotionControllerService,
+       private router: Router,
+      private route: ActivatedRoute,
+      ) { }
   
 
   ngOnInit(): void {
@@ -43,21 +49,30 @@ export class PromotionaddComponent implements OnInit {
         }
         this.promotionForm.get('discount')?.updateValueAndValidity();
       });
-  
+
+      // Récupération de l'ID depuis les paramètres de la route
+    this.productId = this.route.snapshot.paramMap.get('id')!;
+    console.log("ID du produit récupéré :", this.productId);
+
      
     }
   
     onSubmit(): void {
       if (this.promotionForm.valid) {
-        const promotionRequest: Promotion = this.promotionForm.value;
-        this.promotionService.addPromotion(promotionRequest).subscribe({
-          next: () => {
-            alert('Promotion ajoutée avec succès !');
-            this.promotionForm.reset(); // Reset form after successful submission
-            this.promotionForm.patchValue({ discountType: 'POURCENTAGE', promotionStatus: 'ACTIVE' }); // Reset default values
-            this.router.navigate(['/promo']); // Redirect back to list page
+        console.log('Sending data:', this.promotionForm.value);
+        this.promotionService.addPromotionToProduct(
+          this.productId,
+          this.promotionForm.value
+        ).subscribe({
+          next: (result) => {
+            console.log('Promotion added successfully:', result);
+            alert('Promotion added successfully!');
+            this.router.navigate(['/product']);  // Ensure this route is correct
           },
-          error: (err) => console.error("Erreur lors de l'ajout de la promotion", err)
+          error: (error) => {
+            console.error('Failed to add promotion:', error);
+            alert('Failed to add promotion: ' + (error.error?.message || error.message));
+          }
         });
       }
     }

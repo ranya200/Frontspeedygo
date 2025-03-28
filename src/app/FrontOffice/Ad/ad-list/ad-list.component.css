@@ -1,111 +1,124 @@
-/* ad-list.component.css */
-.ads-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 20px;
-  padding: 20px;
-  background-color: #f9f9f9; /* Légèrement hors-blanc pour un meilleur contraste */
+/* General Container Styling */
+.container {
+  margin-top: 2rem;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  color: #333; /* Standard text color for better readability */
 }
 
-.ads-title {
-  text-align: center;
-  font-size: 2rem;
-  color: #333;
-  background-color: #fff3e0; /* Fond orange doux */
-  padding: 20px 0;
-  margin-bottom: 20px;
+/* Header & Button Styling */
+h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
 }
 
-.no-ads {
-  text-align: center;
-  padding: 20px;
-  font-size: 1.2rem;
-  color: #666;
-  grid-column: 1 / -1;
-  background-color: #ffe0b2; /* Orange clair pour le message sans annonces */
+.btn.btn-primary {
+  background-color: #f57c00; /* Orange */
+  color: #fff;
+  border: none;
+  border-radius: 20px;
+  padding: 0.6rem 1.4rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-.ad-card {
-  background-color: #ffffff;
-  border-radius: 10px; /* Bords arrondis */
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12); /* Ombre subtile */
-  border: 1px solid #eee; /* Contour léger pour les cartes */
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
+.btn.btn-primary:hover {
+  background-color: #eb6510;
+  transform: translateY(-2px);
 }
 
-.ad-image {
-  width: 100%;
-  height: 180px;
+/* Card Styling with Gradient Background */
+.card {
+  border: none;
+  border-radius: 12px;
+  overflow: hidden; /* Ensures no content or borders spill out */
+  background-image: linear-gradient(to right top, #0b0b0a); /* Orange gradient effect */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  animation: popIn 0.4s ease-out forwards;
+}
+
+.card-img-top {
+  height: 200px;
   object-fit: cover;
+  transition: transform 0.3s ease; /* Smooth transition for scale effect */
 }
 
-.ad-content {
-  padding: 15px;
-  flex-grow: 1;
+.card-img-top:hover {
+  transform: scale(1.05); /* Slight zoom on hover */
 }
 
-.ad-content h3 {
-  margin-top: 0;
-  color: #5a4a42; /* Teinte plus sombre pour une meilleure lisibilité */
+.card-body {
+  padding: 1rem;
 }
 
-.ad-content p {
-  font-size: 0.85rem; /* Légèrement plus petit pour une meilleure hiérarchie */
-  color: #555;
-  overflow: hidden;
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
+.card-title {
+  font-size: 1.3rem;
+  margin-bottom: 0.5rem;
 }
 
-.ad-details {
-  font-size: 0.8rem;
-  color: #888;
-  margin-top: 5px;
+.card-text {
+  font-size: 0.9rem;
+}
+
+/* Card Footer Styling */
+.card-footer {
+  background-color: transparent;
+  border-top: none;
   display: flex;
   justify-content: space-between;
+  padding: 0.5rem 1rem;
+  flex-wrap: wrap; /* Wrap content on smaller screens */
 }
 
-.ad-actions {
-  padding: 10px 15px;
-  text-align: right;
-  border-top: 1px solid #eee;
+/* Button Variations for Different Actions */
+.btn-secondary, .btn-danger, .btn-info {
+  border-radius: 20px;
+  padding: 0.4rem 0.8rem;
+  color: #fff;
 }
 
-.ad-actions button {
-  padding: 5px 10px; /* Boutons plus petits */
-  margin-left: 5px; /* Espace entre les boutons */
-  border-radius: 5px; /* Bords légèrement arrondis */
-  cursor: pointer;
-  transition: all 0.2s ease;
+.btn-secondary {
+  background-color: #ff9800; /* Lighter orange */
 }
 
-/* Couleurs spécifiques pour chaque action */
-.ad-actions button.modify {
-  background-color: #ffa726; /* Orange pour modifier */
-  color: white;
+.btn-secondary:hover {
+  background-color: #e68900;
+  transform: scale(1.05);
 }
 
-.ad-actions button.modify:hover {
-  background-color: #fb8c00; /* Orange plus foncé au survol */
+.btn-danger {
+  background-color: #ff5722; /* Deep orange */
 }
 
-.ad-actions button.delete {
-  background-color: #ef5350; /* Rouge pour supprimer */
-  color: white;
+.btn-danger:hover {
+  background-color: #e64a19;
+  transform: scale(1.05);
 }
 
-.ad-actions button.delete:hover {
-  background-color: #d32f2f; /* Rouge plus foncé au survol */
+.btn-info {
+  background-color: #33bfff; /* Sky blue for contrast */
 }
 
-.ad-actions button.details {
-  background-color: #26c6da; /* Cyan pour les détails */
-  color: white;
+.btn-info:hover {
+  background-color: #1aa3ff;
+  transform: scale(1.05);
 }
 
-.ad-actions button.details:hover {
-  background-color: #00acc1; /* Cyan plus foncé au survol */
+/* Icons in Buttons for Enhanced UX */
+.btn i {
+  margin-right: 0.3rem; /* Space between icon and text */
+}
+
+/* Responsive Design Adjustments */
+@media (max-width: 768px) {
+  .btn {
+    font-size: 0.8rem; /* Smaller buttons on small devices */
+    padding: 0.3rem 0.6rem; /* Adjust padding */
+  }
+
+  .card-title {
+    font-size: 1.1rem; /* Smaller title on small devices */
+  }
+
+  .card-text {
+    font-size: 0.8rem; /* Smaller text on small devices */
+  }
 }

@@ -55,6 +55,6 @@ export class AdDetailsComponent implements OnInit {
   }
 
   goBack(): void {
-    this.router.navigate(['/ads']);
+    this.router.navigate(['/adlist']);
   }
 }

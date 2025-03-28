@@ -57,6 +57,10 @@ import { ProductclientComponent } from './FrontOffice/Product/productclient/prod
 const routes: Routes = [
   { path: '', component: AllTemplateFrontComponent},
 
+  { path: 'product', component: ProductListComponent , canActivate: [clientGuard]},
+  { path: 'create-product', component: ProductCreateComponent , canActivate: [partnerGuard]},
+  { path: 'product-detail/:id', component: ProductDetailComponent, canActivate: [clientGuard]},
+  { path: 'edit-product/:id', component: ProductEditComponent, canActivate: [partnerGuard]},
   { path: 'create-order', component: OrderCreateComponent, canActivate: [clientGuard] },
   { path: 'payment' , component: PaymentFormComponent, canActivate: [clientGuard]},
   { path: 'carpooling', component: CarpoolingComponent, canActivate: [clientGuard]},
@@ -92,21 +96,22 @@ const routes: Routes = [
   { path: 'promo', component: PromotionlistComponent , canActivate: [partnerGuard]},
   { path: 'promoedit/:id', component: PromotioneditComponent, canActivate: [partnerGuard] },
   // Vehicle Routes
-  { path: 'vehicles', component: VehicleListComponent },
-  { path: 'vehicles/new', component: VehicleFormClientComponent, canActivate: [adminGuard] },
-  { path: 'admin/vehicles/new', component: VehicleFormAdminComponent },
-  { path: 'edit-vehicle/:id', component: VehicleEditComponent },
-  { path: 'driver/vehicles/new', component: VehicleFormDelivaryComponent },
+  { path: 'vehicles', component: VehicleListComponent, canActivate: [adminGuard]  },
+  { path: 'vehicles/new', component: VehicleFormClientComponent, canActivate: [clientGuard]},
+  { path: 'admin/vehicles/new', component: VehicleFormAdminComponent, canActivate: [adminGuard]  },
+  { path: 'edit-vehicle/:id', component: VehicleEditComponent, canActivate: [adminGuard]  },
+  { path: 'driver/vehicles/new', component: VehicleFormDelivaryComponent , canActivate: [driverGuard]},
   // Delivery Routes
-  { path: 'deliveries/assign', component: DeliveryAssignmentComponent },
-  { path: 'deliveries', component: DeliveryListComponent },
-  { path: 'deliveries/driver', component: DriverDeliveryComponent },
-  { path: 'deliveries/user', component: UserDeliveryTrackingComponent },
-  { path: 'deliveries/edit/:id', component: DeliveryEditComponent },
+  { path: 'deliveries/assign', component: DeliveryAssignmentComponent, canActivate: [adminGuard]  },
+  { path: 'deliveries', component: DeliveryListComponent, canActivate: [adminGuard]  },
+  { path: 'deliveries/driver', component: DriverDeliveryComponent, canActivate: [driverGuard] },
+  { path: 'deliveries/user', component: UserDeliveryTrackingComponent, canActivate: [clientGuard] },
+  { path: 'deliveries/edit/:id', component: DeliveryEditComponent , canActivate: [adminGuard] },
   // FastPost Routes
-  { path: 'fastposts/new', component: FastpostFormComponent },
-  { path: 'fastposts', component: FastpostListComponent },
-  { path: 'fastposts/edit/:id', component: FastpostEditComponent },
+  { path: 'fastposts/new', component: FastpostFormComponent, canActivate: [clientGuard] },
+  { path: 'fastposts', component: FastpostListComponent , canActivate: [adminGuard] },
+  { path: 'fastposts/edit/:id', component: FastpostEditComponent, canActivate: [adminGuard]  },
+
   { path: 'admin', component: AllTemplateBackComponent, canActivate: [adminGuard] },
   { path: '**', redirectTo: '' },
 ];

@@ -18,8 +18,8 @@
       </div>
 
       <div class="col-md-6 mb-3">
-        <label class="fw-bold text-secondary"><i class="fas fa-image"></i> Image URL:</label>
-        <p class="text-dark border rounded p-2 bg-light">{{ ad.image }}</p>
+        <label class="fw-bold text-secondary"><i class="fas fa-image"></i> Image :</label>
+        <img *ngIf="ad.image" [src]="'data:image/jpeg;base64,' + ad.image" class="card-img-top" alt="{{ ad.title }}">
       </div>
 
       <div class="col-md-6 mb-3">

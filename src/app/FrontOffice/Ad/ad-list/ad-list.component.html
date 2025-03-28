@@ -1,7 +1,12 @@
-<!-- ad-list.component.html -->
 <app-header-front></app-header-front>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
 
 <h1 class="text-center my-4">Advertisements</h1> <!-- Title for the advertisement section -->
+
+<!-- Add Create Ad Button -->
+<div class="text-center mb-4">
+  <button class="btn btn-primary" routerLink="/crad"><i class="fas fa-plus"></i> Create Ad</button>
+</div>
 
 <div class="container">
   <div class="row">
@@ -13,7 +18,7 @@
     <!-- Ads cards -->
     <div *ngFor="let ad of ads" class="col-md-4 mb-4">
       <div class="card h-100">
-        <img [src]="ad.image || 'assets/default-image.png'" alt="Ad Image" class="card-img-top">
+        <img *ngIf="ad.image" [src]="'data:image/jpeg;base64,' + ad.image" class="card-img-top" alt="{{ ad.title }}">
         <div class="card-body">
           <h5 class="card-title">{{ ad.title }}</h5>
           <p class="card-text">{{ ad.description }}</p>
@@ -22,10 +27,10 @@
             <small>End: {{ ad.endDate | date:'mediumDate' }}</small>
           </div>
         </div>
-        <div class="card-footer">
-          <button class="btn btn-primary" [routerLink]="['/editad', ad.id]" *ngIf="allowEdit">Modifier</button>
-          <button class="btn btn-danger" (click)="ad.id ? deleteAd(ad.id) : null">Supprimer</button>
-          <button class="btn btn-info" *ngIf="ad.id" (click)="goToAdDetails(ad.id)">View Details</button>
+        <div class="card-footer d-flex justify-content-between flex-wrap">
+          <button class="btn btn-danger flex-fill mr-1 mb-1" (click)="ad.id ? deleteAd(ad.id) : null"><i class="fas fa-trash"></i> Delete</button>
+          <button class="btn btn-secondary flex-fill mr-1 mb-1" (click)="editAd(ad.id!)"><i class="fas fa-edit"></i> Edit</button>
+          <button class="btn btn-info flex-fill" *ngIf="ad.id" (click)="goToAdDetails(ad.id)"><i class="fas fa-info-circle"></i> View Details</button>
         </div>
       </div>
     </div>

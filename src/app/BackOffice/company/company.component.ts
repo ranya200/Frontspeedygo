@@ -19,7 +19,7 @@ interface Company {
 @Component({
   selector: 'app-company',
   standalone: true,
-  imports: [CommonModule, FormsModule,  SidebarBackComponent, NavbarBackComponent, FooterBackComponent],
+  imports: [CommonModule, FormsModule, SidebarBackComponent, NavbarBackComponent, FooterBackComponent],
   templateUrl: './company.component.html',
   styleUrls: ['./company.component.css']
 })

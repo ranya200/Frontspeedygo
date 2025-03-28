@@ -34,7 +34,6 @@ export class EditAdComponent implements OnInit {
       category: [''],
       startDate: ['', Validators.required],
       endDate: ['', Validators.required],
-      status: ['']
     });
 
     this.loadAdData();
@@ -65,7 +64,7 @@ export class EditAdComponent implements OnInit {
       this.adService.updateAd(updatedAd).subscribe({
         next: () => {
           alert('Ad updated successfully!');
-          this.router.navigate(['/ads']); // Navigate back to the ad listing
+          this.router.navigate(['/adlist']); // Navigate back to the ad listing
         },
         error: (err) => {
           console.error("Error updating ad", err);
@@ -76,6 +75,6 @@ export class EditAdComponent implements OnInit {
   }
 
   cancelEdit(): void {
-    this.router.navigate(['/ads']); // Navigation on cancel
+    this.router.navigate(['/adlist']); // Navigation on cancel
   }
 }

@@ -23,11 +23,8 @@
 
     <!-- Main Content -->
     <div class="col-md-9">
-      <div class="d-flex justify-content-between align-items-center mb-3">
-        <h1>Liste des Produits</h1>
-        <button (click)="router.navigate(['/create-product'])" class="btn btn-primary">
-          <i class="fa fa-plus"></i> Ajouter un Produit
-        </button>
+      <div class="d-flex justify-content-between align-items-center mb-3">y
+        <button (click)="router.navigate(['/package'])" class="btn btn-primary">Package</button>
       </div>
       <div *ngIf="errorMessage" class="alert alert-danger">
         {{ errorMessage }}
@@ -42,8 +39,12 @@
               <p class="card-text"><strong>{{ product.price }} €</strong></p>
             </div>
             <div class="card-footer">
-              <button (click)="editProduct(product.id!)" class="btn btn-secondary btn-sm mr-2">Modifier</button>
-              <button (click)="deleteProduct(product.id!)" class="btn btn-danger btn-sm">Supprimer</button>
+              <button (click)="viewProductDetails(product.id!)" class="btn btn-secondary btn-sm mr-2">Show</button>
+              <!-- Remplace ce bloc dans chaque carte produit -->
+              <div class="card-footer">
+                <input type="number" [(ngModel)]="quantities[product.id!]" min="1" class="form-control form-control-sm d-inline-block w-25 me-2" placeholder="Quantité">
+                <button (click)="addToPackage(product)" class="btn btn-success btn-sm">Ajouter</button>
+              </div>
             </div>
           </div>
         </div>

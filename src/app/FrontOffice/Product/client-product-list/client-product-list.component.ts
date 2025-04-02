@@ -4,20 +4,23 @@ import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { HeaderFrontComponent } from "../../header-front/header-front.component";
 import { FooterFrontComponent } from "../../footer-front/footer-front.component";
+import { FormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'app-product-list',
+  selector: 'app-client-product-list',
   standalone: true,
-  imports: [CommonModule, HeaderFrontComponent, FooterFrontComponent],
-  templateUrl: './product-list.component.html',
-  styleUrl: './product-list.component.css'
+  imports: [CommonModule, HeaderFrontComponent, FooterFrontComponent, FormsModule],
+  templateUrl: './client-product-list.component.html',
+  styleUrl: './client-product-list.component.css'
 })
-export class ProductListComponent implements OnInit {
+export class ClientProductListComponent implements OnInit {
+
   products: Product[] = [];
   filteredProducts: Product[] = [];
   categories = Object.values(Product.CategoryEnum);
   selectedCategory: string = 'ALL';
   errorMessage: string = '';
+  quantities: { [key: string]: number } = {}; // Pour stocker les quantités entrées
 
   constructor(
     private productService: ProductControllerService,
@@ -50,20 +53,18 @@ export class ProductListComponent implements OnInit {
     }
   }
 
-  deleteProduct(id: string): void {
-    if (confirm('Voulez-vous vraiment supprimer ce produit ?')) {
-      this.productService.deleteProduct(id).subscribe({
-        next: () => {
-          console.log('Produit supprimé');
-          this.loadProducts();
-        },
-        error: (err) => console.error('Erreur lors de la suppression', err)
-      });
-    }
-  }
+  addToPackage(product: Product): void {
+    const quantity = this.quantities[product.id!] || 1;
 
-  editProduct(id: string): void {
-    this.router.navigate(['/edit-product', id]);
+    const request = {
+      product,
+      quantity: { value: quantity }
+    };
+
+    this.panierService.addProductToPackage(request).subscribe({
+      next: () => alert('Produit ajouté au package !'),
+      error: (err) => console.error('Erreur ajout package', err)
+    });
   }
 
   viewProductDetails(id: string): void {

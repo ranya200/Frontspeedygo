@@ -23,19 +23,28 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let product of packageData.products">
-            <td>
-              <img *ngIf="product.image" [src]="'data:image/jpeg;base64,' + product.image" 
-                   class="img-thumbnail" alt="{{ product.name }}" width="60">
-            </td>
-            <td>{{ product.name }}</td>
-            <td><strong>{{ product.price }} €</strong></td>
-            <td>
-              <button (click)="removeProduct(product.id!)" class="btn btn-danger btn-sm">
-                <i class="fas fa-trash"></i> Supprimer
-              </button>
-            </td>
-          </tr>
+        <tr *ngFor="let pip of packageData.products">
+          <td>
+            <img *ngIf="pip.product?.image"
+                 [src]="'data:image/jpeg;base64,' + pip.product?.image"
+                 class="img-thumbnail"
+                 alt="{{ pip.product?.name }}"
+                 width="60">
+          </td>
+          <td>{{ pip.product?.name }}</td>
+          <td>{{ pip.product?.price }} €</td>
+          <td>
+            <input type="number" [(ngModel)]="pip.quantity"
+                   (change)="updateQuantity(pip.product?.id!, pip.quantity!)"
+                   min="1" class="form-control form-control-sm">
+          </td>
+          <td>
+            <button (click)="removeProduct(pip.product?.id!)"
+                    class="btn btn-danger btn-sm">
+              Supprimer
+            </button>
+          </td>
+        </tr>
         </tbody>
       </table>
 
@@ -44,6 +53,10 @@
         <h5 class="text-success"><strong>Total: {{ packageData.totalPrice }} €</strong></h5>
       </div>
     </div>
+    <div class="text-end mt-4">
+      <button class="btn btn-primary" (click)="goToPayment()">Payer</button>
+    </div>
+
 
     <!-- 🛑 Empty Package Message -->
     <ng-template #emptyPackage>

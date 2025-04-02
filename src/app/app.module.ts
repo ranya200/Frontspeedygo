@@ -26,7 +26,7 @@ import { ProductListComponent } from "./FrontOffice/Product/product-list/product
 import { ProductCreateComponent } from './FrontOffice/Product/product-create/product-create.component';
 import { ProductEditComponent } from './FrontOffice/Product/product-edit/product-edit.component';
 import { ProductDetailComponent } from "./FrontOffice/Product/product-detail/product-detail.component";
-
+import { ClientProductListComponent} from "./FrontOffice/Product/client-product-list/client-product-list.component";
 
 // Order & Payment Components
 import { OrderCreateComponent } from "./FrontOffice/Order/order-create/order-create.component";
@@ -104,6 +104,7 @@ const apiConfig = new Configuration({
     ProductCreateComponent,
     ProductEditComponent,
     ProductDetailComponent,
+    ClientProductListComponent,
     OrderCreateComponent,
     PaymentFormComponent,
     LeaveadminComponent,

@@ -19,6 +19,7 @@ import { CompanyComponent } from './BackOffice/company/company.component';
 import {ProductListComponent} from "./FrontOffice/Product/product-list/product-list.component";
 import { ProductCreateComponent } from './FrontOffice/Product/product-create/product-create.component';
 import { ProductEditComponent } from './FrontOffice/Product/product-edit/product-edit.component';
+import {ClientProductListComponent} from "./FrontOffice/Product/client-product-list/client-product-list.component";
 import {OrderCreateComponent} from "./FrontOffice/Order/order-create/order-create.component";
 import {PaymentFormComponent} from "./FrontOffice/payment/payment-form/payment-form.component";
 import {ProductDetailComponent} from "./FrontOffice/Product/product-detail/product-detail.component";
@@ -55,10 +56,11 @@ import { partnerGuard } from './guards/partner.guard';
 
 const routes: Routes = [
   { path: '', component: AllTemplateFrontComponent},
-  { path: 'product', component: ProductListComponent , canActivate: [clientGuard]},
+  { path: 'product', component: ProductListComponent , canActivate: [partnerGuard]},
   { path: 'create-product', component: ProductCreateComponent , canActivate: [partnerGuard]},
   { path: 'product-detail/:id', component: ProductDetailComponent, canActivate: [clientGuard]},
   { path: 'edit-product/:id', component: ProductEditComponent, canActivate: [partnerGuard]},
+  { path: 'productsclient', component: ClientProductListComponent, canActivate: [clientGuard]},
   { path: 'create-order', component: OrderCreateComponent, canActivate: [clientGuard] },
   { path: 'payment' , component: PaymentFormComponent, canActivate: [clientGuard]},
   { path: 'carpooling', component: CarpoolingComponent, canActivate: [clientGuard]},

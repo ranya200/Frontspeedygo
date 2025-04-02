@@ -22,8 +22,8 @@ export class PaymentFormComponent implements OnInit {
     // Récupérer les paramètres de la route
     this.route.queryParams.subscribe(params => {
       this.payment.amount = +params['amount'] || 0;
-      // Vous pouvez aussi récupérer orderId si besoin
-      // const orderId = params['orderId'];
+      this.payment.packageId = params['packageId'];
+      this.payment.userId = params['userId']; // transmis via URL depuis l’appel
     });
   }
 

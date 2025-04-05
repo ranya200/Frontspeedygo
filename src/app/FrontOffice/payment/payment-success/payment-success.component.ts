@@ -18,22 +18,10 @@ export class PaymentSuccessComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    const amount = +this.route.snapshot.queryParamMap.get('amount')!;
-    const userId = this.route.snapshot.queryParamMap.get('userId')!;
-    const packageId = this.route.snapshot.queryParamMap.get('packageId')!;
     const sessionId = this.route.snapshot.queryParamMap.get('session_id');
 
     if (sessionId) {
-      const savedPayment: Payment = {
-        amount,
-        paymentType: 'CARD',
-        userId,
-        packageId,
-        status: true,
-        paymentDate: new Date().toISOString()
-      };
-
-      this.paymentService.recordSuccessfulPayment(savedPayment).subscribe({
+      this.paymentService.verifyAndRecord(sessionId).subscribe({
         next: () => {
           const interval = setInterval(() => {
             this.countdown--;
@@ -43,7 +31,7 @@ export class PaymentSuccessComponent implements OnInit {
             }
           }, 1000);
         },
-        error: err => console.error('❌ Erreur lors de l’enregistrement du paiement', err)
+        error: err => console.error('❌ Paiement non vérifié côté serveur', err)
       });
     }
   }

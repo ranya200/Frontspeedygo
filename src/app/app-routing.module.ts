@@ -53,6 +53,7 @@ import { clientGuard } from './guards/client.guard';
 import { driverGuard } from './guards/driver.guard';
 import { visitorGuard } from './guards/visitor.guard';
 import { partnerGuard } from './guards/partner.guard';
+import {PaymentSuccessComponent} from "./FrontOffice/payment/payment-success/payment-success.component";
 
 const routes: Routes = [
   { path: '', component: AllTemplateFrontComponent},
@@ -63,6 +64,7 @@ const routes: Routes = [
   { path: 'productsclient', component: ClientProductListComponent, canActivate: [clientGuard]},
   { path: 'create-order', component: OrderCreateComponent, canActivate: [clientGuard] },
   { path: 'payment' , component: PaymentFormComponent, canActivate: [clientGuard]},
+  { path: 'payment-success', component: PaymentSuccessComponent , canActivate: [clientGuard] },
   { path: 'carpooling', component: CarpoolingComponent, canActivate: [clientGuard]},
   { path: 'company', component: CompanyComponent, canActivate: [adminGuard] },
   { path: 'leaveadmin', component: LeaveadminComponent , canActivate: [adminGuard]},

@@ -20,6 +20,9 @@
       <td>{{ item.productName }}</td>
       <td>{{ item.unitPrice }}</td>
       <td>{{ item.quantity }}</td>
+      <td *ngIf="item.unitPrice !== undefined && item.quantity !== undefined">
+        {{ item.unitPrice * item.quantity }} €
+      </td>
 
     </tr>
     </tbody>

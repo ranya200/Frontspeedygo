@@ -83,7 +83,7 @@ export class PackageListComponent implements OnInit {
 
     const helper = new JwtHelperService();
     const decoded = helper.decodeToken(token);
-    const username = decoded?.preferred_username;
+    const userId = decoded?.sub; // ✅ identifiant unique
 
     const items: OrderItem[] = this.packageData!.products.map((p: any) => ({
       productId: p.id || p.product?.id,
@@ -99,7 +99,7 @@ export class PackageListComponent implements OnInit {
       priority: Order.PriorityEnum.Medium,
       status: Order.StatusEnum.Pending,
       date: new Date().toISOString(),
-      userId: username, // ✅ obligatoire pour pouvoir filtrer ensuite
+      userId: userId, // ✅ obligatoire pour pouvoir filtrer ensuite
       items: items
     };
 
@@ -109,7 +109,7 @@ export class PackageListComponent implements OnInit {
           queryParams: {
             amount: this.packageData!.totalPrice,
             packageId: this.packageData!.id,
-            userId: username,
+            userId: userId,
             orderId: createdOrder.id
           }
         });

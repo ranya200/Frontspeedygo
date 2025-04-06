@@ -4,6 +4,9 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 import { CommonModule } from '@angular/common';
 import {FooterFrontComponent} from "../../footer-front/footer-front.component";
 import {HeaderFrontComponent} from "../../header-front/header-front.component";
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
+import QRCode from 'qrcode';
 
 @Component({
   selector: 'app-order-history',
@@ -22,12 +25,23 @@ export class OrderHistoryComponent implements OnInit {
     if (token) {
       const helper = new JwtHelperService();
       const decoded = helper.decodeToken(token);
-      const userId = decoded?.preferred_username;
+      const userId = decoded?.sub;
+      console.log('✅ Requête avec userId :', userId);
 
       this.orderService.getOrdersByUser(userId).subscribe({
-        next: (res) => this.orders = res,
-        error: (err) => console.error('Erreur chargement commandes', err)
+        next: async (res: any) => {
+          if (res instanceof Blob) {
+            const text = await res.text();
+            this.orders = JSON.parse(text); // ✅ décodage manuel
+            console.log('✅ Résultat décodé :', this.orders);
+          } else {
+            this.orders = res;
+          }
+        },
+        error: (err) => console.error('❌ Erreur chargement commandes', err)
       });
+
     }
   }
+
 }

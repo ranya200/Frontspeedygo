@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { Product } from '../../../openapi/model/product';
-import { Panier, PanierControllerService } from 'src/app/openapi';
+import {OrderItem, Panier, PanierControllerService} from 'src/app/openapi';
+import { Order, OrderControllerService } from 'src/app/openapi';
 import { FooterFrontComponent } from '../../footer-front/footer-front.component';
 import { HeaderFrontComponent } from '../../header-front/header-front.component';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { JwtHelperService } from '@auth0/angular-jwt'; // si tu utilises Keycloak
+import { JwtHelperService } from '@auth0/angular-jwt';
 
 @Component({
   selector: 'app-package-list',
@@ -19,7 +20,7 @@ export class PackageListComponent implements OnInit {
   packageData: Panier | null = null;
   errorMessage: string = '';
 
-  constructor(private panierService: PanierControllerService, private router: Router) {
+  constructor(private panierService: PanierControllerService,private orderService: OrderControllerService,  private router: Router) {
   }
 
   ngOnInit(): void {
@@ -75,17 +76,47 @@ export class PackageListComponent implements OnInit {
       return;
     }
 
+    if (!this.packageData?.products) {
+      console.error('❌ Les produits du package sont introuvables.');
+      return;
+    }
+
     const helper = new JwtHelperService();
     const decoded = helper.decodeToken(token);
     const username = decoded?.preferred_username;
 
-    this.router.navigate(['/payment'], {
-      queryParams: {
-        amount: this.packageData.totalPrice,
-        packageId: this.packageData.id,
-        userId: username
-      }
+    const items: OrderItem[] = this.packageData!.products.map((p: any) => ({
+      productId: p.id || p.product?.id,
+      productName: p.name || p.product?.name,
+      unitPrice: p.price || p.product?.price,
+      quantity: p.quantity
+    }));
+
+    const orderPayload: Order = {
+      trackingNumber: 'TRK-' + Math.random().toString().slice(2, 8),
+      estimatedDeliveryDate: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000).toISOString(),
+      price: this.packageData!.totalPrice,
+      priority: Order.PriorityEnum.Medium,
+      status: Order.StatusEnum.Pending,
+      date: new Date().toISOString(),
+      userId: username, // ✅ obligatoire pour pouvoir filtrer ensuite
+      items: items
+    };
+
+    this.orderService.createOrder(orderPayload).subscribe({
+      next: (createdOrder) => {
+        this.router.navigate(['/payment'], {
+          queryParams: {
+            amount: this.packageData!.totalPrice,
+            packageId: this.packageData!.id,
+            userId: username,
+            orderId: createdOrder.id
+          }
+        });
+      },
+      error: (err) => console.error('Erreur création de commande', err)
     });
   }
+
 
 }

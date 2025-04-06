@@ -30,6 +30,7 @@ export class PaymentFormComponent implements OnInit {
       this.payment.amount = +params['amount'] || 0;
       this.payment.packageId = params['packageId'];
       this.payment.userId = params['userId']; // transmis via URL depuis l’appel
+      this.payment.orderId = params['orderId'];
     });
   }
 

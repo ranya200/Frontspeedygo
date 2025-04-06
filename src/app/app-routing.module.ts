@@ -48,12 +48,14 @@ import {VehicleEditComponent} from "./BackOffice/Vehicle/vehicle-edit/vehicle-ed
 import {DeliveryListComponent} from "./BackOffice/Delivery/delivery-list/delivery-list.component";
 import {FastpostEditComponent} from "./BackOffice/FastPost/fastpost-edit/fastpost-edit.component";
 import {DeliveryEditComponent} from "./BackOffice/Delivery/delivery-edit/delivery-edit.component";
+import {OrderHistoryComponent} from "./FrontOffice/Orders/order-history/order-history.component";
 import { adminGuard } from './guards/admin.guard';
 import { clientGuard } from './guards/client.guard';
 import { driverGuard } from './guards/driver.guard';
 import { visitorGuard } from './guards/visitor.guard';
 import { partnerGuard } from './guards/partner.guard';
 import {PaymentSuccessComponent} from "./FrontOffice/payment/payment-success/payment-success.component";
+import {PaymentCancelComponent} from "./FrontOffice/payment/payment-cancel/payment-cancel.component";
 
 const routes: Routes = [
   { path: '', component: AllTemplateFrontComponent},
@@ -65,6 +67,8 @@ const routes: Routes = [
   { path: 'create-order', component: OrderCreateComponent, canActivate: [clientGuard] },
   { path: 'payment' , component: PaymentFormComponent, canActivate: [clientGuard]},
   { path: 'payment-success', component: PaymentSuccessComponent , canActivate: [clientGuard] },
+  { path: 'payment-cancel', component: PaymentCancelComponent , canActivate: [clientGuard]},
+  { path: 'order-history', component: OrderHistoryComponent , canActivate: [clientGuard]},
   { path: 'carpooling', component: CarpoolingComponent, canActivate: [clientGuard]},
   { path: 'company', component: CompanyComponent, canActivate: [adminGuard] },
   { path: 'leaveadmin', component: LeaveadminComponent , canActivate: [adminGuard]},

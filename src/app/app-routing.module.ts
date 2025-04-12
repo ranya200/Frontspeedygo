@@ -56,6 +56,7 @@ import { visitorGuard } from './guards/visitor.guard';
 import { partnerGuard } from './guards/partner.guard';
 import {PaymentSuccessComponent} from "./FrontOffice/payment/payment-success/payment-success.component";
 import {PaymentCancelComponent} from "./FrontOffice/payment/payment-cancel/payment-cancel.component";
+import {PaymentHistoryComponent} from "./FrontOffice/payment/payment-history/payment-history.component";
 
 const routes: Routes = [
   { path: '', component: AllTemplateFrontComponent},
@@ -68,6 +69,7 @@ const routes: Routes = [
   { path: 'payment' , component: PaymentFormComponent, canActivate: [clientGuard]},
   { path: 'payment-success', component: PaymentSuccessComponent , canActivate: [clientGuard] },
   { path: 'payment-cancel', component: PaymentCancelComponent , canActivate: [clientGuard]},
+  { path: 'payment-history', component: PaymentHistoryComponent , canActivate: [clientGuard]},
   { path: 'order-history', component: OrderHistoryComponent , canActivate: [clientGuard]},
   { path: 'carpooling', component: CarpoolingComponent, canActivate: [clientGuard]},
   { path: 'company', component: CompanyComponent, canActivate: [adminGuard] },

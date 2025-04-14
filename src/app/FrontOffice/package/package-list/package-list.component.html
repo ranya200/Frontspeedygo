@@ -48,14 +48,31 @@
         </tbody>
       </table>
 
+
+      <div class="text-end mt-3">
+        <p>Distance estimée : <strong>{{ deliveryDistance }} km</strong></p>
+        <p>Poids total :
+          <strong>{{ totalWeight }} kg</strong>
+        </p>
+
+        <p>Prix livraison : <strong>{{ deliveryCost }} €</strong></p>
+        <h5 class="text-success">Total à payer :
+          <strong>{{ (packageData?.totalPrice || 0) + deliveryCost }} €</strong>
+        </h5>
+      </div>
+
+
       <!-- ✅ Total Price -->
       <div class="text-end mt-3">
         <h5 class="text-success"><strong>Total: {{ packageData.totalPrice }} €</strong></h5>
       </div>
+
     </div>
     <div class="text-end mt-4">
       <button class="btn btn-primary" (click)="goToPayment()">Payer</button>
     </div>
+
+    <app-delivery-estimate-map (distanceCalculated)="deliveryDistance = $event; updateEstimation()"></app-delivery-estimate-map>
 
 
     <!-- 🛑 Empty Package Message -->

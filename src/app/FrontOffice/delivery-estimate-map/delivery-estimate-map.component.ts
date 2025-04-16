@@ -41,7 +41,7 @@ export class DeliveryEstimateMapComponent implements OnInit {
 
     this.depotMarker = L.marker([this.depotCoords.lat, this.depotCoords.lng], { draggable: true })
       .addTo(this.map)
-      .bindPopup('📦 Dépôt')
+      .bindPopup('📦 Source ')
       .openPopup();
 
     this.depotMarker.on('dragend', () => {

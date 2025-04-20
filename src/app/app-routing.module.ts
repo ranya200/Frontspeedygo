@@ -58,6 +58,7 @@ import {PaymentSuccessComponent} from "./FrontOffice/payment/payment-success/pay
 import {PaymentCancelComponent} from "./FrontOffice/payment/payment-cancel/payment-cancel.component";
 import {PaymentHistoryComponent} from "./FrontOffice/payment/payment-history/payment-history.component";
 import {DeliveryEstimateMapComponent} from "./FrontOffice/delivery-estimate-map/delivery-estimate-map.component";
+import {ProductValidationComponent} from "./BackOffice/product-validation/product-validation.component";
 
 const routes: Routes = [
   { path: '', component: AllTemplateFrontComponent},
@@ -66,13 +67,14 @@ const routes: Routes = [
   { path: 'product-detail/:id', component: ProductDetailComponent, canActivate: [clientGuard]},
   { path: 'edit-product/:id', component: ProductEditComponent, canActivate: [partnerGuard]},
   { path: 'productsclient', component: ClientProductListComponent, canActivate: [clientGuard]},
-  { path: 'create-order', component: OrderCreateComponent, canActivate: [clientGuard] },
+  { path: 'product-validation', component: ProductValidationComponent, canActivate: [adminGuard]  },
+  { path: 'create-order', component: OrderCreateComponent, canActivate: [clientGuard] }, // pas besoin
   { path: 'payment' , component: PaymentFormComponent, canActivate: [clientGuard]},
   { path: 'payment-success', component: PaymentSuccessComponent , canActivate: [clientGuard] },
   { path: 'payment-cancel', component: PaymentCancelComponent , canActivate: [clientGuard]},
   { path: 'payment-history', component: PaymentHistoryComponent , canActivate: [clientGuard]},
   { path: 'order-history', component: OrderHistoryComponent , canActivate: [clientGuard]},
-  { path: 'delivery-estimate-map', component: DeliveryEstimateMapComponent , canActivate: [clientGuard]},
+  { path: 'delivery-estimate-map', component: DeliveryEstimateMapComponent , canActivate: [clientGuard]}, // pas besoin
   { path: 'carpooling', component: CarpoolingComponent, canActivate: [clientGuard]},
   { path: 'company', component: CompanyComponent, canActivate: [adminGuard] },
   { path: 'leaveadmin', component: LeaveadminComponent , canActivate: [adminGuard]},

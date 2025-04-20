@@ -30,7 +30,7 @@ export class OtpVerificationComponent {
   }
 
   verifyOtp() {
-    const phoneNumber = '+21629422887'; // Remplacez par le numéro de téléphone de l'utilisateur
+    const phoneNumber = '+21629701567'; // Remplacez par le numéro de téléphone de l'utilisateur
     this.http.post('/api/otp/verify', { phoneNumber, code: this.otp })
       .subscribe(
         () => this.message = 'OTP verified successfully',

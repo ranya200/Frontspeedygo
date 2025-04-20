@@ -12,25 +12,37 @@
     </select>
   </div>
 
-  <!-- Champ OTP -->
-  <div *ngIf="otpSent" class="mt-3">
-    <label for="otp">Code OTP reçu :</label>
-    <input
-      type="text"
-      id="otp"
-      maxlength="6"
-      [(ngModel)]="otpCode"
-      (input)="onOtpInputChange()"
-      class="form-control w-25"
-      placeholder="Ex: 123456"
-    >
-    <p *ngIf="otpError" class="text-danger">{{ otpError }}</p>
-    <p *ngIf="otpSuccess" class="text-success">✅ OTP vérifié</p>
+  <!-- 🔒 OTP seulement si paiement en ligne -->
+  <div *ngIf="payment.paymentType === 'CARD'">
+
+    <!-- Champ OTP -->
+    <div *ngIf="otpSent" class="mt-3">
+      <label for="otp">Code OTP reçu :</label>
+      <input
+        type="text"
+        id="otp"
+        maxlength="6"
+        [(ngModel)]="otpCode"
+        (input)="onOtpInputChange()"
+        class="form-control w-25"
+        placeholder="Ex: 123456"
+      >
+      <p *ngIf="otpError" class="text-danger">{{ otpError }}</p>
+      <p *ngIf="otpSuccess" class="text-success">✅ OTP vérifié</p>
+    </div>
+
+    <!-- Bouton Envoyer OTP -->
+    <button *ngIf="!otpSent" class="btn btn-warning mt-3" (click)="sendOtp()">📩 Envoyer OTP</button>
   </div>
 
-  <!-- Boutons -->
-  <button *ngIf="!otpSent" class="btn btn-warning mt-3" (click)="sendOtp()">📩 Envoyer OTP</button>
-  <button class="btn btn-primary mt-3" [disabled]="!otpVerified" (click)="processPayment()">Payer</button>
+  <!-- Bouton de paiement : toujours visible -->
+  <button
+    class="btn btn-primary mt-3"
+    [disabled]="payment.paymentType === 'CARD' && !otpVerified"
+    (click)="processPayment()">
+    Payer
+  </button>
+
 </div>
 
 <app-footer-front></app-footer-front>

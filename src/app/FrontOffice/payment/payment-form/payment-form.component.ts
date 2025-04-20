@@ -20,7 +20,7 @@ import { FooterFrontComponent } from '../../footer-front/footer-front.component'
   ]
 })
 export class PaymentFormComponent implements OnInit {
-  payment: Payment = { amount: 0, paymentType: 'CARD' };
+  payment: Payment = { amount: 0, paymentType: 'CASH' };
 
   otpSent = false;
   otpVerified = false;
@@ -37,16 +37,19 @@ export class PaymentFormComponent implements OnInit {
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
       this.payment.amount = +params['amount'] || 0;
-      this.payment.packageId = params['packageId'];
-      this.payment.userId = params['userId'];
-      this.payment.orderId = params['orderId'];
+      this.payment.packageId = params['packageId'] || '';
+      this.payment.userId = params['userId'] || '';
+      this.payment.orderId = params['orderId'] || ''; // ✅ forcer à string vide
     });
+
+    console.log("📦 Initialisé depuis URL : orderId =", this.payment.orderId, ", userId =", this.payment.userId);
   }
+
 
   sendOtp(): void {
     this.otpError = '';
 
-    const phoneNumber = '+21629422887';
+    const phoneNumber = '+21629701567';
 
     this.http.post('http://localhost:8089/speedygo/api/otp/send', null, {
       params: { phoneNumber },
@@ -66,7 +69,7 @@ export class PaymentFormComponent implements OnInit {
 
   onOtpInputChange(): void {
     if (this.otpCode.length === 6) {
-      const phoneNumber = '+21629422887'; // ✅ même numéro que pour l’envoi
+      const phoneNumber = '+21629701567'; // ✅ même numéro que pour l’envoi
 
       this.http.post('http://localhost:8089/speedygo/api/otp/verify', null, {
         params: { phoneNumber, code: this.otpCode },
@@ -88,20 +91,47 @@ export class PaymentFormComponent implements OnInit {
   }
 
   processPayment(): void {
-    if (!this.otpVerified) {
+    if (this.payment.paymentType === 'CARD' && !this.otpVerified) {
       alert("Veuillez valider l'OTP avant de payer.");
       return;
     }
 
-    this.paymentService.createCheckoutSession(this.payment).subscribe({
-      next: (res) => {
-        if (res['checkoutUrl']) {
-          window.location.href = res['checkoutUrl'];
+    if (this.payment.paymentType === 'CASH') {
+      console.log("📤 Paiement envoyé =", this.payment);
+      this.paymentService.recordSuccessfulPayment(this.payment).subscribe({
+        next: () => {
+          alert('✅ Paiement en espèces enregistré. Vous payerez à la livraison.');
+
+          // 🧺 Appel pour vider le panier
+          this.http.delete(`http://localhost:8089/speedygo/panier/clear/${this.payment.userId}`).subscribe({
+            next: () => {
+              console.log("✅ Panier vidé après paiement en espèces");
+             window.location.href = 'http://localhost:4200/';
+            },
+            error: (err) => {
+              console.warn("❌ Panier non vidé après paiement en espèces :", err);
+              window.location.href = 'http://localhost:4200/';
+            }
+          });
+        },
+        error: (err) => {
+          console.error('❌ Erreur paiement espèces :', err);
         }
-      },
-      error: (err) => {
-        console.error('❌ Erreur lors de la requête Stripe :', err);
-      }
-    });
+      });
+    }
+    else {
+      // Paiement en ligne (Stripe)
+      this.paymentService.createCheckoutSession(this.payment).subscribe({
+        next: (res) => {
+          if (res['checkoutUrl']) {
+            window.location.href = res['checkoutUrl'];
+          }
+        },
+        error: (err) => {
+          console.error('❌ Erreur Stripe :', err);
+        }
+      });
+    }
   }
+
 }

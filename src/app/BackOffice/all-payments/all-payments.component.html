@@ -13,7 +13,7 @@
     <th>Type</th>
     <th>Status</th>
     <th>Order ID</th>
-    <th>User ID</th>
+    <th>User</th>
     <th>Date</th>
   </tr>
   </thead>
@@ -24,7 +24,7 @@
     <td>{{ payment.paymentType }}</td>
     <td>{{ payment.status ? '✔️' : '❌' }}</td>
     <td>{{ payment.orderId }}</td>
-    <td>{{ payment.userId }}</td>
+    <td>{{ payment.userFirstName }} {{ payment.userLastName }}</td>
     <td>{{ payment.paymentDate | date:'short' }}</td>
   </tr>
   </tbody>

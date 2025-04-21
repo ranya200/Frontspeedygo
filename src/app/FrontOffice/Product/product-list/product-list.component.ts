@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ProductControllerService, Product, PanierControllerService } from '../../../openapi';
+import { ProductControllerService, Product, PanierControllerService } from 'src/app/openapi';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { HeaderFrontComponent } from "../../header-front/header-front.component";

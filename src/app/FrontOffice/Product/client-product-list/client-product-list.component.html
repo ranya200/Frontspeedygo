@@ -23,29 +23,42 @@
 
     <!-- Main Content -->
     <div class="col-md-9">
-      <div class="d-flex justify-content-between align-items-center mb-3">y
+      <div class="d-flex justify-content-between align-items-center mb-3">
         <button (click)="router.navigate(['/package'])" class="btn btn-primary">Package</button>
       </div>
-      <div *ngIf="errorMessage" class="alert alert-danger">
-        {{ errorMessage }}
-      </div>
+      <div *ngIf="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
+
       <div class="row">
         <div *ngFor="let product of filteredProducts" class="col-md-4 mb-4">
-          <div class="card h-100">
+          <div class="card h-100 position-relative">
+
+            <!-- ⭐ Badge note moyenne -->
+            <div class="position-absolute top-0 end-0 bg-warning text-dark px-2 py-1 rounded-start">
+              ⭐ {{ averageRatings[product.id!] ? averageRatings[product.id!].toFixed(1) : '0.0' }}
+
+            </div>
+
             <img *ngIf="product.image" [src]="'data:image/jpeg;base64,' + product.image" class="card-img-top" alt="{{ product.name }}">
             <div class="card-body">
               <h5 class="card-title">{{ product.name }}</h5>
               <p class="card-text">{{ product.description }}</p>
               <p class="card-text"><strong>{{ product.price }} €</strong></p>
+
+              <!-- ⭐ Notation client -->
+              <app-star-rating
+                *ngIf="userRatings[product.id!] !== undefined"
+                [rating]="userRatings[product.id!] || 0"
+                [readonly]="false"
+                (ratingChange)="rateProduct(product.id!, $event)">
+              </app-star-rating>
             </div>
+
             <div class="card-footer">
-              <button (click)="viewProductDetails(product.id!)" class="btn btn-secondary btn-sm mr-2">Show</button>
-              <!-- Remplace ce bloc dans chaque carte produit -->
-              <div class="card-footer">
-                <input type="number" [(ngModel)]="quantities[product.id!]" min="1" class="form-control form-control-sm d-inline-block w-25 me-2" placeholder="Quantité">
-                <button (click)="addToPackage(product)" class="btn btn-success btn-sm">Ajouter</button>
-              </div>
+              <button (click)="viewProductDetails(product.id!)" class="btn btn-secondary btn-sm me-2">Show</button>
+              <input type="number" [(ngModel)]="quantities[product.id!]" min="1" class="form-control form-control-sm d-inline-block w-25 me-2" placeholder="Quantité">
+              <button (click)="addToPackage(product)" class="btn btn-success btn-sm">Ajouter</button>
             </div>
+
           </div>
         </div>
       </div>

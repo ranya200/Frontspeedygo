@@ -61,6 +61,7 @@ import {DeliveryEstimateMapComponent} from "./FrontOffice/delivery-estimate-map/
 import {ProductValidationComponent} from "./BackOffice/product-validation/product-validation.component";
 import {AllOrdersComponent} from "./BackOffice/all-orders/all-orders.component";
 import {AllPaymentsComponent} from "./BackOffice/all-payments/all-payments.component";
+import {RecommendationComponent} from "./components/recommendation/recommendation/recommendation.component";
 
 const routes: Routes = [
   { path: '', component: AllTemplateFrontComponent},
@@ -70,6 +71,7 @@ const routes: Routes = [
   { path: 'edit-product/:id', component: ProductEditComponent, canActivate: [partnerGuard]},
   { path: 'productsclient', component: ClientProductListComponent, canActivate: [clientGuard]},
   { path: 'admin/product-validation', component: ProductValidationComponent, canActivate: [adminGuard]  },
+  { path: 'recommendation-products', component: RecommendationComponent, canActivate: [clientGuard]},
   { path: 'create-order', component: OrderCreateComponent, canActivate: [clientGuard] }, // pas besoin
   { path: 'payment' , component: PaymentFormComponent, canActivate: [clientGuard]},
   { path: 'payment-success', component: PaymentSuccessComponent , canActivate: [clientGuard] },

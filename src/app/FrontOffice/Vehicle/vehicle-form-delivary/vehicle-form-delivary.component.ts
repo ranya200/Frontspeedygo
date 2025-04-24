@@ -36,13 +36,25 @@ export class VehicleFormDelivaryComponent implements OnInit {
   ngOnInit(): void {
     // Set default values for status and type
     this.vehicleForm = this.fb.group({
-      brand: ['', Validators.required],
-      model: ['', Validators.required],
-      capacity: ['', Validators.required],
-      licensePlate: ['', Validators.required],
-      vin: ['', Validators.required],
+      brand: ['',  Validators.required,
+        Validators.pattern('^[A-Za-z ]+$'), // Only letters and spaces
+        Validators.maxLength(20)],
+      model: ['', Validators.required,
+        Validators.pattern('^[A-Za-z0-9 ]+$'), // Letters, numbers, and spaces
+        Validators.maxLength(20)],
+      capacity: ['', Validators.required,
+        Validators.pattern('^[0-9]+$'), // Only numbers
+        Validators.min(1), // Min value = 1
+        Validators.max(9)],
+      licensePlate: ['', Validators.required,
+        Validators.pattern('^[A-Z0-9-]+$'), // Letters, numbers, and dashes
+        Validators.maxLength(10)],
+      vin: ['', Validators.required,
+        Validators.pattern('^[A-HJ-NPR-Z0-9]{17}$')],
       fabricationDate: ['', Validators.required],
-      fuelType: ['', Validators.required],
+      fuelType: ['', Validators.required,
+        Validators.pattern('^[A-Za-z ]+$'), // Only letters and spaces
+        Validators.maxLength(15)],
       image: ['', Validators.required],
 // Set defaults for fields not shown in the UI:
       vehicleStatus: ['', Validators.required],

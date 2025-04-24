@@ -52,7 +52,11 @@ import { clientGuard } from './guards/client.guard';
 import { driverGuard } from './guards/driver.guard';
 import { visitorGuard } from './guards/visitor.guard';
 import { partnerGuard } from './guards/partner.guard';
+import {VehicleAlertComponent} from "./BackOffice/Vehicle/vehicle-alert/vehicle-alert.component";
+import {MaintenanceScheduleComponent} from "./BackOffice/Vehicle/maintenance-schedule/maintenance-schedule.component";
+import {DeliveriesListComponent} from "./BackOffice/Delivery/deliveries-list/deliveries-list.component";
 import { ProductclientComponent } from './FrontOffice/Product/productclient/productclient.component';
+
 
 const routes: Routes = [
   { path: '', component: AllTemplateFrontComponent},
@@ -101,12 +105,16 @@ const routes: Routes = [
   { path: 'admin/vehicles/new', component: VehicleFormAdminComponent, canActivate: [adminGuard]  },
   { path: 'edit-vehicle/:id', component: VehicleEditComponent, canActivate: [adminGuard]  },
   { path: 'driver/vehicles/new', component: VehicleFormDelivaryComponent , canActivate: [driverGuard]},
+  { path: 'maintenance-alerts', component: VehicleAlertComponent },
+  { path: 'maintenance/schedule/:vehicleId', component: MaintenanceScheduleComponent },
+
   // Delivery Routes
   { path: 'deliveries/assign', component: DeliveryAssignmentComponent, canActivate: [adminGuard]  },
-  { path: 'deliveries', component: DeliveryListComponent, canActivate: [adminGuard]  },
+  { path: 'deliveries', component: DeliveriesListComponent, canActivate: [adminGuard]  },
   { path: 'deliveries/driver', component: DriverDeliveryComponent, canActivate: [driverGuard] },
   { path: 'deliveries/user', component: UserDeliveryTrackingComponent, canActivate: [clientGuard] },
   { path: 'deliveries/edit/:id', component: DeliveryEditComponent , canActivate: [adminGuard] },
+
   // FastPost Routes
   { path: 'fastposts/new', component: FastpostFormComponent, canActivate: [clientGuard] },
   { path: 'fastposts', component: FastpostListComponent , canActivate: [adminGuard] },

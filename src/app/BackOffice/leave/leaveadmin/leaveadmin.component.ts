@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
-import { Leave, LeaveControllerService } from 'src/app/openapi';
+import { Leave, LeaveControllerService, LeaveSettings, LeaveSettingsControllerService } from 'src/app/openapi';
 import { NavbarBackComponent } from "../../navbar-back/navbar-back.component";
 import { SidebarBackComponent } from "../../sidebar-back/sidebar-back.component";
 import { FooterBackComponent } from "../../footer-back/footer-back.component";
@@ -17,11 +17,52 @@ import { FooterBackComponent } from "../../footer-back/footer-back.component";
 export class LeaveadminComponent implements OnInit{
 
     leaves: Leave[] = []; // Store all leaves
+    settingsForm!: FormGroup;
+    currentSettings!: LeaveSettings;
+    leaveSet: LeaveSettings[] = [];
+
   
-    constructor(private fb: FormBuilder, private leaveService: LeaveControllerService, private router: Router) { }
+    constructor(private fb: FormBuilder, private leaveService: LeaveControllerService,private leaveSettingsService: LeaveSettingsControllerService, private router: Router) { }
     ngOnInit(): void {
+      this.settingsForm = this.fb.group({
+        maxAllowedDays: [10, [Validators.required, Validators.min(1)]]
+          
+      });
+      
       this.getAllLeaves();
+      this.fetchSettings();
+
   
+      }
+
+      fetchSettings(): void {
+        this.leaveSettingsService.getSettings().subscribe({
+          next: async (response) => {
+            if (response instanceof Blob) {
+              const text = await response.text(); // 🔁 Convertir le Blob en texte
+              const settings = JSON.parse(text);  // 📦 Convertir en JSON
+              this.currentSettings = settings;
+              this.settingsForm.patchValue({ maxAllowedDays: settings.maxAllowedDays });
+            } else {
+              this.currentSettings = response;
+              this.settingsForm.patchValue({ maxAllowedDays: response.maxAllowedDays });
+            }
+          },
+          error: (err) => console.error('Erreur lors du chargement des paramètres', err)
+        });
+      }
+      
+      
+
+
+      updateSettings(): void {
+        const updatedMaxDays = this.settingsForm.value.maxAllowedDays;
+
+        this.leaveSettingsService.updateMaxAllowedDays(updatedMaxDays).subscribe({
+          next: () => alert('Leave settings updated successfully!'),
+          error: (err) => console.error('Error updating settings', err)
+        });
+        
       }
     
   

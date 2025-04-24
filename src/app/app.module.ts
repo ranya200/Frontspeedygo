@@ -62,6 +62,7 @@ import { ComplaintAdminComponent } from './BackOffice/complaint/complaint-admin/
 import { ComplaintAdminopenComponent } from './BackOffice/complaint/complaint-adminopen/complaint-adminopen.component';
 import { AdDetailsComponent } from './FrontOffice/Ad/ad-details/ad-details.component';
 import {VehicleAlertComponent} from "./BackOffice/Vehicle/vehicle-alert/vehicle-alert.component";
+import { ProductclientComponent } from './FrontOffice/Product/productclient/productclient.component';
 
 export function initializeKeycloak(authService: AuthService) {
   return () => authService.init();
@@ -105,6 +106,7 @@ const apiConfig = new Configuration({
     ProductCreateComponent,
     ProductEditComponent,
     ProductDetailComponent,
+    ProductclientComponent,
     OrderCreateComponent,
     PaymentFormComponent,
     LeaveadminComponent,

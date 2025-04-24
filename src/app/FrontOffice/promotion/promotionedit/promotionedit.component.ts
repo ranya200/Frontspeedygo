@@ -21,7 +21,7 @@ export class PromotioneditComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private fb: FormBuilder,
-    private leaveService: PromotionControllerService
+    private promoService: PromotionControllerService
   ) {}
 
   ngOnInit(): void {
@@ -51,7 +51,7 @@ export class PromotioneditComponent implements OnInit {
   }
 
   loadpromotionData(): void {
-    this.leaveService.getPromotion(this.promotionId).subscribe({
+    this.promoService.getPromotion(this.promotionId).subscribe({
       next: async (response) => {
         if (response instanceof Blob) {
           const text = await response.text(); // Convert Blob to text
@@ -74,7 +74,7 @@ export class PromotioneditComponent implements OnInit {
         id: this.promotionId // Ensure the ID is included
       };
 
-      this.leaveService.updatePromotion(updatedLeave).subscribe({
+      this.promoService.updatePromotion(updatedLeave).subscribe({
         next: () => {
           alert('Demande de congé mise à jour avec succès !');
           this.router.navigate(['/promo']); // Redirect back to list page

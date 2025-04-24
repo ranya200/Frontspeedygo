@@ -55,9 +55,12 @@ import { partnerGuard } from './guards/partner.guard';
 import {VehicleAlertComponent} from "./BackOffice/Vehicle/vehicle-alert/vehicle-alert.component";
 import {MaintenanceScheduleComponent} from "./BackOffice/Vehicle/maintenance-schedule/maintenance-schedule.component";
 import {DeliveriesListComponent} from "./BackOffice/Delivery/deliveries-list/deliveries-list.component";
+import { ProductclientComponent } from './FrontOffice/Product/productclient/productclient.component';
+
 
 const routes: Routes = [
   { path: '', component: AllTemplateFrontComponent},
+
   { path: 'product', component: ProductListComponent , canActivate: [clientGuard]},
   { path: 'create-product', component: ProductCreateComponent , canActivate: [partnerGuard]},
   { path: 'product-detail/:id', component: ProductDetailComponent, canActivate: [clientGuard]},
@@ -66,25 +69,36 @@ const routes: Routes = [
   { path: 'payment' , component: PaymentFormComponent, canActivate: [clientGuard]},
   { path: 'carpooling', component: CarpoolingComponent, canActivate: [clientGuard]},
   { path: 'company', component: CompanyComponent, canActivate: [adminGuard] },
-  { path: 'leaveadmin', component: LeaveadminComponent , canActivate: [adminGuard]},
-  { path: 'promoadd', component: PromotionaddComponent , canActivate: [partnerGuard]},
-  { path: 'promoedit/:id', component: PromotioneditComponent, canActivate: [partnerGuard] },
+  // ad routes
+  { path: 'show-ad', component: AdDetailsComponent, canActivate: [clientGuard]},
+  { path: 'ad-details/:id', component: AdDetailsComponent },
+  { path: 'adlist', component: AdListComponent, canActivate: [clientGuard]},
+  { path: 'editad/:id', component: EditAdComponent , canActivate: [clientGuard]},  // Modified to accept an 'id' parameter
+  { path: 'crad', component: CreateAdComponent, canActivate: [clientGuard] },
+  // package routes
   { path: 'package', component: PackageListComponent , canActivate: [clientGuard]},
+  // product routes
+  { path: 'product', component: ProductListComponent , canActivate: [partnerGuard]},
+  { path: 'create-product', component: ProductCreateComponent , canActivate: [partnerGuard]},
+  { path: 'product-detail/:id', component: ProductDetailComponent, canActivate: [clientGuard]}, 
+  { path: 'edit-product/:id', component: ProductEditComponent, canActivate: [partnerGuard]},
+  { path: 'productclient', component: ProductclientComponent, canActivate: [clientGuard] },
+  // complaint routes
+  { path: 'complaint', component: ComplaintListComponent, canActivate: [clientGuard]},
   { path: 'complaintadd', component: ComplaintAddComponent },
   { path: 'complaintedit/:id', component: ComplaintEditComponent },
   { path: 'complaintdetails/:id', component: ComplaintDetailsComponent },
   { path: 'admin/complaints', component: ComplaintAdminComponent, canActivate: [adminGuard] },
   { path: 'admin/complaint/:id', component: ComplaintAdminopenComponent, canActivate: [adminGuard] },
-  { path: 'show-ad', component: AdDetailsComponent, canActivate: [clientGuard]},
-  { path: 'ad-details/:id', component: AdDetailsComponent },
-  { path: 'leave', component: LeaveslistComponent, canActivate: [clientGuard]},
+  // leave routes
+  { path: 'leave', component: LeaveslistComponent, canActivate: [driverGuard]},
   { path: 'leaveadd', component: LeaveAddComponent , canActivate: [driverGuard]},
-  { path: 'leaveedit/:id', component: LeaveEditComponent, canActivate: [driverGuard]},
-  { path: 'promo', component: PromotionlistComponent, canActivate: [partnerGuard]},
-  { path: 'adlist', component: AdListComponent, canActivate: [clientGuard]},
-  { path: 'complaint', component: ComplaintListComponent, canActivate: [clientGuard]},
-  { path: 'editad/:id', component: EditAdComponent , canActivate: [clientGuard]},  // Modified to accept an 'id' parameter
-  { path: 'crad', component: CreateAdComponent, canActivate: [clientGuard] },
+  { path: 'leaveedit/:id', component: LeaveEditComponent},
+  { path: 'leaveadmin', component: LeaveadminComponent , canActivate: [adminGuard]},
+  // promotion routes
+  { path: 'promoadd/:id', component: PromotionaddComponent , canActivate: [partnerGuard]},
+  { path: 'promo', component: PromotionlistComponent , canActivate: [partnerGuard]},
+  { path: 'promoedit/:id', component: PromotioneditComponent, canActivate: [partnerGuard] },
   // Vehicle Routes
   { path: 'vehicles', component: VehicleListComponent, canActivate: [adminGuard]  },
   { path: 'vehicles/new', component: VehicleFormClientComponent, canActivate: [clientGuard]},

@@ -38,6 +38,9 @@
         </div>
       </div>
 
+
+
+
       <!-- Stock Quantity -->
       <div class="form-group mb-3">
         <label for="stockQuantity" class="form-label fw-bold">
@@ -46,6 +49,17 @@
         <input id="stockQuantity" type="number" formControlName="stockQuantity" class="form-control rounded" min="0" placeholder="Quantité disponible" required>
         <div *ngIf="productForm.get('stockQuantity')?.invalid && productForm.get('stockQuantity')?.touched" class="text-danger">
           Veuillez entrer une quantité valide.
+        </div>
+      </div>
+
+      <!-- Product Weight -->
+      <div class="form-group mb-3">
+        <label for="weight" class="form-label fw-bold">
+          <i class="fas fa-weight-hanging"></i> Poids (kg)
+        </label>
+        <input id="weight" type="number" formControlName="weight" class="form-control rounded" min="0" step="0.01" placeholder="Poids du produit en kg" required>
+        <div *ngIf="productForm.get('weight')?.invalid && productForm.get('weight')?.touched" class="text-danger">
+          Veuillez entrer un poids valide.
         </div>
       </div>
 

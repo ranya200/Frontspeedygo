@@ -4,6 +4,7 @@ import { FooterFrontComponent} from "../footer-front/footer-front.component";
 
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
+import {RecommendationComponent} from "../../components/recommendation/recommendation/recommendation.component";
 
 
 @Component({
@@ -11,7 +12,7 @@ import { RouterLink } from '@angular/router';
   templateUrl: './all-template-front.component.html',
   styleUrl: './all-template-front.component.css',
   standalone: true, // ✅ Make it standalone like CarpoolingComponent
-  imports: [CommonModule, HeaderFrontComponent, FooterFrontComponent, RouterLink],
+  imports: [CommonModule, HeaderFrontComponent, FooterFrontComponent, RouterLink, RecommendationComponent],
 })
 export class AllTemplateFrontComponent {
 

@@ -19,6 +19,7 @@ import { CompanyComponent } from './BackOffice/company/company.component';
 import {ProductListComponent} from "./FrontOffice/Product/product-list/product-list.component";
 import { ProductCreateComponent } from './FrontOffice/Product/product-create/product-create.component';
 import { ProductEditComponent } from './FrontOffice/Product/product-edit/product-edit.component';
+import {ClientProductListComponent} from "./FrontOffice/Product/client-product-list/client-product-list.component";
 import {OrderCreateComponent} from "./FrontOffice/Order/order-create/order-create.component";
 import {PaymentFormComponent} from "./FrontOffice/payment/payment-form/payment-form.component";
 import {ProductDetailComponent} from "./FrontOffice/Product/product-detail/product-detail.component";
@@ -47,26 +48,43 @@ import {VehicleEditComponent} from "./BackOffice/Vehicle/vehicle-edit/vehicle-ed
 import {DeliveryListComponent} from "./BackOffice/Delivery/delivery-list/delivery-list.component";
 import {FastpostEditComponent} from "./BackOffice/FastPost/fastpost-edit/fastpost-edit.component";
 import {DeliveryEditComponent} from "./BackOffice/Delivery/delivery-edit/delivery-edit.component";
+import {OrderHistoryComponent} from "./FrontOffice/Orders/order-history/order-history.component";
 import { adminGuard } from './guards/admin.guard';
 import { clientGuard } from './guards/client.guard';
 import { driverGuard } from './guards/driver.guard';
 import { visitorGuard } from './guards/visitor.guard';
 import { partnerGuard } from './guards/partner.guard';
+import {PaymentSuccessComponent} from "./FrontOffice/payment/payment-success/payment-success.component";
+import {PaymentCancelComponent} from "./FrontOffice/payment/payment-cancel/payment-cancel.component";
+import {PaymentHistoryComponent} from "./FrontOffice/payment/payment-history/payment-history.component";
+import {DeliveryEstimateMapComponent} from "./FrontOffice/delivery-estimate-map/delivery-estimate-map.component";
+import {ProductValidationComponent} from "./BackOffice/product-validation/product-validation.component";
+import {AllOrdersComponent} from "./BackOffice/all-orders/all-orders.component";
+import {AllPaymentsComponent} from "./BackOffice/all-payments/all-payments.component";
+import {RecommendationComponent} from "./components/recommendation/recommendation/recommendation.component";
 import {VehicleAlertComponent} from "./BackOffice/Vehicle/vehicle-alert/vehicle-alert.component";
 import {MaintenanceScheduleComponent} from "./BackOffice/Vehicle/maintenance-schedule/maintenance-schedule.component";
 import {DeliveriesListComponent} from "./BackOffice/Delivery/deliveries-list/deliveries-list.component";
 import { ProductclientComponent } from './FrontOffice/Product/productclient/productclient.component';
 
-
 const routes: Routes = [
   { path: '', component: AllTemplateFrontComponent},
-
-  { path: 'product', component: ProductListComponent , canActivate: [clientGuard]},
+  { path: 'product', component: ProductListComponent , canActivate: [partnerGuard]},
   { path: 'create-product', component: ProductCreateComponent , canActivate: [partnerGuard]},
   { path: 'product-detail/:id', component: ProductDetailComponent, canActivate: [clientGuard]},
   { path: 'edit-product/:id', component: ProductEditComponent, canActivate: [partnerGuard]},
-  { path: 'create-order', component: OrderCreateComponent, canActivate: [clientGuard] },
+  { path: 'productsclient', component: ClientProductListComponent, canActivate: [clientGuard]},
+  { path: 'admin/product-validation', component: ProductValidationComponent, canActivate: [adminGuard]  },
+  { path: 'recommendation-products', component: RecommendationComponent, canActivate: [clientGuard]},
+  { path: 'create-order', component: OrderCreateComponent, canActivate: [clientGuard] }, // pas besoin
   { path: 'payment' , component: PaymentFormComponent, canActivate: [clientGuard]},
+  { path: 'payment-success', component: PaymentSuccessComponent , canActivate: [clientGuard] },
+  { path: 'payment-cancel', component: PaymentCancelComponent , canActivate: [clientGuard]},
+  { path: 'payment-history', component: PaymentHistoryComponent , canActivate: [clientGuard]},
+  { path: 'order-history', component: OrderHistoryComponent , canActivate: [clientGuard]},
+  { path: 'admin/orders', component: AllOrdersComponent, canActivate: [adminGuard] },
+  { path: 'admin/payments', component: AllPaymentsComponent, canActivate: [adminGuard] },
+  { path: 'delivery-estimate-map', component: DeliveryEstimateMapComponent , canActivate: [clientGuard]}, // pas besoin
   { path: 'carpooling', component: CarpoolingComponent, canActivate: [clientGuard]},
   { path: 'company', component: CompanyComponent, canActivate: [adminGuard] },
   // ad routes

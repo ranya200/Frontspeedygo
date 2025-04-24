@@ -1,0 +1,32 @@
+<app-navbar-back></app-navbar-back>
+<app-sidebar-back></app-sidebar-back>
+<div class="container mt-4">
+  <div class="row">
+    <!-- The offset adds left space -->
+    <div class="offset-md-2 col-md-10">
+      <h3>📦 All Orders</h3>
+<table class="table table-striped">
+  <thead>
+  <tr>
+    <th>ID</th>
+    <th>Tracking Number</th>
+    <th>Price (€)</th>
+    <th>Priority</th>
+    <th>Status</th>
+    <th>User</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let order of orders">
+    <td>{{ order.id }}</td>
+    <td>{{ order.trackingNumber }}</td>
+    <td>{{ order.price }}</td>
+    <td>{{ order.priority }}</td>
+    <td>{{ order.status }}</td>
+    <td>{{ order.userFirstName }} {{ order.userLastName }}</td>
+  </tr>
+  </tbody>
+</table>
+    </div>
+  </div>
+</div>

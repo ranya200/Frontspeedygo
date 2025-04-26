@@ -1,0 +1,112 @@
+<div class="chat-container">
+
+  <!-- 👥 Liste des utilisateurs -->
+  <div class="user-list">
+    <h3>Utilisateurs</h3>
+    <ul>
+      <li 
+        *ngFor="let user of users"
+        [class.selected]="user.id === receiverId"
+        (click)="selectUser(user)">
+        {{ user.firstName }} {{ user.lastName }} ({{ user.username }})
+      </li>
+    </ul>
+  </div>
+
+  <!-- 💬 Zone des messages -->
+  <div class="messages">
+    <div 
+      *ngFor="let msg of messages" 
+      class="message" 
+      [ngClass]="{ 'me': msg.sender === currentUserId }">
+
+      <div class="message-bubble">
+
+        <!-- 📌 En-tête du message -->
+        <div class="meta">
+          <strong>{{ msg.sender === currentUserId ? 'Moi' : getReceiverName() }}</strong>
+          <small>{{ msg.timestamp | date: 'short' }}</small>
+
+          <!-- 🗑️ Bouton de suppression -->
+          <button 
+            *ngIf="msg.sender === currentUserId" 
+            (click)="askDelete(msg)" 
+            title="Supprimer ce message">
+            🗑️
+          </button>
+        </div>
+       
+        <!-- 🖼️ Affichage contenu -->
+        <ng-container *ngIf="isImage(msg.content); else checkAudio">
+          <img  [src]="msg.content" 
+          alt="Image envoyée" 
+          style="max-width: 200px; border-radius: 5px;" />
+        </ng-container>
+        
+        <ng-template #checkAudio>
+          <ng-container *ngIf="isAudio(msg.content); else textMsg">
+            <audio [src]="msg.content" controls></audio>
+          </ng-container>
+        </ng-template>
+        
+        <ng-template #textMsg>
+          <ng-container *ngIf="msg.content && msg.content.includes('google.com/maps'); else checkFile">
+            <a [href]="msg.content" target="_blank">📍 Voir l'emplacement</a>
+          </ng-container>
+        </ng-template>
+        
+        <ng-template #checkFile>
+          <ng-container *ngIf="isFile(msg.content); else plainText">
+            <a [href]="msg.content" download target="_blank">
+              📄 {{ (msg.content && msg.content.split('/').pop()) || 'Fichier' }}
+            </a>
+          </ng-container>
+        </ng-template>
+        
+        <ng-template #plainText>
+          {{ msg.content }}
+        </ng-template>
+        
+        
+                
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ✍️ Zone de saisie -->
+  <div class="input-area">
+    <input 
+      [(ngModel)]="message" 
+      placeholder="Tapez votre message..." 
+      aria-label="Zone de saisie du message" />
+
+    <input 
+      type="file" 
+      (change)="onFileSelected($event)" 
+      #fileInput 
+      aria-label="Sélectionner un fichier" />
+
+      <canvas #waveCanvas width="300" height="60" class="waveform-canvas" ></canvas>
+       <!-- 🎙️ Contrôle audio -->
+      <button *ngIf="!isRecording" (click)="startRecording()">🎙️</button>
+      <button *ngIf="isRecording" (click)="stopRecording()">⏹️</button>
+      <div class="recording-visual" *ngIf="isRecording">
+        <div class="pulse-circle"></div>
+      </div>
+      
+
+    <button (click)="send()">Envoyer</button>
+    <button (click)="openLocationDialog()">📍 Partager ma position</button>
+
+  </div>
+
+  <!-- 🗑️ Fenêtre de confirmation suppression -->
+  <div class="modal" *ngIf="confirmDeleteMessage">
+    <div class="modal-content">
+      <p>Voulez-vous vraiment supprimer ce message ?</p>
+      <button (click)="deleteMessage()">Oui</button>
+      <button (click)="cancelDelete()">Non</button>
+    </div>
+  </div>
+</div>

@@ -3,9 +3,9 @@
 <div class="container mt-4">
   <div class="card shadow-lg p-4">
     <h2 class="text-primary text-center mb-4">Create Promotion</h2>
-
+<!--
     <form [formGroup]="promotionForm" (ngSubmit)="onSubmit()">
-      
+      -->
 
       <!-- Promotion Title -->
       <div class="form-group mb-3">
@@ -29,12 +29,12 @@
         </select>
       </div>
 
-      <!-- Discount Amount (Only for POURCENTAGE & FIXEDAMOUNT) -->
+      <!-- Discount Amount (Only for POURCENTAGE & FIXEDAMOUNT) 
       <div class="form-group mb-3" *ngIf="promotionForm.get('discountType')?.value !== 'FREEDELIVERY'">
         <label for="discount" class="form-label fw-bold">Discount Amount</label>
         <input id="discount" type="number" formControlName="discount" class="form-control rounded" min="0" required>
       </div>
-
+-->
       <!-- Start Date -->
       <div class="form-group mb-3">
         <label for="startDate" class="form-label fw-bold">Start Date</label>
@@ -56,7 +56,7 @@
         </select>
       </div>
 
-      <!-- Submit Button -->
+      <!-- Submit Button 
       <div class="d-flex justify-content-center">
         <button type="submit" class="btn btn-primary btn-lg px-4" [disabled]="promotionForm.invalid">
           <i class="fas fa-paper-plane"></i> Submit
@@ -64,7 +64,7 @@
       </div>
 
     </form>
-
+-->
     <!-- Return Button -->
     <div class="d-flex justify-content-center mt-3">
       <a class="btn btn-secondary btn-lg px-4" [routerLink]="['/promo']">

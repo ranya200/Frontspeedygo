@@ -1,0 +1,38 @@
+table {
+    width: 100%;
+  }
+  
+  th, td {
+    vertical-align: middle;
+  }
+  
+  .badge {
+    font-size: 0.9rem;
+    padding: 0.5em 0.75em;
+  }
+  .card-container {
+    padding: 2rem;
+  }
+  
+  .card {
+    border-radius: 15px;
+    background-color: #fff;
+    padding: 1rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  }
+  
+  .table th {
+    font-weight: 500;
+    color: #555;
+  }
+  
+  .table td {
+    vertical-align: middle;
+  }
+  
+  button {
+    border-radius: 6px;
+    padding: 4px 8px;
+    font-size: 14px;
+  }
+  

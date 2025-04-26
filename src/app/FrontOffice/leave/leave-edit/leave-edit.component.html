@@ -1,41 +1,49 @@
 <app-header-front></app-header-front>
 
 <div class="container mt-4">
-  <div class="card shadow-lg p-4">
-    <h2 class="text-primary text-center mb-4">Modify Leave Request</h2>
+  <div class="card p-4 shadow-lg">
+    <h2 class="text-center text-primary">Edit Leave Request</h2>
 
-    <form [formGroup]="leaveForm" (ngSubmit)="updateLeave()">
-      
-      <!-- Start Date -->
-      <div class="form-group mb-3">
-        <label for="startDate" class="form-label fw-bold">Start Date</label>
-        <input id="startDate" type="date" formControlName="startDate" class="form-control rounded" required>
+    <form *ngIf="leaveForm" [formGroup]="leaveForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label>Start Date</label>
+        <input type="date" formControlName="startDate" class="form-control" />
       </div>
 
-      <!-- End Date -->
-      <div class="form-group mb-3">
-        <label for="endDate" class="form-label fw-bold">End Date</label>
-        <input id="endDate" type="date" formControlName="endDate" class="form-control rounded" required>
+      <div class="form-group">
+        <label>End Date</label>
+        <input type="date" formControlName="endDate" class="form-control" />
       </div>
 
-      <!-- Reason for Leave -->
-      <div class="form-group mb-3">
-        <label for="reason" class="form-label fw-bold">Reason</label>
-        <textarea id="reason" formControlName="reason" class="form-control rounded" rows="4" required></textarea>
+      <div class="form-group">
+        <label>Reason</label>
+        <textarea formControlName="reason" rows="4" class="form-control"></textarea>
       </div>
 
-      <!-- Submit & Cancel Buttons -->
-      <div class="d-flex justify-content-center gap-3">
-        <button type="submit" class="btn btn-primary btn-lg px-4" [disabled]="leaveForm.invalid">
-          <i class="fas fa-save"></i> Update
-        </button>
-        <button type="button" class="btn btn-secondary btn-lg px-4" (click)="cancelEdit()">
-          <i class="fas fa-times"></i> Cancel
-        </button>
+      <div *ngIf="leaveForm.errors?.['dateInvalid']" class="alert alert-danger mt-2">
+        La date de début doit être antérieure à la date de fin.
       </div>
 
+      <div class="text-center mt-3">
+        <button class="btn btn-success px-4" [disabled]="leaveForm.invalid">Update</button>
+      </div>
     </form>
 
+    <div *ngIf="errorMessage" class="alert alert-danger mt-3 text-center">{{ errorMessage }}</div>
+    <div *ngIf="successMessage" class="alert alert-success mt-3 text-center">{{ successMessage }}</div>
+
+    <div *ngIf="showConfirmation" class="text-center mt-3">
+      <div class="alert alert-warning">
+        🚨 Cette demande dépasse la limite autorisée de {{ overLimitDays }} jour{{ overLimitDays > 1 ? 's' : '' }}.
+      </div>
+      <button class="btn btn-warning px-4" (click)="confirmEdit()">
+        Confirmer et soumettre quand même
+      </button>
+    </div>
+    
+    <div class="text-center mt-3">
+      <a class="btn btn-secondary" routerLink="/leave">Back</a>
+    </div>
   </div>
 </div>
 

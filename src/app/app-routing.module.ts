@@ -53,6 +53,8 @@ import { driverGuard } from './guards/driver.guard';
 import { visitorGuard } from './guards/visitor.guard';
 import { partnerGuard } from './guards/partner.guard';
 import { ProductclientComponent } from './FrontOffice/Product/productclient/productclient.component';
+import { ChatComponent } from './FrontOffice/chatcomponents/chat/chat.component';
+import { LeaveDetailComponent } from './BackOffice/leave/leave-detail/leave-detail.component';
 
 const routes: Routes = [
   { path: '', component: AllTemplateFrontComponent},
@@ -89,8 +91,9 @@ const routes: Routes = [
   // leave routes
   { path: 'leave', component: LeaveslistComponent, canActivate: [driverGuard]},
   { path: 'leaveadd', component: LeaveAddComponent , canActivate: [driverGuard]},
-  { path: 'leaveedit/:id', component: LeaveEditComponent},
+  { path: 'leaveedit/:id', component: LeaveEditComponent , canActivate: [driverGuard]},
   { path: 'leaveadmin', component: LeaveadminComponent , canActivate: [adminGuard]},
+  { path: 'leaveadmin/:id', component: LeaveDetailComponent , canActivate: [adminGuard]},
   // promotion routes
   { path: 'promoadd/:id', component: PromotionaddComponent , canActivate: [partnerGuard]},
   { path: 'promo', component: PromotionlistComponent , canActivate: [partnerGuard]},
@@ -111,6 +114,8 @@ const routes: Routes = [
   { path: 'fastposts/new', component: FastpostFormComponent, canActivate: [clientGuard] },
   { path: 'fastposts', component: FastpostListComponent , canActivate: [adminGuard] },
   { path: 'fastposts/edit/:id', component: FastpostEditComponent, canActivate: [adminGuard]  },
+  //chat
+  { path: 'chat', component: ChatComponent },
 
   { path: 'admin', component: AllTemplateBackComponent, canActivate: [adminGuard] },
   { path: '**', redirectTo: '' },

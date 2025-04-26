@@ -13,9 +13,9 @@ import { CommonModule } from '@angular/common';
   templateUrl: './promotionlist.component.html',
   styleUrl: './promotionlist.component.css'
 })
-export class PromotionlistComponent implements OnInit {
+export class PromotionlistComponent {
   
-  promotionForm!: FormGroup;
+  /*promotionForm!: FormGroup;
   promotions: Promotion[] = []; // Store all promotions
   selectedPromotion: Promotion | null = null; // Track the promotion being edited
   
@@ -54,6 +54,6 @@ export class PromotionlistComponent implements OnInit {
   
     editPromotion(id: string): void {
       this.router.navigate(['/promoedit', id]); // Redirect to edit page with leave ID
-    }
+    }*/
 
 }

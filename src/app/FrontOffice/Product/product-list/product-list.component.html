@@ -35,25 +35,28 @@
       <div class="row">
         <div *ngFor="let product of filteredProducts" class="col-md-4 mb-4">
           <div class="card h-100">
+            <div class="badge bg-warning text-dark" *ngIf="product.promoPrice !== undefined">Promotion</div>
             <img *ngIf="product.image" [src]="'data:image/jpeg;base64,' + product.image" class="card-img-top" alt="{{ product.name }}">
             <div class="card-body">
               <h5 class="card-title">{{ product.name }}</h5>
               <p class="card-text">{{ product.description }}</p>
-               <!-- Display Discounted Price and Original Price -->
-               <div class="card-text" *ngIf="product.discountedPrice !== product.price; else normalPrice">
-                <span class="text-muted" style="text-decoration: line-through;">{{ product.price | currency:'EUR' }}</span>
-                <p><strong>{{ product.discountedPrice | currency:'EUR' }}</strong></p>
-               </div>
+              <div *ngIf="product.promoPrice !== undefined; else normalPrice">
+                <span style="text-decoration: line-through; color: gray;">
+                  {{ product.price | currency:'EUR' }}
+                </span><br>
+                <span class="text-danger fw-bold">
+                  {{ product.promoPrice | currency:'EUR' }}
+                </span>
+              </div>
               <ng-template #normalPrice>
                 <strong>{{ product.price | currency:'EUR' }}</strong>
-              </ng-template>
+              </ng-template>              
             </div>
             <div class="card-footer">
               <button (click)="viewProductDetails(product.id!)" class="btn btn-success btn-sm">Show Details</button>
               <button (click)="editProduct(product.id!)" class="btn btn-success btn-sm">Edit</button>
             </div>
             <div class="card-footer">
-              <button (click)="makepromotion(product.id!)" class="btn btn-secondary btn-sm mr-2">add promotion</button>
               <button (click)="deleteProduct(product.id!)" class="btn btn-danger btn-sm">Delete</button>
             </div>
           </div>

@@ -4,7 +4,7 @@
   <div class="card shadow-lg p-4">
     <h2 class="text-primary text-center mb-4">Leave Request</h2>
 
-    <form [formGroup]="leaveForm" (ngSubmit)="onSubmit()">
+    <form [formGroup]="leaveForm" (ngSubmit)="submitLeave()">
       
       <!-- Start Date -->
       <div class="form-group mb-3">
@@ -34,6 +34,15 @@
         </button>
       </div>
 
+      <div *ngIf="successMessage" class="alert alert-success mt-3">{{ successMessage }}</div>
+      <div *ngIf="errorMessage" class="alert alert-danger mt-3">{{ errorMessage }}</div>
+
+      <div *ngIf="showConfirmation" class="text-center mt-3">
+        <button class="btn btn-warning" (click)="confirmLeave()">
+          ✅ Confirmer et Soumettre quand même ({{ overLimitDays }} jours en trop)
+        </button>
+      </div>      
+      
     </form>
 
     <!-- Return Button -->

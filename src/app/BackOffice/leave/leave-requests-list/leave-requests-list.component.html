@@ -1,0 +1,53 @@
+<div class="container mt-4">
+  <h2 class="text-center mb-4">All Leave Requests</h2>
+
+  <div *ngIf="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
+  <div *ngIf="successMessage" class="alert alert-success">{{ successMessage }}</div>
+
+  <div class="table-responsive">
+    <table class="table table-bordered table-striped shadow">
+      <thead class="table-dark text-center">
+        <tr>
+          <th>Driver</th>
+          <th>Start Date</th>
+          <th>End Date</th>
+          <th>Reason</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let leave of leaves" class="align-middle text-center">
+          <td>{{ leave.driverFullName || 'Unknown' }}</td>
+          <td>{{ leave.startDate | date: 'mediumDate' }}</td>
+          <td>{{ leave.endDate | date: 'mediumDate' }}</td>
+          <td>{{ leave.reason }}</td>
+          <td>
+            <span class="badge"
+                  [ngClass]="{
+                    'bg-warning text-dark': leave.status === 'PENDING',
+                    'bg-success': leave.status === 'APPROVED',
+                    'bg-danger': leave.status === 'REJECTED'
+                  }">
+              {{ leave.status }}
+            </span>
+          </td>
+          <td>
+            <button *ngIf="leave.status === 'PENDING'" class="btn btn-success btn-sm me-2"
+                    (click)="approve(leave.id!)">
+              ✅ Approve
+            </button>
+            <button *ngIf="leave.status === 'PENDING'" class="btn btn-danger btn-sm me-2"
+                    (click)="reject(leave.id!)">
+              ❌ Reject
+            </button>
+            <button class="btn btn-secondary btn-sm"
+            [routerLink]="['/leaveadmin', leave.id]">
+              🔍 View
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

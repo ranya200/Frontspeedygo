@@ -3,8 +3,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { HeaderFrontComponent } from '../../header-front/header-front.component';
 import { FooterFrontComponent } from '../../footer-front/footer-front.component';
-import { Leave, LeaveControllerService } from 'src/app/openapi';
-import { Router, RouterModule } from '@angular/router';
+import {Leave, LeaveControllerService } from 'src/app/openapi';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { jwtDecode } from 'jwt-decode';
 
 @Component({
   selector: 'app-leave-add',
@@ -15,21 +16,31 @@ import { Router, RouterModule } from '@angular/router';
 })
 export class LeaveAddComponent implements OnInit {
   leaveForm!: FormGroup;
-  leaves: Leave[] = []; // Store all leaves
+  successMessage = '';
+  errorMessage = '';  leaves: Leave[] = []; // Store all leaves
+  driverId!: string;
+  overLimitDays: number = 0;
+  showConfirmation: boolean = false;
+  pendingLeaveRequest!: Leave;
 
 
-  constructor(private fb: FormBuilder, private leaveService: LeaveControllerService, private router: Router) { }
+  constructor(private fb: FormBuilder, private leaveService: LeaveControllerService, private router: Router,private route: ActivatedRoute, ) { }
 
   ngOnInit(): void {
+    const token = localStorage.getItem('token');
+    if (token) {
+      const decoded: any = jwtDecode(token);
+      this.driverId = decoded.sub; // ✅ this is your Keycloak user ID
+    }
+  
     this.leaveForm = this.fb.group({
       startDate: ['', Validators.required],
       endDate: ['', Validators.required],
-      reason: ['', [Validators.required, Validators.minLength(5)]],
-      status: ['PENDING', Validators.required] // Default to PENDING
+      reason: ['', [Validators.required, Validators.minLength(5)]]
     }, {
-      validators: this.dateRangeValidator  // ✅ Add validator here
+      validators: this.dateRangeValidator
     });
-        // Fetch all leaves when component loads
+    
   }
 
   dateRangeValidator(form: FormGroup): { [key: string]: any } | null {
@@ -42,26 +53,72 @@ export class LeaveAddComponent implements OnInit {
     return null;
   }
   
-
-  onSubmit(): void {
-    if (this.leaveForm.valid) {
-      const leaveRequest: Leave = this.leaveForm.value;
-      this.leaveService.addLeave(leaveRequest).subscribe({
-        next: () => {alert('Demande de congé soumise avec succès !');
-        this.router.navigate(['/leave']); // Redirect back to list page
+  submitLeave(): void {
+    if (this.leaveForm.invalid) return;
+  
+    const leaveRequest: Leave = {
+      ...this.leaveForm.value,
+      status: 'PENDING',
+      driverId: this.driverId
+    };
+  
+    this.leaveService.checkLeave(leaveRequest).subscribe({
+      next: async (res: any) => {
+        let parsed: any;
+    
+        if (res instanceof Blob) {
+          const text = await res.text();
+          try {
+            parsed = JSON.parse(text);
+          } catch (e) {
+            console.error("❌ Erreur de parsing JSON :", text);
+            this.errorMessage = "Erreur interne lors de la vérification.";
+            return;
+          }
+        } else {
+          parsed = res;
+        }
+    
+        console.log("✅ Parsed response:", parsed);
+    
+        if (parsed.exceeds) {
+          this.overLimitDays = parsed.exceededDays;
+          this.pendingLeaveRequest = leaveRequest;
+          this.showConfirmation = true;
+          return;
+        }
+    
+        // Si pas de dépassement → soumission directe
+        this.leaveService.createLeave(leaveRequest).subscribe({
+          next: () => {
+            this.successMessage = 'Leave request submitted successfully!';
+            this.leaveForm.reset();
+            this.errorMessage = '';
+          },
+          error: async (error) => {
+            this.errorMessage = "Erreur lors de la soumission.";
+            console.error("🔴 Create error:", await error?.error?.text?.());
+          }
+        });
       },
-        error: (err) => console.error('Erreur lors de la soumission', err)
-      });
-    }
-  }
-
-
+      error: () => {
+        this.errorMessage = "Impossible de vérifier les jours autorisés.";
+      }
+    });    
+  }  
   
-
- 
- 
-  
-  
-  
+  confirmLeave(): void {
+    this.leaveService.createLeave(this.pendingLeaveRequest).subscribe({
+      next: () => {
+        this.successMessage = 'Leave request submitted despite limit.';
+        this.leaveForm.reset();
+        this.showConfirmation = false;
+        this.errorMessage = '';
+      },
+      error: () => {
+        this.errorMessage = 'Failed to confirm the leave request.';
+      }
+    });
+  }  
   
 }

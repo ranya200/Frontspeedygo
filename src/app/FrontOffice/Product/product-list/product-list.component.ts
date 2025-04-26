@@ -82,8 +82,4 @@ export class ProductListComponent implements OnInit {
     this.filterProducts();
   }
 
-  // added by firas
-  makepromotion(id: string): void {
-    this.router.navigate(['/promoadd', id]);
-  }
 }

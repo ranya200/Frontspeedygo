@@ -3,8 +3,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { HeaderFrontComponent } from '../../header-front/header-front.component';
 import { FooterFrontComponent } from '../../footer-front/footer-front.component';
-import { Leave, LeaveControllerService, LeaveStatistics, LeaveStatisticsControllerService } from 'src/app/openapi';
+import { Leave, LeaveControllerService } from 'src/app/openapi';
 import { Router, RouterModule } from '@angular/router';
+import { jwtDecode } from 'jwt-decode';
 
 @Component({
   selector: 'app-leaveslist',
@@ -15,35 +16,58 @@ import { Router, RouterModule } from '@angular/router';
 })
 export class LeaveslistComponent implements OnInit{
 
-  leaveForm!: FormGroup;
-  leaves: Leave[] = []; // Store all leaves
-  selectedLeave: Leave | null = null; // Stocke le congé en cours d'édition
-  totalDaysTaken: number = 0;
+  leaves: Leave[] = [];
+  currentUserId!: string;
+  errorMessage = '';
+  successMessage='';
+  totalDays: number = 0;
 
+  constructor(private leaveService: LeaveControllerService, private router: Router) { }
 
-  constructor(private fb: FormBuilder, private leaveService: LeaveControllerService, private router: Router, private statisticsService: LeaveStatisticsControllerService) { }
   ngOnInit(): void {
-    this.getAllLeaves();
-    this.fetchTotalDaysTaken();
+    this.loadCurrentUserId();
+    this.fetchLeavesForUser();
+    this.loadTotalLeaveDays();
+  }
 
+  loadTotalLeaveDays(): void {
+    this.leaveService.getTotalLeaveDays(this.currentUserId).subscribe({
+      next: async (res) => {
+        if (res && typeof res === 'object' && 'size' in res && 'type' in res) {
+          const text = await (res as Blob).text();
+          this.totalDays = parseInt(text, 10);
+        } else {
+          this.totalDays = res as number;
+        }
+      },
+      error: (err) => console.error('Erreur chargement total jours', err)
+    });
+  }
+
+  loadCurrentUserId(): void {
+    const token = localStorage.getItem('token');
+    if (token) {
+      const decoded: any = jwtDecode(token);
+      this.currentUserId = decoded.sub; // Assuming `sub` is the user ID (UUID)
     }
-    
-    fetchTotalDaysTaken(): void {
-      this.statisticsService.getTotalDaysTaken().subscribe({
-        next: async (response) => {
-          if (response instanceof Blob) {
-            const text = await response.text();
-            const stats: LeaveStatistics = JSON.parse(text);
-            this.totalDaysTaken = stats.totalDaysTaken ?? 0;
-          } else {
-            this.totalDaysTaken = response.totalDaysTaken ?? 0;
-          }
-        },
-        error: (err) => console.error('Erreur lors de la récupération des statistiques', err)
-      });
-    }
+  }
+
+  fetchLeavesForUser(): void {
+    this.leaveService.getMyLeaves(this.currentUserId).subscribe({
+      next: (res: Leave[] | Blob) => {
+        if (res instanceof Blob) {
+          res.text().then(text => this.leaves = JSON.parse(text));
+        } else {
+          this.leaves = res;
+        }
+      },
+      error: (err) => {
+        console.error('Erreur récupération des congés', err);
+        this.errorMessage = 'Erreur de chargement des congés';
+      }
+    });
+  }
   
-
   getAllLeaves(): void {
     this.leaveService.getAllLeaves().subscribe({
       next: async (response) => {
@@ -60,23 +84,22 @@ export class LeaveslistComponent implements OnInit{
   }
 
   deleteLeave(id: string): void {
-    if (confirm("Voulez-vous vraiment supprimer cette demande de congé ?")) {
+    if (confirm('Are you sure you want to delete this leave request?')) {
       this.leaveService.deleteLeave(id).subscribe({
         next: () => {
-          alert('Demande de congé supprimée avec succès !');
-          this.getAllLeaves(); // Rafraîchir la liste après suppression
+          this.successMessage = 'Leave deleted successfully.';
+          this.fetchLeavesForUser(); // Refresh list
         },
-        error: (err) => console.error('Erreur lors de la suppression', err)
+        error: err => {
+          console.error('Error deleting leave:', err);
+          this.errorMessage = 'Could not delete leave. It may already be approved or rejected.';
+        }
       });
     }
   }
-
+    
   editLeave(id: string): void {
     this.router.navigate(['/leaveedit', id]); // Redirect to edit page with leave ID
   }
-  
-
-  
-  
 
 }

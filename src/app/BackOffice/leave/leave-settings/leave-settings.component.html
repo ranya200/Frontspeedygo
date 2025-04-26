@@ -1,0 +1,19 @@
+<div class="card shadow p-4">
+    <h2 class="text-center mb-4">Leave Settings</h2>
+  
+    <form [formGroup]="settingsForm" (ngSubmit)="updateSettings()">
+      <div class="form-group mb-3">
+        <label for="maxAllowedDays">Max Allowed Leave Days</label>
+        <input type="number" class="form-control" id="maxAllowedDays"
+               formControlName="maxAllowedDays" min="1" required />
+      </div>
+  
+      <div class="text-center">
+        <button type="submit" class="btn btn-primary" [disabled]="settingsForm.invalid">Update</button>
+      </div>
+  
+      <div *ngIf="successMessage" class="alert alert-success mt-3">{{ successMessage }}</div>
+      <div *ngIf="errorMessage" class="alert alert-danger mt-3">{{ errorMessage }}</div>
+    </form>
+  </div>
+  

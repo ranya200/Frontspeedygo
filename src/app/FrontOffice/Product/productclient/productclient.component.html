@@ -39,11 +39,11 @@
             <div class="card-body">
               <h5 class="card-title">{{ product.name }}</h5>
               <p class="card-text">{{ product.description }}</p>
-               <!-- Display Discounted Price and Original Price -->
+               <!-- Display Discounted Price and Original Price 
                <div class="card-text" *ngIf="product.discountedPrice !== product.price; else normalPrice">
                 <span class="text-muted" style="text-decoration: line-through;">{{ product.price | currency:'EUR' }}</span>
                 <p><strong>{{ product.discountedPrice | currency:'EUR' }}</strong></p>
-               </div>
+               </div>-->
               <ng-template #normalPrice>
                 <strong>{{ product.price | currency:'EUR' }}</strong>
               </ng-template>

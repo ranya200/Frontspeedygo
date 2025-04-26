@@ -62,6 +62,11 @@ import { ComplaintAdminComponent } from './BackOffice/complaint/complaint-admin/
 import { ComplaintAdminopenComponent } from './BackOffice/complaint/complaint-adminopen/complaint-adminopen.component';
 import { AdDetailsComponent } from './FrontOffice/Ad/ad-details/ad-details.component';
 import { ProductclientComponent } from './FrontOffice/Product/productclient/productclient.component';
+import { ChatComponent } from './FrontOffice/chatcomponents/chat/chat.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatButtonModule } from '@angular/material/button';
+import { MapPreviewComponent } from './FrontOffice/chatcomponents/map-preview/map-preview.component';
+import { LeaveDetailComponent } from './BackOffice/leave/leave-detail/leave-detail.component';
 
 export function initializeKeycloak(authService: AuthService) {
   return () => authService.init();
@@ -78,6 +83,8 @@ const apiConfig = new Configuration({
   ],
   imports: [
     BrowserModule,
+    MatDialogModule,
+    MatButtonModule,
     FormsModule,
     ReactiveFormsModule,
     AppRoutingModule,
@@ -120,6 +127,9 @@ const apiConfig = new Configuration({
     ComplaintAdminComponent,
     ComplaintAdminopenComponent,
     AdDetailsComponent,
+    ChatComponent,
+    MapPreviewComponent,
+    LeaveDetailComponent,
     ApiModule.forRoot(() => apiConfig)
   ],
   providers: [

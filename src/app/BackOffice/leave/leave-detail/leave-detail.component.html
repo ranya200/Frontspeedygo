@@ -1,0 +1,59 @@
+<app-navbar-back></app-navbar-back>
+
+<div class="d-flex">
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <app-sidebar-back></app-sidebar-back>
+  </div>
+
+  <!-- Main Content -->
+  <div class="container mt-5 content">
+    <div *ngIf="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
+
+    <div *ngIf="leave" class="card shadow p-4">
+      <h2 class="text-center text-primary mb-4">Leave Request Details</h2>
+
+      <div class="row mb-3">
+        <div class="col-md-6">
+          <p><strong>Driver Name:</strong> {{ leave.driverFirstName }} {{ leave.driverLastName }}</p>
+        </div>
+        <div class="col-md-6">
+          <p><strong>Status:</strong> 
+            <span class="badge"
+                  [ngClass]="{
+                    'bg-success': leave.status === 'APPROVED',
+                    'bg-danger': leave.status === 'REJECTED',
+                    'bg-warning text-dark': leave.status === 'PENDING'
+                  }">
+              {{ leave.status }}
+            </span>
+          </p>
+        </div>
+      </div>
+
+      <div class="row mb-3">
+        <div class="col-md-6">
+          <p><strong>Start Date:</strong> {{ leave.startDate | date:'fullDate' }}</p>
+        </div>
+        <div class="col-md-6">
+          <p><strong>End Date:</strong> {{ leave.endDate | date:'fullDate' }}</p>
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <p><strong>Reason:</strong></p>
+        <div class="border rounded p-3 bg-light">
+          {{ leave.reason }}
+        </div>
+      </div>
+
+      <div class="d-flex justify-content-center mt-4">
+        <a  [routerLink]="['/leaveadmin']" class="btn btn-secondary">
+          <i class="fas fa-arrow-left"></i> Back to list
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-footer-back></app-footer-back>

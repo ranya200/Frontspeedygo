@@ -1,0 +1,47 @@
+<div class="leave-summary-container">
+    <h2 class="leave-summary-title">Driver Leave Summary</h2>
+  
+    <table class="summary-table">
+      <thead>
+        <tr>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>Days Taken</th>
+          <th>Limit</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let summary of summaries">
+          <td>{{ summary.firstName }}</td>
+          <td>{{ summary.lastName }}</td>
+          <td>
+            <div class="progress-bar-container">
+              <div
+                class="progress-bar-fill"
+                [style.width.%]="(summary.totalDaysTaken / summary.limit) * 100"
+              ></div>
+            </div>
+            <span>{{ summary.totalDaysTaken }}</span>
+          </td>
+          <td>
+            <span *ngIf="summary.totalDaysTaken > summary.limit" class="exceeded-badge">
+              Exceeded
+            </span>
+            <span *ngIf="summary.totalDaysTaken <= summary.limit" class="limit-text">
+              {{ summary.limit }}
+            </span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <!--
+  <apx-chart
+  *ngIf="chartOptions"
+  [series]="chartOptions.series"
+  [chart]="chartOptions.chart"
+  [xaxis]="chartOptions.xaxis"
+  [title]="chartOptions.title"
+></apx-chart>
+-->
+

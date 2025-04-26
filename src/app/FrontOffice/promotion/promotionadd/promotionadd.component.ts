@@ -13,9 +13,9 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
   templateUrl: './promotionadd.component.html',
   styleUrl: './promotionadd.component.css'
 })
-export class PromotionaddComponent implements OnInit {
+export class PromotionaddComponent {
 
-  promotionForm!: FormGroup;
+/*  promotionForm!: FormGroup;
   promotions: Promotion[] = [];
   productId!: string; // Store the ID from the URL
 
@@ -75,5 +75,5 @@ export class PromotionaddComponent implements OnInit {
           }
         });
       }
-    }
+    }*/
 }

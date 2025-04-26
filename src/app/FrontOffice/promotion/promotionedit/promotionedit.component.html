@@ -1,17 +1,17 @@
 <app-header-front></app-header-front>
-
+<!--
 <div class="container mt-4">
   <div class="card shadow-lg p-4">
     <h2 class="text-primary text-center mb-4">Modify Promotion</h2>
 
     <form [formGroup]="promotionForm" (ngSubmit)="updatePromotion()">
-      
+      -->
       <!-- Promotion Title -->
-      <div class="form-group mb-3">
+ <!--    <div class="form-group mb-3">
         <label for="title" class="form-label fw-bold">Promotion Title</label>
         <input id="title" type="text" formControlName="title" class="form-control rounded" required>
       </div>
-
+--> 
       <!-- Description -->
       <div class="form-group mb-3">
         <label for="description" class="form-label fw-bold">Description</label>
@@ -29,11 +29,12 @@
       </div>
 
       <!-- Discount Amount (Only for POURCENTAGE & FIXEDAMOUNT) -->
+       <!--
       <div class="form-group mb-3" *ngIf="promotionForm.get('discountType')?.value !== 'FREEDELIVERY'">
         <label for="discount" class="form-label fw-bold">Discount Amount</label>
         <input id="discount" type="number" formControlName="discount" class="form-control rounded" min="0" required>
       </div>
-
+-->
       <!-- Start Date -->
       <div class="form-group mb-3">
         <label for="startDate" class="form-label fw-bold">Start Date</label>
@@ -55,7 +56,7 @@
         </select>
       </div>
 
-      <!-- Submit & Cancel Buttons -->
+      <!-- Submit & Cancel Buttons 
       <div class="d-flex justify-content-center gap-3">
         <button type="submit" class="btn btn-primary btn-lg px-4" [disabled]="promotionForm.invalid">
           <i class="fas fa-save"></i> Update
@@ -69,5 +70,5 @@
 
   </div>
 </div>
-
+-->
 <app-footer-front></app-footer-front>

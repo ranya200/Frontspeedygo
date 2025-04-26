@@ -13,8 +13,8 @@ import { CommonModule } from '@angular/common';
   templateUrl: './promotionedit.component.html',
   styleUrl: './promotionedit.component.css'
 })
-export class PromotioneditComponent implements OnInit {
-  promotionForm!: FormGroup;
+export class PromotioneditComponent  {
+  /*promotionForm!: FormGroup;
   promotionId!: string; // Store the ID from the URL
 
   constructor(
@@ -86,5 +86,5 @@ export class PromotioneditComponent implements OnInit {
 
   cancelEdit(): void {
     this.router.navigate(['/promo']); // Navigate back to the list
-  }
+  }*/
 }

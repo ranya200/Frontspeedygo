@@ -1,114 +1,139 @@
 <app-header-front></app-header-front>
 
 <!-- Hero Section -->
-<div class="py-3 bg-primary bg-pattern mb-4">
-    <div class="container">
-        <div class="row">
-            <div class="col-12">
-                <div class="text-center text-white">
-                    <span class="heading-xxs letter-spacing-xl">
-                        Your ride, your comfort, your choice with SpeedyGo!
-                    </span>
-                </div>
-            </div>
+<div class="py-3 bg-primary bg-pattern mb-4 position-relative">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <div class="text-center text-white">
+          <span class="heading-xxs letter-spacing-xl">
+            Your ride, your comfort, your choice with SpeedyGo!
+          </span>
         </div>
+      </div>
     </div>
+
+    <div class="position-absolute end-0 mt-3 me-3">
+      <button class="menu-btn" (click)="toggleDrawer()">☰</button>
+    </div>
+
+    <div *ngIf="isDrawerOpen" class="drawer-container text-end mt-4 me-3">
+      <button class="btn btn-outline-primary fw-bold mb-2" (click)="toggleRideView()">
+        {{ showMyRidesOnly ? '🔄 Voir tous les trajets' : '👤 Mes trajets' }}
+      </button>
+      <button class="btn btn-outline-success fw-bold mb-2" (click)="showSuggestRideModal = true">
+        🚗 Suggest a Ride
+      </button>
+      <button class="btn btn-outline-primary fw-bold" routerLink="/request-ride">
+        🚘 Special ride?
+      </button>
+    </div>
+  </div>
 </div>
 
-<!-- Carpooling Section -->
+<!-- Carpooling List -->
 <div class="carpooling-container">
-    <div class="carpooling-header">
-        <h2>Available Carpooling Rides</h2>
-        <button class="suggest-btn" (click)="showSuggestRideModal = true">🚗 Suggest a Ride!</button>
-    </div>
+  <div class="carpooling-header text-center">
+    <h2>Available Carpooling Rides</h2>
+  </div>
 
-    <div class="carpooling-list">
-        <div class="carpool-card" *ngFor="let carpool of carpoolingList" (click)="selectCarpool(carpool)">
-            <button class="delete-btn" (click)="deleteCarpool(carpool.id); $event.stopPropagation()">X</button>
+  <div class="carpooling-list">
+    <div class="carpool-card" *ngFor="let carpool of filteredRides" 
+         [class.card-expanded]="showRatings[carpool.id!] || showRatingForm[carpool.id!]" 
+         (click)="selectCarpool(carpool)">
 
-            <div class="card-header">
-                <h3><i class="fas fa-user"></i> {{ carpool.driverName }}</h3>
-            </div>
-            <div class="card-body">
-                <p><i class="fas fa-map-marker-alt"></i> <strong>Pickup:</strong> {{ carpool.pickupLocation }}</p>
-                <p><i class="fas fa-map-marker-alt"></i> <strong>Dropoff:</strong> {{ carpool.dropoffLocation }}</p>
-                <p><i class="fas fa-clock"></i> <strong>Time:</strong> {{ carpool.departureTime }}</p>
-                <p><i class="fas fa-chair"></i> <strong>Seats Available:</strong> {{ carpool.availableSeats }}</p>
-                <p><i class="fas fa-dollar-sign"></i> <strong>Price:</strong> {{ carpool.pricePerSeat | currency }}</p>
-            </div>
-            <div class="card-footer">
-                <button class="btn book-btn">Book This ↑</button>
-            </div>
+      <button class="delete-btn" (click)="deleteCarpool(carpool.id); $event.stopPropagation()">X</button>
+
+      <div class="card-header">
+        <h3><i class="fas fa-user"></i> {{ carpool.driverName }}</h3>
+        <p *ngIf="driverGlobalBadges[carpool.driverId!]">
+          <span class="badge bg-warning text-dark">🏅 {{ driverGlobalBadges[carpool.driverId!] }}</span>
+        </p>
+      </div>
+
+      <div class="card-body">
+        <p><i class="fas fa-map-marker-alt"></i> <strong>Pickup:</strong> {{ carpool.pickupLocation }}</p>
+        <p><i class="fas fa-map-marker-alt"></i> <strong>Dropoff:</strong> {{ carpool.dropoffLocation }}</p>
+        <p><i class="fas fa-clock"></i> <strong>Time:</strong> {{ carpool.departureTime }}</p>
+        <p><i class="fas fa-chair"></i> <strong>Seats Available:</strong> {{ carpool.availableSeats }}</p>
+        <p><i class="fas fa-dollar-sign"></i> <strong>Price:</strong> {{ carpool.pricePerSeat | currency }}</p>
+        <p *ngIf="averageRatings[carpool.id!]">
+          ⭐ Avg Rating: {{ averageRatings[carpool.id!] | number: '1.1-2' }} / 5
+        </p>
+      </div>
+
+      <div class="card-footer d-flex flex-column gap-2">
+        <div *ngIf="carpool.driverId !== currentUserId" class="d-flex align-items-center gap-2" (click)="$event.stopPropagation()">
+          <label for="seats-{{ carpool.id }}" class="mb-0"><strong>Seats to Book:</strong></label>
+          <input id="seats-{{ carpool.id }}" type="number" min="1" [max]="carpool.availableSeats"
+                 [(ngModel)]="seatsToBook[carpool.id!]" class="form-control" style="width: 100px;" />
+          <button class="btn btn-primary" (click)="bookRide(carpool.id!); $event.stopPropagation()">Book This ↑</button>
         </div>
+
+        <app-ride-rating-form *ngIf="confirmedRides.includes(carpool.id!)"
+                              [driverId]="carpool.driverId!"
+                              [passengerId]="currentUserId!"
+                              [rideId]="carpool.id!">
+        </app-ride-rating-form>
+
+        <app-ride-ratings-list *ngIf="showRatings[carpool.id!]" [rideId]="carpool.id!">
+        </app-ride-ratings-list>
+
+        <button class="btn btn-sm btn-outline-secondary mt-1" (click)="toggleShowRatings(carpool.id!); $event.stopPropagation()">
+          {{ showRatings[carpool.id!] ? '🛑 Hide Reviews' : '📝 Show Reviews' }}
+        </button>
+      </div>
     </div>
+  </div>
+</div>
 
-    <!-- Update Carpooling Modal -->
-    <div class="modal-backdrop" *ngIf="selectedCarpool">
-        <div class="modal">
-            <div class="modal-header">
-                <h2>Update Carpooling Ride</h2>
-                
-            </div>
-            <div class="modal-body">
-                <form #carpoolForm="ngForm" (submit)="updateCarpooling(); $event.preventDefault()">
-                    <input type="text" placeholder="Driver Name" [(ngModel)]="selectedCarpool.driverName" name="driverName" required #driverName="ngModel"/>
-                    <p *ngIf="driverName.invalid && driverName.touched" class="error-msg">Driver Name is required</p>
-
-                    <input type="text" placeholder="Pickup Location" [(ngModel)]="selectedCarpool.pickupLocation" name="pickupLocation" required #pickupLocation="ngModel"/>
-                    <p *ngIf="pickupLocation.invalid && pickupLocation.touched" class="error-msg">Pickup Location is required</p>
-
-                    <input type="text" placeholder="Dropoff Location" [(ngModel)]="selectedCarpool.dropoffLocation" name="dropoffLocation" required #dropoffLocation="ngModel"/>
-                    <p *ngIf="dropoffLocation.invalid && dropoffLocation.touched" class="error-msg">Dropoff Location is required</p>
-
-                    <input type="datetime-local" [(ngModel)]="selectedCarpool.departureTime" name="departureTime" required #departureTime="ngModel"/>
-                    <p *ngIf="departureTime.invalid && departureTime.touched" class="error-msg">Departure Time is required</p>
-
-                    <input type="number" placeholder="Seats Available" [(ngModel)]="selectedCarpool.availableSeats" name="availableSeats" min="1" required #availableSeats="ngModel"/>
-                    <p *ngIf="availableSeats.invalid && availableSeats.touched" class="error-msg">At least 1 seat is required</p>
-
-                    <input type="number" placeholder="Price per Seat ($)" [(ngModel)]="selectedCarpool.pricePerSeat" name="pricePerSeat" min="1" required #pricePerSeat="ngModel"/>
-                    <p *ngIf="pricePerSeat.invalid && pricePerSeat.touched" class="error-msg">Price must be at least $1</p>
-
-                    <button type="submit" class="btn" [disabled]="carpoolForm.invalid">Update</button>
-                    <button type="button" class="cancel-btn" (click)="selectedCarpool = null">Cancel</button>
-                </form>
-            </div>
+<!-- Suggest a Ride Modal -->
+<div class="modal-backdrop" *ngIf="showSuggestRideModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h2>Add a Ride</h2>
+    </div>
+    <div class="modal-body">
+      <form #carpoolForm="ngForm" (submit)="submitCarpooling(); $event.preventDefault()">
+        <div class="form-group">
+          <input class="form-control" type="text" placeholder="Driver Name" [(ngModel)]="newCarpool.driverName" name="driverName" required />
         </div>
-    </div>
-
-    <!-- Suggest a Ride Modal -->
-    <div class="modal-backdrop" *ngIf="showSuggestRideModal">
-        <div class="modal">
-            <div class="modal-header">
-                <h2>Suggest a Ride</h2>
-               
-            </div>
-            <div class="modal-body">
-                <form #carpoolForm="ngForm" (submit)="submitCarpooling(); $event.preventDefault()">
-                    <input type="text" placeholder="Driver Name" [(ngModel)]="newCarpool.driverName" name="driverName" required #driverNameNew="ngModel"/>
-                    <p *ngIf="driverNameNew.invalid && driverNameNew.touched" class="error-msg">Driver Name is required</p>
-
-                    <input type="text" placeholder="Pickup Location" [(ngModel)]="newCarpool.pickupLocation" name="pickupLocation" required #pickupLocationNew="ngModel"/>
-                    <p *ngIf="pickupLocationNew.invalid && pickupLocationNew.touched" class="error-msg">Pickup Location is required</p>
-
-                    <input type="text" placeholder="Dropoff Location" [(ngModel)]="newCarpool.dropoffLocation" name="dropoffLocation" required #dropoffLocationNew="ngModel"/>
-                    <p *ngIf="dropoffLocationNew.invalid && dropoffLocationNew.touched" class="error-msg">Dropoff Location is required</p>
-
-                    <input type="datetime-local" [(ngModel)]="newCarpool.departureTime" name="departureTime" required #departureTimeNew="ngModel"/>
-                    <p *ngIf="departureTimeNew.invalid && departureTimeNew.touched" class="error-msg">Departure Time is required</p>
-
-                    <input type="number" placeholder="Seats Available" [(ngModel)]="newCarpool.availableSeats" name="availableSeats" min="1" required #availableSeatsNew="ngModel"/>
-                    <p *ngIf="availableSeatsNew.invalid && availableSeatsNew.touched" class="error-msg">At least 1 seat is required</p>
-
-                    <input type="number" placeholder="Price per Seat ($)" [(ngModel)]="newCarpool.pricePerSeat" name="pricePerSeat" min="1" required #pricePerSeatNew="ngModel"/>
-                    <p *ngIf="pricePerSeatNew.invalid && pricePerSeatNew.touched" class="error-msg">Price must be at least $1</p>
-
-                    <button type="submit" class="btn" [disabled]="carpoolForm.invalid">Submit</button>
-                    <button type="button" class="cancel-btn" (click)="showSuggestRideModal = false">Cancel</button>
-                </form>
-            </div>
+        <div class="form-group">
+          <input class="form-control" type="text" placeholder="Pickup Location" [(ngModel)]="newCarpool.pickupLocation" name="pickupLocation" required />
         </div>
+        <div class="form-group">
+          <input class="form-control" type="text" placeholder="Dropoff Location" [(ngModel)]="newCarpool.dropoffLocation" name="dropoffLocation" required />
+        </div>
+        <div class="form-group">
+          <input class="form-control" type="datetime-local" [(ngModel)]="newCarpool.departureTime" name="departureTime" required />
+        </div>
+        <div class="form-group">
+          <input class="form-control" type="number" placeholder="Seats Available" [(ngModel)]="newCarpool.availableSeats" name="availableSeats" min="1" required />
+        </div>
+        <div class="form-group">
+          <input class="form-control" type="number" placeholder="Price per Seat ($)" [(ngModel)]="newCarpool.pricePerSeat" name="pricePerSeat" min="1" required />
+        </div>
+
+        <div class="text-end mt-3">
+          <button type="submit" class="btn btn-primary me-2" [disabled]="carpoolForm.invalid">Submit</button>
+          <button type="button" class="btn btn-secondary" (click)="showSuggestRideModal = false">Cancel</button>
+        </div>
+      </form>
     </div>
+  </div>
 </div>
 
 <app-footer-front></app-footer-front>
+
+<style>
+  .carpool-card {
+    transition: all 0.3s ease-in-out;
+  }
+
+  .card-expanded {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+    transform: scale(1.01);
+    z-index: 1;
+    position: relative;
+  }
+</style>

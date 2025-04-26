@@ -2,6 +2,10 @@ import { Injectable } from '@angular/core';
 import { KeycloakService } from 'keycloak-angular';
 import { Router } from '@angular/router';
 import {HttpClient} from "@angular/common/http";
+import * as jwtDecode from 'jwt-decode'; // ✅ works with CommonJS
+
+
+
 @Injectable({
   providedIn: 'root',
 })
@@ -96,4 +100,25 @@ export class AuthService {
     const token = this.keycloak.getKeycloakInstance().tokenParsed;
     return token?.realm_access?.roles || [];
   }
+
+
+  
+  getUserIdFromToken(): string | null {
+    const token = this.getToken();
+    if (!token) return null;
+  
+    try {
+      const payloadBase64 = token.split('.')[1]; // take the payload part
+      const payload = JSON.parse(atob(payloadBase64));
+      return payload.sub; // ✅ Keycloak User ID
+    } catch (error) {
+      console.error('Error decoding token:', error);
+      return null;
+    }
+  }
+  
+
+
+ 
+  
 }

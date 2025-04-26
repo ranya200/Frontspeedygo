@@ -1,0 +1,42 @@
+<!-- ⭐ Show form trigger -->
+<a *ngIf="!submitted && !canShowForm" href="#" (click)="showForm(); $event.preventDefault()" class="text-primary fw-semibold">
+  ⭐ Click here to rate this ride
+</a>
+
+
+<!-- Rating Form Panel -->
+<div *ngIf="canShowForm && !submitted" class="rating-panel shadow-sm rounded bg-white p-4 mt-3 border">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h5 class="mb-0">⭐ Rate this Ride</h5>
+    <button type="button" class="btn btn-sm btn-outline-danger" (click)="toggleRatingForm()">✖</button>
+  </div>
+
+  <form [formGroup]="form" (ngSubmit)="submit()">
+    <div class="form-group mb-3">
+      <label class="form-label">🛡️ Safety</label>
+      <input type="range" min="1" max="5" class="form-range" formControlName="safetyScore" />
+    </div>
+
+    <div class="form-group mb-3">
+      <label class="form-label">⏰ Punctuality</label>
+      <input type="range" min="1" max="5" class="form-range" formControlName="punctualityScore" />
+    </div>
+
+    <div class="form-group mb-3">
+      <label class="form-label">🛋️ Comfort</label>
+      <input type="range" min="1" max="5" class="form-range" formControlName="comfortScore" />
+    </div>
+
+    <div class="form-group mb-3">
+      <label class="form-label">📝 Comments</label>
+      <textarea class="form-control" rows="3" formControlName="comment" placeholder="Your comments..."></textarea>
+    </div>
+
+    <button class="btn btn-success w-100 fw-bold" type="submit">✅ Submit Rating</button>
+  </form>
+</div>
+
+<!-- ✅ Success Message -->
+<div *ngIf="submitted" class="alert alert-success mt-3">
+  ✅ Thank you for rating this ride! 🙌
+</div>

@@ -51,23 +51,11 @@
             <div class="card-body">
               <h5 class="card-title">{{ product.name }}</h5>
               <p class="card-text">{{ product.description }}</p>
-               <!-- Display Discounted Price and Original Price -->
-               <div class="card-text" *ngIf="product.discountedPrice !== product.price; else normalPrice">
-                <span class="text-muted" style="text-decoration: line-through;">{{ product.price | currency:'EUR' }}</span>
-                <p><strong>{{ product.discountedPrice | currency:'EUR' }}</strong></p>
-               </div>
-              <ng-template #normalPrice>
-                <strong>{{ product.price | currency:'EUR' }}</strong>
-              </ng-template>
+              <p class="card-text"><strong>{{ product.price }} €</strong></p>
             </div>
             <div class="card-footer">
-
-              <button (click)="viewProductDetails(product.id!)" class="btn btn-success btn-sm">Show Details</button>
-              <button (click)="editProduct(product.id!)" class="btn btn-success btn-sm">Edit</button>
-            </div>
-            <div class="card-footer">
-              <button (click)="makepromotion(product.id!)" class="btn btn-secondary btn-sm mr-2">add promotion</button>
-              <button (click)="deleteProduct(product.id!)" class="btn btn-danger btn-sm">Delete</button>
+              <button (click)="editProduct(product.id!)" class="btn btn-secondary btn-sm mr-2">Modifier</button>
+              <button (click)="deleteProduct(product.id!)" class="btn btn-danger btn-sm">Supprimer</button>
             </div>
           </div>
         </div>

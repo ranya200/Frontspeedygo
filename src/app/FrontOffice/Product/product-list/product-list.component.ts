@@ -98,9 +98,4 @@ export class ProductListComponent implements OnInit {
     this.selectedCategory = category;
     this.filterProducts();
   }
-
-  // added by firas
-  makepromotion(id: string): void {
-    this.router.navigate(['/promoadd', id]);
-  }
 }

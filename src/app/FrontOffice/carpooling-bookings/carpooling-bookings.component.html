@@ -1,57 +1,74 @@
 <app-header-front></app-header-front>
 
-<div class="container mt-5">
-  <h2 class="text-center mb-4 text-primary fw-bold">
-    📋 Booking Requests for Your Carpooling Rides
+<!-- Hero Header -->
+<section class="py-5 bg-success text-white text-center mb-5">
+  <div class="container">
+    <h1 class="display-5 fw-bold">📋 Manage Your Booking Requests</h1>
+    <p class="lead">Easily confirm passengers for your rides and stay organized with SpeedyGo!</p>
+  </div>
+</section>
+
+<!-- Main Section -->
+<section class="container mb-5">
+  <h2 class="h5 text-center text-dark fw-bold mb-4">
+    🚗 Booking Requests for Your Carpooling Rides
   </h2>
 
-  <div *ngIf="bookings.length === 0" class="text-center text-muted fs-5">
-    <p>No booking requests yet.</p>
+  <div *ngIf="bookings.length === 0" class="text-center text-muted fs-5 my-5">
+    <p>No booking requests yet. 🚶‍♂️</p>
   </div>
 
-  <div *ngFor="let booking of bookings" class="card shadow border-0 mb-4">
-    <div class="card-body">
-      <div class="d-flex justify-content-between align-items-start flex-wrap">
-        <div class="w-100 mb-3">
-          <h5 class="fw-bold text-dark mb-2">
-            🚗 <span class="fs-5">{{ booking.pickupLocation }}</span>
-            <span class="mx-2 text-muted">➡️</span>
-            <span class="fs-5">{{ booking.dropoffLocation }}</span>
-          </h5>
-          <p class="text-muted mb-2">
-            🕒 <strong>{{ booking.departureTime | date:'fullDate' }} at {{ booking.departureTime | date:'shortTime' }}</strong>
-          </p>
-        </div>
-
-        <div class="w-100 mb-2">
-          <p class="mb-1">
-            👤 <span class="text-secondary">Passenger:</span>
-            <strong>{{ booking.passengerName || booking.passengerId }}</strong>
-          </p>
-          
-          <p class="mb-1">
-            🪑 <span class="text-secondary">Seats Booked:</span> <strong>{{ booking.seatsBooked }}</strong>
-          </p>
-          <p class="mb-2">
-            📌 <span class="text-secondary">Status:</span>
-            <span class="badge px-3 py-2 rounded-pill"
+  <div *ngIf="bookings.length > 0" class="table-responsive">
+    <table class="table table-hover align-middle shadow-sm">
+      <thead class="table-light">
+        <tr>
+          <th><i class="fas fa-map-marker-alt text-primary"></i> Pickup</th>
+          <th><i class="fas fa-map-marker-alt text-danger"></i> Dropoff</th>
+          <th><i class="fas fa-clock text-warning"></i> Departure Time</th>
+          <th><i class="fas fa-user text-secondary"></i> Passenger</th>
+          <th><i class="fas fa-chair text-info"></i> Seats</th>
+          <th><i class="fas fa-info-circle text-muted"></i> Status</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let booking of bookings">
+          <td>{{ booking.pickupLocation }}</td>
+          <td>{{ booking.dropoffLocation }}</td>
+          <td>
+            <i class="fas fa-calendar-alt text-primary me-1"></i>
+            {{ booking.departureTime | date:'fullDate' }}
+            <br />
+            <i class="fas fa-clock text-warning me-1"></i>
+            {{ booking.departureTime | date:'shortTime' }}
+          </td>
+          <td>
+            <i class="fas fa-user text-secondary me-1"></i> {{ booking.passengerName || booking.passengerId }}
+          </td>
+          <td><i class="fas fa-chair text-info me-1"></i> {{ booking.seatsBooked }}</td>
+          <td>
+            <span class="badge rounded-pill px-3 py-2"
               [ngClass]="{
                 'bg-warning text-dark': booking.status === 'PENDING',
                 'bg-success': booking.status === 'CONFIRMED'
               }">
               {{ booking.status }}
             </span>
-          </p>
-        </div>
-
-        <div *ngIf="booking.status === 'PENDING'" class="text-end w-100 mt-2">
-          <button class="btn btn-success btn-sm px-4 py-2" (click)="confirmBooking(booking.id!)">
-            ✅ Confirm Booking
-          </button>
-        </div>
-      </div>
-    </div>
+          </td>
+          <td class="text-center">
+            <div *ngIf="booking.status === 'PENDING'">
+              <button class="btn btn-outline-success btn-sm" (click)="confirmBooking(booking.id!)">
+                ✅ Confirm
+              </button>
+            </div>
+            <div *ngIf="booking.status !== 'PENDING'" class="text-muted small">
+              ✔️ Confirmed
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
-</div>
+</section>
 
 <app-footer-front></app-footer-front>

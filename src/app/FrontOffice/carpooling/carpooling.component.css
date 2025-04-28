@@ -381,3 +381,21 @@ button[disabled] {
 .btn-outline-success {
   width: 100%;
 }
+
+.btn-danger:hover {
+  background-color: #bb2d3b; /* darker red */
+}
+
+.success-snackbar {
+  background-color: #4CAF50; /* Nice green */
+  color: white;
+  font-size: 14px;
+  border-radius: 8px;
+}
+
+.error-snackbar {
+  background-color: #f44336; /* Bright red */
+  color: white;
+  font-size: 14px;
+  border-radius: 8px;
+}

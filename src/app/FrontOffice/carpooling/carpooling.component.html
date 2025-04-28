@@ -1,6 +1,9 @@
 <app-header-front></app-header-front>
 
 <!-- Hero Section -->
+<!-- Hero Section -->
+<!-- Drawer Button and Menu Grouped Together -->
+
 <div class="py-3 bg-primary bg-pattern mb-4 position-relative">
   <div class="container">
     <div class="row">
@@ -12,24 +15,52 @@
         </div>
       </div>
     </div>
-
-    <div class="position-absolute end-0 mt-3 me-3">
-      <button class="menu-btn" (click)="toggleDrawer()">☰</button>
-    </div>
-
-    <div *ngIf="isDrawerOpen" class="drawer-container text-end mt-4 me-3">
-      <button class="btn btn-outline-primary fw-bold mb-2" (click)="toggleRideView()">
-        {{ showMyRidesOnly ? '🔄 Voir tous les trajets' : '👤 Mes trajets' }}
-      </button>
-      <button class="btn btn-outline-success fw-bold mb-2" (click)="showSuggestRideModal = true">
-        🚗 Suggest a Ride
-      </button>
-      <button class="btn btn-outline-primary fw-bold" routerLink="/request-ride">
-        🚘 Special ride?
-      </button>
-    </div>
   </div>
 </div>
+
+
+<div class="d-flex align-items-center gap-2 my-4">
+  <div class="flex-grow-1">
+    <input type="text" 
+           [(ngModel)]="searchQuery" 
+           (input)="applyRideFilter()" 
+           class="form-control"
+           placeholder="🔎 Search by pickup or dropoff location...">
+  </div>
+  
+  <button class="btn btn-primary rounded-circle position-absolute end-0 mt-2 me-5"
+  style="width: 36px; height: 36px; padding: 0; font-size: 18px; line-height: 36px; text-align: center;"
+  (click)="toggleFavoritesFilter()">
+❤️
+  </button>
+</div>
+
+
+<div class="position-absolute end-0 mt-2 me-3">
+  
+</div>
+<div class="position-absolute end-0 mt-2 me-3" style="z-index: 1050;">
+  
+  <!-- Toggle Drawer Button -->
+  <button class="btn btn-light mb-2" (click)="toggleDrawer()">☰</button>
+
+  <!-- Drawer Menu -->
+  <div *ngIf="isDrawerOpen" 
+       class="bg-light shadow rounded p-3 text-end"
+       style="width: 200px;">
+    <button class="btn btn-outline-primary fw-bold mb-2 w-100" (click)="toggleRideView()">
+      {{ showMyRidesOnly ? '🔄 Voir tous les trajets' : '👤 Mes trajets' }}
+    </button>
+    <button class="btn btn-outline-success fw-bold mb-2 w-100" (click)="showSuggestRideModal = true">
+      🚗 Suggest a Ride
+    </button>
+    <button class="btn btn-outline-primary fw-bold w-100" routerLink="/request-ride">
+      🚘 Special ride?
+    </button>
+  </div>
+
+</div>
+
 
 <!-- Carpooling List -->
 <div class="carpooling-container">
@@ -42,9 +73,15 @@
          [class.card-expanded]="showRatings[carpool.id!] || showRatingForm[carpool.id!]" 
          (click)="selectCarpool(carpool)">
 
-      <button class="delete-btn" (click)="deleteCarpool(carpool.id); $event.stopPropagation()">X</button>
+         <button *ngIf="carpool.driverId === currentUserId"
+         class="delete-btn"
+         (click)="deleteCarpool(carpool.id); $event.stopPropagation()">
+   X
+ </button>
+ 
 
       <div class="card-header">
+        
         <h3><i class="fas fa-user"></i> {{ carpool.driverName }}</h3>
         <p *ngIf="driverGlobalBadges[carpool.driverId!]">
           <span class="badge bg-warning text-dark">🏅 {{ driverGlobalBadges[carpool.driverId!] }}</span>
@@ -60,6 +97,39 @@
         <p *ngIf="averageRatings[carpool.id!]">
           ⭐ Avg Rating: {{ averageRatings[carpool.id!] | number: '1.1-2' }} / 5
         </p>
+        <div class="d-flex align-items-center gap-2">
+
+          
+          <ng-container *ngIf="carpool.driverId !== currentUserId">
+        
+            
+            <button *ngIf="!isFavorite(carpool.id!) && !showFavoritesOnly"
+        (click)="toggleFavorite(carpool.id!); $event.stopPropagation()"
+        class="btn btn-sm"
+        style="background-color: #dc3545; color: white;">
+  <i class="far fa-heart"></i>
+</button>
+
+    
+        
+            
+            <button *ngIf="isFavorite(carpool.id!) && showFavoritesOnly"
+                    (click)="toggleFavorite(carpool.id!); $event.stopPropagation()"
+                    class="btn btn-outline-danger btn-sm">
+              🗑️ Remove
+            </button>
+        
+           
+            <span *ngIf="isFavorite(carpool.id!) && !showFavoritesOnly" class="badge bg-success">
+              ⭐ Favorited
+            </span>
+        
+          </ng-container>
+        
+        </div>
+        
+
+
       </div>
 
       <div class="card-footer d-flex flex-column gap-2">
@@ -95,23 +165,30 @@
     </div>
     <div class="modal-body">
       <form #carpoolForm="ngForm" (submit)="submitCarpooling(); $event.preventDefault()">
+
         <div class="form-group">
-          <input class="form-control" type="text" placeholder="Driver Name" [(ngModel)]="newCarpool.driverName" name="driverName" required />
+          <label for="pickupLocation" class="form-label">Pickup Location</label>
+          <input id="pickupLocation" class="form-control" type="text" [(ngModel)]="newCarpool.pickupLocation" name="pickupLocation" required />
         </div>
+
         <div class="form-group">
-          <input class="form-control" type="text" placeholder="Pickup Location" [(ngModel)]="newCarpool.pickupLocation" name="pickupLocation" required />
+          <label for="dropoffLocation" class="form-label">Dropoff Location</label>
+          <input id="dropoffLocation" class="form-control" type="text" [(ngModel)]="newCarpool.dropoffLocation" name="dropoffLocation" required />
         </div>
+
         <div class="form-group">
-          <input class="form-control" type="text" placeholder="Dropoff Location" [(ngModel)]="newCarpool.dropoffLocation" name="dropoffLocation" required />
+          <label for="departureTime" class="form-label">Departure Time</label>
+          <input id="departureTime" class="form-control" type="datetime-local" [(ngModel)]="newCarpool.departureTime" name="departureTime" required />
         </div>
+
         <div class="form-group">
-          <input class="form-control" type="datetime-local" [(ngModel)]="newCarpool.departureTime" name="departureTime" required />
+          <label for="availableSeats" class="form-label">Seats Available</label>
+          <input id="availableSeats" class="form-control" type="number" [(ngModel)]="newCarpool.availableSeats" name="availableSeats" min="1" required />
         </div>
+
         <div class="form-group">
-          <input class="form-control" type="number" placeholder="Seats Available" [(ngModel)]="newCarpool.availableSeats" name="availableSeats" min="1" required />
-        </div>
-        <div class="form-group">
-          <input class="form-control" type="number" placeholder="Price per Seat ($)" [(ngModel)]="newCarpool.pricePerSeat" name="pricePerSeat" min="1" required />
+          <label for="pricePerSeat" class="form-label">Price per Seat ($)</label>
+          <input id="pricePerSeat" class="form-control" type="number" [(ngModel)]="newCarpool.pricePerSeat" name="pricePerSeat" min="1" required />
         </div>
 
         <div class="text-end mt-3">
@@ -122,6 +199,7 @@
     </div>
   </div>
 </div>
+
 
 <app-footer-front></app-footer-front>
 

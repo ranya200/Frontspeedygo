@@ -10,6 +10,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
+
 
 import { CarpoolingService } from 'src/app/services/carpooling/carpooling.service';
 import { HeaderFrontComponent } from '../header-front/header-front.component';
@@ -60,6 +62,13 @@ export class CarpoolingComponent implements OnInit {
   driverGlobalBadges: { [driverId: string]: string } = {}; // NEW
   showRatings: { [rideId: string]: boolean } = {};
   showRatingForm: { [rideId: string]: boolean } = {};
+  currentUserName: string = '';
+  searchQuery: string = '';
+  favoriteRideIds: string[] = [];
+  showFavoritesOnly: boolean = false;
+
+
+
 
   newCarpool: Carpool = {
     driverId: '',
@@ -77,7 +86,8 @@ export class CarpoolingComponent implements OnInit {
     private authService: AuthService,
     private bookingService: BookingService,
     private ratingService: RatingService,
-    private router: Router
+    private router: Router,
+    private snackBar: MatSnackBar
   ) {}
 
   ngOnInit(): void {
@@ -86,8 +96,45 @@ export class CarpoolingComponent implements OnInit {
     this.fetchConfirmedBookings();
     this.loadGlobalBadges(); // NEW
     this.loadDriverRatings(); // ratings spécifiques au ride
+    this.currentUserName = this.authService.getUserNameFromToken() ?? '';
+    const storedFavorites = localStorage.getItem('favoriteRides');
+this.favoriteRideIds = storedFavorites ? JSON.parse(storedFavorites) : [];
     
   }
+
+  showToast(message: string, type: 'success' | 'error' = 'success', duration: number = 3000) {
+    this.snackBar.open(message, 'Close', {
+      duration: duration,
+      verticalPosition: 'bottom',
+      horizontalPosition: 'right',
+      panelClass: type === 'success' ? ['success-snackbar'] : ['error-snackbar']
+    });
+  }
+  
+  
+
+  toggleFavorite(rideId: string) {
+    const index = this.favoriteRideIds.indexOf(rideId);
+    if (index > -1) {
+      // Already favorited, unfavorite it
+      this.favoriteRideIds.splice(index, 1);
+    } else {
+      // Not favorited yet, add it
+      this.favoriteRideIds.push(rideId);
+    }
+    this.saveFavorites();
+    this.applyRideFilter(); // 🆕 Force re-apply to update icons immediately
+  }
+  
+  
+  saveFavorites() {
+    localStorage.setItem('favoriteRides', JSON.stringify(this.favoriteRideIds));
+  }
+  
+  isFavorite(rideId: string): boolean {
+    return this.favoriteRideIds.includes(rideId);
+  }
+  
 
   fetchConfirmedBookings(): void {
     if (!this.currentUserId) return;
@@ -150,11 +197,39 @@ export class CarpoolingComponent implements OnInit {
     );
   }
 
-  applyRideFilter() {
+  /*applyRideFilter() {
     this.filteredRides = this.showMyRidesOnly
       ? this.carpoolingList.filter(c => c.driverId === this.currentUserId)
       : this.carpoolingList;
   }
+      */
+  applyRideFilter() {
+    this.filteredRides = this.carpoolingList.filter(c => {
+      const matchesDriver = !this.showMyRidesOnly || c.driverId === this.currentUserId;
+      const matchesSearch = this.matchSearchQuery(c);
+      const matchesFavorite = !this.showFavoritesOnly || this.isFavorite(c.id!);
+  
+      return matchesDriver && matchesSearch && matchesFavorite;
+    });
+  }
+  
+  toggleFavoritesFilter() {
+    this.showFavoritesOnly = !this.showFavoritesOnly;
+    this.applyRideFilter();
+  }
+  
+  
+  // Helper method
+  matchSearchQuery(carpool: Carpool): boolean {
+    if (!this.searchQuery) return true;
+  
+    const query = this.searchQuery.toLowerCase();
+    return (
+      (carpool.pickupLocation?.toLowerCase().includes(query)) ||
+      (carpool.dropoffLocation?.toLowerCase().includes(query))
+    );
+  }
+  
 
   toggleRideView() {
     this.showMyRidesOnly = !this.showMyRidesOnly;
@@ -167,13 +242,16 @@ export class CarpoolingComponent implements OnInit {
 
   bookRide(rideId: string): void {
     if (!this.currentUserId) {
-      alert('You must be logged in to book a ride!');
+      this.showToast('❌ You must be logged in to book a ride!', 'error');
+
+      //alert();
       return;
     }
 
     const ride = this.filteredRides.find(r => r.id === rideId);
     if (ride?.driverId === this.currentUserId) {
-      alert('❌ You cannot book your own ride.');
+      this.showToast('❌ You cannot book your own ride.', 'error');
+     // alert();
       return;
     }
 
@@ -188,26 +266,31 @@ export class CarpoolingComponent implements OnInit {
 
     this.bookingService.createBooking(newBooking).subscribe({
       next: () => {
-        alert(`✅ ${seats} seat(s) booked successfully!`);
+        this.showToast(`✅ ${seats} seat(s) booked successfully!`);
+       // alert();
         this.seatsToBook[rideId] = 1;
       },
       error: (err) => {
         console.error(err);
-        alert('❌ Failed to book seat.');
+        this.showToast('❌ Failed to book seat.', 'error');
+       // alert();
       }
     });
   }
 
   submitCarpooling() {
     this.newCarpool.driverId = this.currentUserId!;
+    this.newCarpool.driverName = this.currentUserName!;
     this.carpoolingService.addCarpooling(this.newCarpool).subscribe(
       () => {
-        alert('Carpooling added successfully!');
+        this.showToast('✅ Carpooling added successfully!');
+       // alert('Carpooling added successfully!');
         this.loadCarpooling();
         this.resetForm();
         this.showSuggestRideModal = false;
       },
-      () => alert('Failed to submit carpooling.')
+      () =>  this.showToast('❌ Failed to submit carpooling.', 'error')
+        //alert()
     );
   }
 
@@ -215,10 +298,13 @@ export class CarpoolingComponent implements OnInit {
     if (id && confirm('Are you sure you want to cancel this ride?')) {
       this.carpoolingService.deleteCarpooling(id).subscribe(
         () => {
-          alert('Ride canceled successfully!');
+          this.showToast('✅ Ride canceled successfully!');
+          
+          //alert();
           this.loadCarpooling();
         },
-        () => alert('Failed to cancel the ride.')
+        () =>this.showToast('❌Failed to cancel the ride.', 'error')
+           
       );
     }
   }
@@ -235,11 +321,12 @@ export class CarpoolingComponent implements OnInit {
     if (this.selectedCarpool?.id) {
       this.carpoolingService.updateCarpooling(this.selectedCarpool.id, this.selectedCarpool).subscribe(
         () => {
-          alert('Carpooling updated successfully!');
+          alert('✅ Carpooling updated successfully!');
           this.loadCarpooling();
           this.selectedCarpool = null;
         },
-        () => alert('Failed to update carpooling.')
+        () =>this.showToast('❌Failed to update carpooling.', 'error')
+           
       );
     }
   }

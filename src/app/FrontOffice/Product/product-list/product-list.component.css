@@ -188,3 +188,26 @@ h1 {
     padding: 0.3rem 0.6rem;
   }
 }
+
+.badge-container {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 10;
+}
+
+.badge {
+  padding: 5px 10px;
+  font-size: 12px;
+  font-weight: bold;
+  color: #0947cc;
+  border-radius: 5px;
+}
+
+.badge-success {
+  background-color: #2be62b;
+}
+
+.badge-danger {
+  background-color: red;
+}

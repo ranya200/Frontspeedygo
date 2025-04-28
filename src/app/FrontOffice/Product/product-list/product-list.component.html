@@ -36,6 +36,18 @@
         <div *ngFor="let product of filteredProducts" class="col-md-4 mb-4">
           <div class="card h-100">
             <img *ngIf="product.image" [src]="'data:image/jpeg;base64,' + product.image" class="card-img-top" alt="{{ product.name }}">
+
+            <!-- Badge de prédiction dans le coin -->
+            <div class="badge-container">
+              <span class="badge"
+                    [ngClass]="{
+                      'badge-success': product.prediction === 'Fast',
+                      'badge-danger': product.prediction === 'Slow'
+                    }">
+                {{ product.prediction === 'Fast' ? 'Fast' : 'Slow' }}
+              </span>
+            </div>
+
             <div class="card-body">
               <h5 class="card-title">{{ product.name }}</h5>
               <p class="card-text">{{ product.description }}</p>

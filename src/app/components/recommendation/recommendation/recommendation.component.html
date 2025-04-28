@@ -1,5 +1,5 @@
 <div class="recommendations-container">
-  <h2>🔥 Recommandations personnalisées</h2>
+  <h2>🔥 Recommandations for you</h2>
 
   <div *ngIf="recommendations.length === 0">
     <p>😕 Aucune recommandation pour l’instant.</p>
@@ -10,7 +10,6 @@
       <img [src]="'data:image/jpeg;base64,' + product.image" alt="{{ product.name }}" />
       <h4>{{ product.name }}</h4>
       <p>{{ product.price }} €</p>
-      <button class="add-button">Ajouter au panier</button>
     </div>
   </div>
 </div>

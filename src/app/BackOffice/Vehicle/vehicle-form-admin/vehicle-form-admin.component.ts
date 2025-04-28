@@ -6,6 +6,7 @@ import {CommonModule, NgIf} from '@angular/common';
 import {NavbarBackComponent} from "../../navbar-back/navbar-back.component";
 import {SidebarBackComponent} from "../../sidebar-back/sidebar-back.component";
 import { FormsModule} from '@angular/forms'; // ✅ Ensure these are imported
+import { CustomVehicleService } from 'src/app/services/custom-vehicle/custom-vehicle.service';
 
 
 @Component({
@@ -35,19 +36,45 @@ export class VehicleFormAdminComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private vehicleService: VehicleControllerService,
+    private customVehicleService: CustomVehicleService,
     private router: Router
+
   ) { }
 
   ngOnInit(): void {
     // Set default values for status and type
     this.vehicleForm = this.fb.group({
-      brand: ['', Validators.required],
-      model: ['', Validators.required],
-      capacity: ['', Validators.required],
-      licensePlate: ['', Validators.required],
-      vin: ['', Validators.required],
+      brand: ['',  [
+        Validators.required,
+        Validators.pattern('^[A-Za-z ]+$'), // Only letters and spaces
+        Validators.maxLength(20)
+      ]],
+      model: ['', [
+        Validators.required,
+        Validators.pattern('^[A-Za-z0-9 ]+$'), // Letters, numbers, and spaces
+        Validators.maxLength(20)
+      ]],
+      capacity: ['', [
+        Validators.required,
+        Validators.pattern('^[0-9]+$'), // Only numbers
+        Validators.min(1),
+        Validators.max(9)
+      ]],
+      licensePlate: ['', [
+        Validators.required,
+        Validators.pattern('^[A-Z0-9-]+$'), // Uppercase letters, numbers, and dashes
+        Validators.maxLength(10)
+      ]],
+      vin: ['', [
+        Validators.required,
+        Validators.pattern('^[A-Za-z0-9 ]+$') // Standard 17-character VIN format
+      ]],
       fabricationDate: ['', Validators.required],
-      fuelType: ['', Validators.required],
+      fuelType: ['', [
+        Validators.required,
+        Validators.pattern('^[A-Za-z ]+$'), // Only letters and spaces
+        Validators.maxLength(15)
+      ]],
       image: ['', Validators.required],
 // Set defaults for fields not shown in the UI:
       vehicleStatus: ['', Validators.required],
@@ -68,37 +95,53 @@ export class VehicleFormAdminComponent implements OnInit {
     if (event.target.files && event.target.files.length > 0) {
       this.selectedFile = event.target.files[0];
       // Met à jour le contrôle "image" avec le nom du fichier
+      const allowedTypes = ['image/png', 'image/jpeg', 'image/jpg'];
+      if (!allowedTypes.includes(this.selectedFile.type)) {
+        alert('❌ Only PNG, JPEG, or JPG files are allowed!');
+        this.vehicleForm.patchValue({ image: '' });
+        return;
+      }
       this.vehicleForm.patchValue({ image: this.selectedFile.name });
     }
   }
 
   onSubmit(): void {
     if (this.vehicleForm.valid && this.selectedFile) {
-      const vehicle: Vehicle = this.vehicleForm.value;
+      const formValue = this.vehicleForm.value;
 
-      // ✅ Check if vehicleStatus and vehicleType are selected
-      if (!vehicle.vehicleStatus) {
-        alert("⚠️ Please select a vehicle status!");
-        return;
-      }
-      if (!vehicle.vehicleType) {
-        alert("⚠️ Please select a vehicle type!");
-        return;
-      }
+      const vehicle = {
+        brand: formValue.brand,
+        model: formValue.model,
+        capacity: formValue.capacity,
+        licensePlate: formValue.licensePlate,
+        vin: formValue.vin,
+        fabricationDate: new Date(formValue.fabricationDate).toISOString(),
+        fuelType: formValue.fuelType,
+        vehicleStatus: formValue.vehicleStatus,
+        vehicleStatusD: formValue.vehicleStatusD,
+        vehicleType: formValue.vehicleType,
+        available: true
+      };
 
-      const image: Blob = this.selectedFile;
+      const formData = new FormData();
+      formData.append('vehicle', new Blob([JSON.stringify(vehicle)], { type: 'application/json' }));
+      formData.append('imageFileName', this.selectedFile); // 👈 nom du champ exact du backend
 
-      this.vehicleService.addVehicle( vehicle,  image).subscribe({
+      this.customVehicleService.addVehicleWithImage(formData).subscribe({
         next: (data) => {
           console.log('✅ Vehicle created', data);
           this.router.navigate(['/vehicles']);
         },
-        error: (err) => console.error('❌ Error creating vehicle', err)
+        error: (err) => {
+          console.error('❌ Error creating vehicle', err);
+          alert("Erreur lors de l'ajout du véhicule !");
+        }
       });
     } else {
       alert("⚠️ Please fill out all fields and select an image!");
     }
   }
+
 
 
 

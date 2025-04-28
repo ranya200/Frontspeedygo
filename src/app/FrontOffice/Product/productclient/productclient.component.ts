@@ -1,19 +1,18 @@
 import { Component, OnInit } from '@angular/core';
-import { ProductControllerService, Product, PanierControllerService } from 'src/app/openapi';
 import { Router } from '@angular/router';
+import { PanierControllerService, Product, ProductControllerService } from 'src/app/openapi';
+import { FooterFrontComponent } from '../../footer-front/footer-front.component';
+import { HeaderFrontComponent } from '../../header-front/header-front.component';
 import { CommonModule } from '@angular/common';
-import { HeaderFrontComponent } from "../../header-front/header-front.component";
-import { FooterFrontComponent } from "../../footer-front/footer-front.component";
-import { jwtDecode } from 'jwt-decode';
 
 @Component({
-  selector: 'app-product-list',
+  selector: 'app-productclient',
   standalone: true,
-  imports: [CommonModule, HeaderFrontComponent, FooterFrontComponent],
-  templateUrl: './product-list.component.html',
-  styleUrl: './product-list.component.css'
+  imports: [FooterFrontComponent, HeaderFrontComponent, CommonModule],
+  templateUrl: './productclient.component.html',
+  styleUrl: './productclient.component.css'
 })
-export class ProductListComponent implements OnInit {
+export class ProductclientComponent implements OnInit {
   products: Product[] = [];
   filteredProducts: Product[] = [];
   categories = Object.values(Product.CategoryEnum);
@@ -27,40 +26,17 @@ export class ProductListComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    const token = localStorage.getItem('token');
-    if (token) {
-      const decoded: any = jwtDecode(token);
-      const roles: string[] = decoded.realm_access?.roles || [];
-
-      if (roles.includes('partner')) {
-        this.loadPartnerProducts();
-      } else {
-        this.loadAllProducts(); // admin or client
-      }
-    }
+    this.loadProducts();
   }
 
-  loadPartnerProducts(): void {
-    this.productService.getMyProducts().subscribe({
-      next: (data: Product[]) => {
-        this.products = data;
-        this.filterProducts();
-      },
-      error: (err) => {
-        console.error('Erreur de chargement (partenaire)', err);
-        this.errorMessage = 'Erreur de chargement de vos produits.';
-      }
-    });
-  }
-
-  loadAllProducts(): void {
+  loadProducts(): void {
     this.productService.listProducts().subscribe({
       next: (data: Product[]) => {
         this.products = data;
         this.filterProducts();
       },
       error: (err) => {
-        console.error('Erreur de chargement (admin/client)', err);
+        console.error('Erreur de chargement', err);
         this.errorMessage = 'Erreur de chargement des produits.';
       }
     });
@@ -74,12 +50,19 @@ export class ProductListComponent implements OnInit {
     }
   }
 
+  addToPackage(product: Product): void {
+    this.panierService.addProductToPackage(product).subscribe({
+      next: () => alert('Produit ajouté au package !'),
+      error: (err) => console.error('Erreur ajout package', err)
+    });
+  }
+
   deleteProduct(id: string): void {
     if (confirm('Voulez-vous vraiment supprimer ce produit ?')) {
       this.productService.deleteProduct(id).subscribe({
         next: () => {
           console.log('Produit supprimé');
-          this.loadPartnerProducts();
+          this.loadProducts();
         },
         error: (err) => console.error('Erreur lors de la suppression', err)
       });
@@ -104,3 +87,4 @@ export class ProductListComponent implements OnInit {
     this.router.navigate(['/promoadd', id]);
   }
 }
+

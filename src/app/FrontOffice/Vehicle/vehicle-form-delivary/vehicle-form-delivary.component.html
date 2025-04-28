@@ -19,30 +19,63 @@
     <div class="form-group mb-3">
       <label for="brand">Brand</label>
       <input id="brand" formControlName="brand" class="form-control">
+      <div *ngIf="vehicleForm.get('brand')?.touched && vehicleForm.get('brand')?.invalid" class="text-danger">
+        <small *ngIf="vehicleForm.get('brand')?.errors?.['required']">Brand is required.</small>
+        <small *ngIf="vehicleForm.get('brand')?.errors?.['pattern']">Only letters are allowed.</small>
+        <small *ngIf="vehicleForm.get('brand')?.errors?.['maxLength']">Max 20 characters allowed.</small>
+      </div>
     </div>
     <div class="form-group mb-3">
       <label for="model">Model</label>
       <input id="model" formControlName="model" class="form-control">
+      <div *ngIf="vehicleForm.get('model')?.touched && vehicleForm.get('model')?.invalid" class="text-danger">
+        <small *ngIf="vehicleForm.get('model')?.errors?.['required']">Model is required.</small>
+        <small *ngIf="vehicleForm.get('model')?.errors?.['pattern']">Only letters, numbers, and spaces allowed.</small>
+        <small *ngIf="vehicleForm.get('model')?.errors?.['maxLength']">Max 20 characters allowed.</small>
+      </div>
     </div>
     <div class="form-group mb-3">
       <label for="capacity" class="form-label fw-bold">Capacity</label>
       <input id="capacity" type="number" formControlName="capacity" class="form-control rounded" required>
+      <div *ngIf="vehicleForm.get('capacity')?.touched && vehicleForm.get('capacity')?.invalid" class="text-danger">
+        <small *ngIf="vehicleForm.get('capacity')?.errors?.['required']">Capacity is required.</small>
+        <small *ngIf="vehicleForm.get('capacity')?.errors?.['pattern']">Only numbers allowed.</small>
+        <small *ngIf="vehicleForm.get('capacity')?.errors?.['min']">Minimum capacity is 1.</small>
+        <small *ngIf="vehicleForm.get('capacity')?.errors?.['max']">Capacity too high.</small>
+      </div>
     </div>
     <div class="form-group mb-3">
       <label for="licensePlate">License Plate</label>
       <input id="licensePlate" formControlName="licensePlate" class="form-control">
+      <div *ngIf="vehicleForm.get('licensePlate')?.touched && vehicleForm.get('licensePlate')?.invalid" class="text-danger">
+        <small *ngIf="vehicleForm.get('licensePlate')?.errors?.['required']">License plate is required.</small>
+        <small *ngIf="vehicleForm.get('licensePlate')?.errors?.['pattern']">Only uppercase letters, numbers, and dashes allowed.</small>
+        <small *ngIf="vehicleForm.get('licensePlate')?.errors?.['maxLength']">Max 10 characters allowed.</small>
+      </div>
     </div>
     <div class="form-group mb-3">
       <label for="vin">VIN</label>
       <input id="vin" formControlName="vin" class="form-control">
+      <div *ngIf="vehicleForm.get('vin')?.touched && vehicleForm.get('vin')?.invalid" class="text-danger">
+        <small *ngIf="vehicleForm.get('vin')?.errors?.['required']">VIN is required.</small>
+        <small *ngIf="vehicleForm.get('vin')?.errors?.['pattern']">VIN must be exactly 17 characters (letters & numbers).</small>
+      </div>
     </div>
     <div class="form-group mb-3">
       <label for="fabricationDate">Fabrication Date</label>
       <input id="fabricationDate" type="date" formControlName="fabricationDate" class="form-control">
+      <div *ngIf="vehicleForm.get('fabricationDate')?.touched && vehicleForm.get('fabricationDate')?.invalid" class="text-danger">
+        <small *ngIf="vehicleForm.get('fabricationDate')?.errors?.['required']">Fabrication date is required.</small>
+      </div>
     </div>
     <div class="form-group mb-3">
       <label for="fuelType">Fuel Type</label>
       <input id="fuelType" formControlName="fuelType" class="form-control">
+      <div *ngIf="vehicleForm.get('fuelType')?.touched && vehicleForm.get('fuelType')?.invalid" class="text-danger">
+        <small *ngIf="vehicleForm.get('fuelType')?.errors?.['required']">Fuel type is required.</small>
+        <small *ngIf="vehicleForm.get('fuelType')?.errors?.['pattern']">Only letters are allowed.</small>
+        <small *ngIf="vehicleForm.get('fuelType')?.errors?.['maxLength']">Max 15 characters allowed.</small>
+      </div>
     </div>
     <!-- File Input for Image -->
     <div class="form-group mb-3">

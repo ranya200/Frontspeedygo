@@ -28,4 +28,13 @@ export class RatingService {
     return this.http.get<{ [driverId: string]: string }>(`${this.baseUrl}/badges/global`);
   }
   
+  updateRating(ratingId: string, updatedRating: RideRating): Observable<RideRating> {
+    return this.http.put<RideRating>(`${this.baseUrl}/${ratingId}`, updatedRating);
+  }
+
+  getUserRatingForRide(rideId: string, passengerId: string): Observable<RideRating> {
+    return this.http.get<RideRating>(`${this.baseUrl}/ride/${rideId}/user/${passengerId}`);
+  }
+  
+  
 }

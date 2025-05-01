@@ -1,9 +1,8 @@
-// ✅ FINAL VERSION of CarpoolingComponent (ride-specific + global rating fallback)
+// ✅ FINAL VERSION of CarpoolingComponent (with backend favorites)
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { RouterModule } from '@angular/router';
-import { Router } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -12,16 +11,17 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
-
 import { CarpoolingService } from 'src/app/services/carpooling/carpooling.service';
-import { HeaderFrontComponent } from '../header-front/header-front.component';
-import { FooterFrontComponent } from '../footer-front/footer-front.component';
+import { FavoriteService } from 'src/app/services/favorite/favorite.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { BookingService } from 'src/app/services/booking/booking.service';
 import { RatingService } from 'src/app/services/rating/rating.service';
-import { Booking } from 'src/app/models/booking.model';
 import { Carpool } from 'src/app/models/carpool.model';
+import { Booking } from 'src/app/models/booking.model';
 import { RideRating } from 'src/app/models/ride-rating.model';
+
+import { HeaderFrontComponent } from '../header-front/header-front.component';
+import { FooterFrontComponent } from '../footer-front/footer-front.component';
 import { RideRatingFormComponent } from '../ride-rating-form/ride-rating-form.component';
 import { RideRatingsListComponent } from '../ride-ratings-list/ride-ratings-list.component';
 
@@ -59,16 +59,16 @@ export class CarpoolingComponent implements OnInit {
   confirmedRides: string[] = [];
   averageRatings: { [rideId: string]: number } = {};
   rideBadges: { [rideId: string]: string } = {};
-  driverGlobalBadges: { [driverId: string]: string } = {}; // NEW
+  driverGlobalBadges: { [driverId: string]: string } = {};
   showRatings: { [rideId: string]: boolean } = {};
   showRatingForm: { [rideId: string]: boolean } = {};
   currentUserName: string = '';
   searchQuery: string = '';
   favoriteRideIds: string[] = [];
   showFavoritesOnly: boolean = false;
-
-
-
+  showEditForm: { [rideId: string]: boolean } = {};
+  editRatingData: { [rideId: string]: RideRating } = {};
+  showTodayOnly: boolean = false;
 
   newCarpool: Carpool = {
     driverId: '',
@@ -83,6 +83,7 @@ export class CarpoolingComponent implements OnInit {
 
   constructor(
     private carpoolingService: CarpoolingService,
+    private favoriteService: FavoriteService,
     private authService: AuthService,
     private bookingService: BookingService,
     private ratingService: RatingService,
@@ -90,16 +91,93 @@ export class CarpoolingComponent implements OnInit {
     private snackBar: MatSnackBar
   ) {}
 
+ 
+
+toggleTodayFilter(): void {
+  this.showTodayOnly = !this.showTodayOnly;
+  this.applyRideFilter(); // Reapply filter when toggling
+}
+
+
   ngOnInit(): void {
     this.currentUserId = this.authService.getUserIdFromToken();
+    this.currentUserName = this.authService.getUserNameFromToken() ?? '';
     this.loadCarpooling();
     this.fetchConfirmedBookings();
-    this.loadGlobalBadges(); // NEW
-    this.loadDriverRatings(); // ratings spécifiques au ride
-    this.currentUserName = this.authService.getUserNameFromToken() ?? '';
-    const storedFavorites = localStorage.getItem('favoriteRides');
-this.favoriteRideIds = storedFavorites ? JSON.parse(storedFavorites) : [];
-    
+    this.loadGlobalBadges();
+    this.loadDriverRatings();
+    this.loadFavoritesFromBackend(); // ✅ load from backend
+  }
+
+  loadFavoritesFromBackend(): void {
+    if (!this.currentUserId) return;
+    this.favoriteService.getFavorites(this.currentUserId).subscribe({
+      next: (ids) => {
+        this.favoriteRideIds = ids;
+        this.applyRideFilter();
+      },
+      error: () => {
+        console.error('❌ Failed to load favorites');
+      }
+    });
+  }
+
+  toggleFavorite(rideId: string): void {
+    if (!this.currentUserId) return;
+
+    const index = this.favoriteRideIds.indexOf(rideId);
+    if (index > -1) {
+      this.favoriteService.removeFavorite(this.currentUserId, rideId).subscribe({
+        next: () => {
+          this.favoriteRideIds.splice(index, 1);
+          this.applyRideFilter();
+        },
+        error: () => {
+          console.error('❌ Failed to remove favorite');
+        }
+      });
+    } else {
+      this.favoriteService.addFavorite(this.currentUserId, rideId).subscribe({
+        next: () => {
+          this.favoriteRideIds.push(rideId);
+          this.applyRideFilter();
+        },
+        error: () => {
+          console.error('❌ Failed to add favorite');
+        }
+      });
+    }
+  }
+
+  isFavorite(rideId: string): boolean {
+    return this.favoriteRideIds.includes(rideId);
+  }
+
+  onEditRatingClick(rideId: string): void {
+    const passengerId = this.currentUserId!;
+    this.ratingService.getUserRatingForRide(rideId, passengerId).subscribe((rating) => {
+      this.editRatingData[rideId] = rating;
+      this.showRatingForm[rideId] = true;
+    });
+  }
+
+  toggleEditForm(id: string): void {
+    this.showEditForm[id] = !this.showEditForm[id];
+  }
+
+  updateCarpooling(carpool: Carpool): void {
+    if (carpool.id) {
+      this.carpoolingService.updateCarpooling(carpool.id, carpool).subscribe({
+        next: () => {
+          this.showToast('✅ Carpool updated successfully!');
+          this.loadCarpooling();
+          this.showEditForm[carpool.id!] = false;
+        },
+        error: () => {
+          this.showToast('❌ Failed to update carpool.', 'error');
+        }
+      });
+    }
   }
 
   showToast(message: string, type: 'success' | 'error' = 'success', duration: number = 3000) {
@@ -110,31 +188,6 @@ this.favoriteRideIds = storedFavorites ? JSON.parse(storedFavorites) : [];
       panelClass: type === 'success' ? ['success-snackbar'] : ['error-snackbar']
     });
   }
-  
-  
-
-  toggleFavorite(rideId: string) {
-    const index = this.favoriteRideIds.indexOf(rideId);
-    if (index > -1) {
-      // Already favorited, unfavorite it
-      this.favoriteRideIds.splice(index, 1);
-    } else {
-      // Not favorited yet, add it
-      this.favoriteRideIds.push(rideId);
-    }
-    this.saveFavorites();
-    this.applyRideFilter(); // 🆕 Force re-apply to update icons immediately
-  }
-  
-  
-  saveFavorites() {
-    localStorage.setItem('favoriteRides', JSON.stringify(this.favoriteRideIds));
-  }
-  
-  isFavorite(rideId: string): boolean {
-    return this.favoriteRideIds.includes(rideId);
-  }
-  
 
   fetchConfirmedBookings(): void {
     if (!this.currentUserId) return;
@@ -177,61 +230,56 @@ this.favoriteRideIds = storedFavorites ? JSON.parse(storedFavorites) : [];
     });
   }
 
-  loadMyRides() {
-    if (!this.currentUserId) return;
-    this.carpoolingService.getCarpoolingByDriverId(this.currentUserId).subscribe((data) => {
-      this.filteredRides = data;
-    });
-  }
-
-  loadCarpooling() {
-    this.carpoolingService.getCarpooling().subscribe(
-      (data) => {
+  loadCarpooling(): void {
+    this.carpoolingService.getCarpooling().subscribe({
+      next: (data) => {
         this.carpoolingList = data;
         this.applyRideFilter();
         this.loadDriverRatings();
       },
-      (error) => {
-        console.error('Error fetching carpooling data:', error);
+      error: (err) => {
+        console.error('Error fetching carpooling data:', err);
       }
-    );
+    });
   }
-
-  /*applyRideFilter() {
-    this.filteredRides = this.showMyRidesOnly
-      ? this.carpoolingList.filter(c => c.driverId === this.currentUserId)
-      : this.carpoolingList;
-  }
-      */
-  applyRideFilter() {
+  applyRideFilter(): void {
     this.filteredRides = this.carpoolingList.filter(c => {
       const matchesDriver = !this.showMyRidesOnly || c.driverId === this.currentUserId;
       const matchesSearch = this.matchSearchQuery(c);
       const matchesFavorite = !this.showFavoritesOnly || this.isFavorite(c.id!);
+      const matchesToday = !this.showTodayOnly || this.isRideToday(c.departureTime);
   
-      return matchesDriver && matchesSearch && matchesFavorite;
+      return matchesDriver && matchesSearch && matchesFavorite && matchesToday;
     });
   }
+
+  isRideToday(departureTime: string): boolean {
+    const rideDate = new Date(departureTime);
+    const today = new Date();
   
-  toggleFavoritesFilter() {
-    this.showFavoritesOnly = !this.showFavoritesOnly;
-    this.applyRideFilter();
-  }
-  
-  
-  // Helper method
-  matchSearchQuery(carpool: Carpool): boolean {
-    if (!this.searchQuery) return true;
-  
-    const query = this.searchQuery.toLowerCase();
     return (
-      (carpool.pickupLocation?.toLowerCase().includes(query)) ||
-      (carpool.dropoffLocation?.toLowerCase().includes(query))
+      rideDate.getDate() === today.getDate() &&
+      rideDate.getMonth() === today.getMonth() &&
+      rideDate.getFullYear() === today.getFullYear()
     );
   }
   
 
-  toggleRideView() {
+  toggleFavoritesFilter(): void {
+    this.showFavoritesOnly = !this.showFavoritesOnly;
+    this.applyRideFilter();
+  }
+
+  matchSearchQuery(carpool: Carpool): boolean {
+    if (!this.searchQuery) return true;
+    const query = this.searchQuery.toLowerCase();
+    return (
+      carpool.pickupLocation?.toLowerCase().includes(query) ||
+      carpool.dropoffLocation?.toLowerCase().includes(query)
+    );
+  }
+
+  toggleRideView(): void {
     this.showMyRidesOnly = !this.showMyRidesOnly;
     this.applyRideFilter();
   }
@@ -243,15 +291,12 @@ this.favoriteRideIds = storedFavorites ? JSON.parse(storedFavorites) : [];
   bookRide(rideId: string): void {
     if (!this.currentUserId) {
       this.showToast('❌ You must be logged in to book a ride!', 'error');
-
-      //alert();
       return;
     }
 
     const ride = this.filteredRides.find(r => r.id === rideId);
     if (ride?.driverId === this.currentUserId) {
       this.showToast('❌ You cannot book your own ride.', 'error');
-     // alert();
       return;
     }
 
@@ -267,49 +312,46 @@ this.favoriteRideIds = storedFavorites ? JSON.parse(storedFavorites) : [];
     this.bookingService.createBooking(newBooking).subscribe({
       next: () => {
         this.showToast(`✅ ${seats} seat(s) booked successfully!`);
-       // alert();
         this.seatsToBook[rideId] = 1;
       },
       error: (err) => {
         console.error(err);
         this.showToast('❌ Failed to book seat.', 'error');
-       // alert();
       }
     });
   }
 
-  submitCarpooling() {
+  submitCarpooling(): void {
     this.newCarpool.driverId = this.currentUserId!;
     this.newCarpool.driverName = this.currentUserName!;
-    this.carpoolingService.addCarpooling(this.newCarpool).subscribe(
-      () => {
+    this.carpoolingService.addCarpooling(this.newCarpool).subscribe({
+      next: () => {
         this.showToast('✅ Carpooling added successfully!');
-       // alert('Carpooling added successfully!');
         this.loadCarpooling();
         this.resetForm();
         this.showSuggestRideModal = false;
       },
-      () =>  this.showToast('❌ Failed to submit carpooling.', 'error')
-        //alert()
-    );
+      error: () => {
+        this.showToast('❌ Failed to submit carpooling.', 'error');
+      }
+    });
   }
 
-  deleteCarpool(id?: string) {
+  deleteCarpool(id?: string): void {
     if (id && confirm('Are you sure you want to cancel this ride?')) {
-      this.carpoolingService.deleteCarpooling(id).subscribe(
-        () => {
+      this.carpoolingService.deleteCarpooling(id).subscribe({
+        next: () => {
           this.showToast('✅ Ride canceled successfully!');
-          
-          //alert();
           this.loadCarpooling();
         },
-        () =>this.showToast('❌Failed to cancel the ride.', 'error')
-           
-      );
+        error: () => {
+          this.showToast('❌ Failed to cancel the ride.', 'error');
+        }
+      });
     }
   }
 
-  selectCarpool(carpool: Carpool) {
+  selectCarpool(carpool: Carpool): void {
     if (carpool.driverId === this.currentUserId) {
       this.router.navigate(['/carpooling-bookings'], {
         queryParams: { rideId: carpool.id }
@@ -317,25 +359,7 @@ this.favoriteRideIds = storedFavorites ? JSON.parse(storedFavorites) : [];
     }
   }
 
-  updateCarpooling() {
-    if (this.selectedCarpool?.id) {
-      this.carpoolingService.updateCarpooling(this.selectedCarpool.id, this.selectedCarpool).subscribe(
-        () => {
-          alert('✅ Carpooling updated successfully!');
-          this.loadCarpooling();
-          this.selectedCarpool = null;
-        },
-        () =>this.showToast('❌Failed to update carpooling.', 'error')
-           
-      );
-    }
-  }
-
-  cancelUpdate() {
-    this.selectedCarpool = null;
-  }
-
-  resetForm() {
+  resetForm(): void {
     this.newCarpool = {
       driverId: '',
       driverName: '',

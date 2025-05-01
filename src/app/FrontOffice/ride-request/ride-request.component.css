@@ -352,3 +352,10 @@ button[disabled] {
   background-color: gray !important;
   cursor: not-allowed;
 }
+
+.applicant-scroll-container {
+  max-height: 150px; 
+  overflow-y: auto;  
+  padding-right: 10px; 
+}
+

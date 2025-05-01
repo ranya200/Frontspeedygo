@@ -1,12 +1,12 @@
 import { Component, Inject, OnInit, AfterViewInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import * as L from 'leaflet';
+import mapboxgl from 'mapbox-gl';
 
 @Component({
   selector: 'app-location-map-dialog',
   template: `
     <div class="map-dialog-container">
-      <div id="map" class="leaflet-map"></div>
+      <div id="map" class="mapbox-map"></div>
       <div class="text-end mt-3">
         <button class="btn btn-primary" (click)="confirmLocation()">✅ Confirm Location</button>
       </div>
@@ -29,48 +29,51 @@ import * as L from 'leaflet';
   imports: []
 })
 export class LocationMapDialogComponent implements OnInit, AfterViewInit {
-  private map!: L.Map;
-  private marker!: L.Marker;
-  private selectedCoords: { lat: number, lng: number } = {
-    lat: 36.8065,
-    lng: 10.1815
-  }; // Default: Tunis
+  private map!: mapboxgl.Map;
+  private marker!: mapboxgl.Marker;
+
+  selectedCoords = { lat: 36.8065, lng: 10.1815 }; // Default: Tunis
 
   constructor(
     public dialogRef: MatDialogRef<LocationMapDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    // ✅ Configure your Mapbox access token
+    mapboxgl.accessToken = 'pk.eyJ1IjoiaG91c3NlbTEyMzQiLCJhIjoiY21hNWhxbGF3MGhzczJpc2dieTRqbWczbSJ9.WB_CdzlMnLXexWtQfyRQaA';
+  }
 
   ngAfterViewInit(): void {
-    setTimeout(() => {
-      this.map = L.map('map', {
-        attributionControl: false
-      }).setView([this.selectedCoords.lat, this.selectedCoords.lng], 13);
-  
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        maxZoom: 19
-      }).addTo(this.map);
-  
-      this.marker = L.marker(this.selectedCoords, {
-        draggable: true
-      }).addTo(this.map);
-  
-      this.marker.on('dragend', () => {
-        const pos = this.marker.getLatLng();
-        this.selectedCoords = { lat: pos.lat, lng: pos.lng };
-      });
-  
-      // 🔁 Ensure rendering after dialog opens
-      setTimeout(() => {
-        this.map.invalidateSize();
-      }, 300);
-    }, 0); // ensure DOM is ready
-  }
-  
+    // ✅ Initialize the map
+    this.map = new mapboxgl.Map({
+      container: 'map',
+      style: 'mapbox://styles/mapbox/streets-v11',
+      center: [this.selectedCoords.lng, this.selectedCoords.lat],
+      zoom: 13,
+      dragRotate: false,
+      touchZoomRotate: true
+    });
 
-  confirmLocation() {
+    // ✅ Add a draggable marker
+    this.marker = new mapboxgl.Marker({ draggable: true })
+      .setLngLat([this.selectedCoords.lng, this.selectedCoords.lat])
+      .addTo(this.map);
+
+    this.marker.on('dragend', () => {
+      const lngLat = this.marker.getLngLat();
+      this.selectedCoords = { lat: lngLat.lat, lng: lngLat.lng };
+    });
+
+    // ✅ Fix display issues after dialog opens
+    setTimeout(() => {
+      this.map.resize();
+      this.map.setCenter([this.selectedCoords.lng, this.selectedCoords.lat]); // ✅ Recentrer manuellement
+    }, 300);
+    
+  }
+
+  confirmLocation(): void {
     this.dialogRef.close(this.selectedCoords);
   }
 }

@@ -36,9 +36,11 @@
           <td>{{ request.pickupLocation }}</td>
           <td>{{ request.dropoffLocation }}</td>
           <td>{{ request.preferredTime | date:'short' }}</td>
-          <td>
+          <td class="d-flex gap-2">
             <button class="btn btn-outline-primary btn-sm" (click)="apply(request.id!)">🚗 Apply</button>
+            <button class="btn btn-outline-info btn-sm" (click)="openRouteMap(request.pickupLocation, request.dropoffLocation)">🗺️ View Route</button>
           </td>
+          
         </tr>
       </tbody>
     </table>
@@ -69,10 +71,24 @@
             <td><span class="badge bg-info">{{ request.status }}</span></td>
             <td>
               <div *ngIf="request.appliedDrivers?.length; else noApplicants">
-                <div *ngFor="let driver of request.appliedDrivers" class="d-flex align-items-center gap-2 mb-2">
-                  <span>{{ driver.fullName }}</span>
-                  <button class="btn btn-outline-success btn-sm" (click)="confirm(driver.id, request.id!)">✅ Confirm</button>
-                </div>
+                <ul class="list-unstyled mb-0">
+                  <li
+                    *ngFor="let driver of request.appliedDrivers; let last = last"
+                    class="d-flex justify-content-between align-items-center py-2 px-1"
+                    [ngStyle]="{ 'border-bottom': last ? 'none' : '1px solid #dee2e6' }"
+                    style="transition: background-color 0.2s ease;"
+                  >
+                    <span>{{ driver.fullName }}</span>
+                    <span class="d-flex gap-2">
+                      <i class="fas fa-check text-success" title="Confirm"
+                         style="cursor: pointer;" 
+                         (click)="confirm(driver.id, request.id!)"></i>
+                      <i class="fas fa-times text-danger" title="Decline"
+                         style="cursor: pointer;" 
+                         (click)="decline(driver.id, request.id!)"></i>
+                    </span>
+                  </li>
+                </ul>
               </div>
               <ng-template #noApplicants>
                 <span class="text-muted">No applicants</span>
@@ -83,6 +99,8 @@
       </table>
     </div>
   </div>
+  
+  
 
   <!-- Confirmed Rides Table -->
   <div *ngIf="showMatchedRides && matchedRideRequests.length > 0" class="mt-5">

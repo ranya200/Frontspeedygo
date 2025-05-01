@@ -1,13 +1,15 @@
-<!-- ⭐ Show form trigger -->
-<a *ngIf="!submitted && !canShowForm" href="#" (click)="showForm(); $event.preventDefault()" class="text-primary fw-semibold">
+<!-- ⭐ Show form trigger (Only in create mode) -->
+<a *ngIf="!editMode && !submitted && !canShowForm"
+   href="#"
+   (click)="showForm(); $event.preventDefault()"
+   class="text-primary fw-semibold">
   ⭐ Click here to rate this ride
 </a>
-
 
 <!-- Rating Form Panel -->
 <div *ngIf="canShowForm && !submitted" class="rating-panel shadow-sm rounded bg-white p-4 mt-3 border">
   <div class="d-flex justify-content-between align-items-center mb-3">
-    <h5 class="mb-0">⭐ Rate this Ride</h5>
+    <h5 class="mb-0">{{ editMode ? '✏️ Edit your Rating' : '⭐ Rate this Ride' }}</h5>
     <button type="button" class="btn btn-sm btn-outline-danger" (click)="toggleRatingForm()">✖</button>
   </div>
 
@@ -32,7 +34,9 @@
       <textarea class="form-control" rows="3" formControlName="comment" placeholder="Your comments..."></textarea>
     </div>
 
-    <button class="btn btn-success w-100 fw-bold" type="submit">✅ Submit Rating</button>
+    <button class="btn btn-success w-100 fw-bold" type="submit">
+      {{ editMode ? '💾 Update Rating' : '✅ Submit Rating' }}
+    </button>
   </form>
 </div>
 

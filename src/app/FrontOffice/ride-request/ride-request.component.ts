@@ -12,6 +12,7 @@ import { RideRequestWithNames } from 'src/app/models/ride-request-with-names.mod
 import { HeaderFrontComponent } from '../header-front/header-front.component';
 import { FooterFrontComponent } from '../footer-front/footer-front.component';
 import { LocationMapDialogComponent } from '../location-map-dialog/location-map-dialog.component';
+import { RideRouteMapDialogComponent } from '../ride-route-map-dialog/ride-route-map-dialog.component';
 
 @Component({
   selector: 'app-ride-request',
@@ -35,6 +36,14 @@ export class RideRequestComponent implements OnInit {
 
   showMyRequests: boolean = false;
 
+
+  openRouteMap(pickup: string, dropoff: string): void {
+    this.dialog.open(RideRouteMapDialogComponent, {
+      width: '90vw',
+      height: '90vh',
+      data: { pickup, dropoff }
+    });
+  }
 
   toggleMyRequests() {
     this.showMyRequests = !this.showMyRequests;
@@ -73,6 +82,11 @@ export class RideRequestComponent implements OnInit {
     }
   }
 
+  decline(driverId: string, requestId: string): void {
+    // TODO: Add your logic here
+    console.log(`Declined driver ${driverId} for request ${requestId}`);
+    // Optionally call a service to remove the driver from the list
+  }
   loadRequests(): void {
     this.rideRequestService.getWithNames().subscribe((data) => {
       this.rideRequests = data.filter(r => r.passengerId !== this.currentUserId && r.status !== 'MATCHED');

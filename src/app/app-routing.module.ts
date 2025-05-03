@@ -56,6 +56,7 @@ import { visitorGuard } from './guards/visitor.guard';
 import { partnerGuard } from './guards/partner.guard';
 import {LocationMapComponent} from './FrontOffice/location-map/location-map.component'
 import { CarpoolingBookingsComponent } from './FrontOffice/carpooling-bookings/carpooling-bookings.component';
+import { MyBookingsComponent } from './FrontOffice/my-bookings/my-bookings.component';
 
 
 const routes: Routes = [
@@ -109,6 +110,8 @@ const routes: Routes = [
   { path: 'apply-to-ride', component: RideApplyComponent },
   { path: 'map', component: LocationMapComponent },
   { path: 'carpooling-bookings', component: CarpoolingBookingsComponent },
+  { path: 'my-bookings', component: MyBookingsComponent },
+
 
   { path: 'admin', component: AllTemplateBackComponent, canActivate: [adminGuard] },
   { path: '**', redirectTo: '' },

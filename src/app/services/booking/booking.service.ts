@@ -30,6 +30,13 @@ export class BookingService {
     return this.http.get<Booking[]>(`${this.baseUrl}/user/${userId}`);
   }
   
+  declineBooking(bookingId: string): Observable<any> {
+    return this.http.put(`${this.baseUrl}/${bookingId}/decline`, {});
+  }
+
+  cancelBooking(id: string): Observable<Booking> {
+    return this.http.put<Booking>(`${this.baseUrl}/${id}/cancel`, {});
+  }
   
   
 }

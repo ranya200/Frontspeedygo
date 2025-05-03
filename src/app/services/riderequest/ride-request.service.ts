@@ -35,7 +35,17 @@ export class RideRequestService {
     return this.http.get<RideRequestWithNames[]>('http://localhost:8089/speedygo/api/ride-requests/with-names');
   }
   
-
+  unapplyFromRequest(requestId: string, driverId: string): Observable<any> {
+    return this.http.put(`${this.apiUrl}/${requestId}/unapply/${driverId}`, {});
+  }
   
+  declineFromRequest(requestId: string, driverId: string): Observable<void> {
+    return this.http.put<void>(`http://localhost:8089/speedygo/api/ride-requests/${requestId}/decline/${driverId}`, {});
+  }
+  
+  declineConfirmedRide(requestId: string): Observable<any> {
+    
+    return this.http.put(`http://localhost:8089/speedygo/api/ride-requests/${requestId}/decline`, {});
+  }
   
 }

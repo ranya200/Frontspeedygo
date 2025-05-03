@@ -3,7 +3,7 @@ export interface Booking {
   rideId: string;
   passengerId: string;
   seatsBooked: number;
-  status: 'PENDING' | 'CONFIRMED';
+  status: 'PENDING' | 'CONFIRMED' | 'DECLINED'| 'CANCELED' |'FULL';
 
   // ✅ Champs enrichis du trajet
   pickupLocation?: string;

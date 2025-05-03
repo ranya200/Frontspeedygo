@@ -34,16 +34,32 @@ export class RideRequestComponent implements OnInit {
   isMapDialogOpen = false;
   showMatchedRides = false;
 
+  
+
   showMyRequests: boolean = false;
 
 
+  
+  declineConfirmedRide(requestId: string): void {
+    // Send the request to the backend to decline the confirmed ride
+    this.rideRequestService.declineConfirmedRide(requestId).subscribe(() => {
+      this.snackBar.open('🚫 Ride declined!', 'Close', { duration: 3000 });
+      this.loadRequests(); // Reload requests to update the UI
+    });
+  }
+  
+
   openRouteMap(pickup: string, dropoff: string): void {
+    this.isMapDialogOpen = true;  // Set to true when the map modal is opened
     this.dialog.open(RideRouteMapDialogComponent, {
       width: '90vw',
       height: '90vh',
       data: { pickup, dropoff }
+    }).afterClosed().subscribe(() => {
+      this.isMapDialogOpen = false;  // Set to false when the modal is closed
     });
   }
+  
 
   toggleMyRequests() {
     this.showMyRequests = !this.showMyRequests;
@@ -83,10 +99,21 @@ export class RideRequestComponent implements OnInit {
   }
 
   decline(driverId: string, requestId: string): void {
-    // TODO: Add your logic here
-    console.log(`Declined driver ${driverId} for request ${requestId}`);
-    // Optionally call a service to remove the driver from the list
+    if (!driverId || !requestId) return;
+  
+    this.rideRequestService.declineFromRequest(requestId, driverId).subscribe({
+      next: () => {
+        // Successfully declined the driver, reload the requests
+        this.snackBar.open('❌ Driver declined from request!', 'Close', { duration: 3000 });
+        this.loadRequests();
+      },
+      error: (err) => {
+        console.error('Error declining driver:', err);
+        this.snackBar.open('⚠️ Error declining driver. Please try again.', 'Close', { duration: 3000 });
+      }
+    });
   }
+  
   loadRequests(): void {
     this.rideRequestService.getWithNames().subscribe((data) => {
       this.rideRequests = data.filter(r => r.passengerId !== this.currentUserId && r.status !== 'MATCHED');
@@ -113,14 +140,24 @@ export class RideRequestComponent implements OnInit {
     });
   }
 
-  apply(requestId?: string): void {
+  apply(requestId: string): void {
     if (!requestId || !this.currentUserId) return;
-
+  
     this.rideRequestService.applyToRequest(requestId, this.currentUserId).subscribe(() => {
       this.snackBar.open('🚗 Applied to ride request!', 'Close', { duration: 3000 });
       this.loadRequests();
     });
   }
+  
+  unapply(requestId: string): void {
+    if (!requestId || !this.currentUserId) return;
+  
+    this.rideRequestService.unapplyFromRequest(requestId, this.currentUserId).subscribe(() => {
+      this.snackBar.open('❌ Unapplied from ride request!', 'Close', { duration: 3000 });
+      this.loadRequests();
+    });
+  }
+  
 
   getConfirmedDriverName(request: RideRequestWithNames): string {
     const driver = request.appliedDrivers?.find(d => d.id === request.confirmedDriverId);
@@ -177,6 +214,24 @@ export class RideRequestComponent implements OnInit {
     const data = await response.json();
     return data.display_name || `Lat: ${lat.toFixed(5)}, Lng: ${lng.toFixed(5)}`;
   }
+
+  toggleApply(requestId: string): void {
+    if (!this.currentUserId) return;
+  
+    const isApplied = this.isApplied(requestId);
+  
+    if (isApplied) {
+      this.unapply(requestId); // If applied, unapply
+    } else {
+      this.apply(requestId); // If not applied, apply
+    }
+  }
+  
+  isApplied(requestId: string): boolean {
+    const request = this.rideRequests.find(r => r.id === requestId);
+    return request?.appliedDrivers?.some(driver => driver.id === this.currentUserId) ?? false;
+  }
+  
 
   private resetForm(): void {
     this.newRequest = {

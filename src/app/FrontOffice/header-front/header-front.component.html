@@ -1931,6 +1931,16 @@
             <i class="fe fe-search"></i>
           </a>
         </li>
+        <!-- Message Notification Icon -->
+        <li class="nav-item ms-lg-n4" *ngIf="isLoggedIn">
+          <a class="nav-link position-relative" href="javascript:void(0);" (click)="goToChat()">
+            <i class="fe fe-message-circle"></i>
+            <span *ngIf="unreadMessageCount > 0" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+              {{ unreadMessageCount > 9 ? '9+' : unreadMessageCount }}
+              <span class="visually-hidden">unread messages</span>
+            </span>
+          </a>
+        </li>
         <li class="nav-item dropdown" *ngIf="isLoggedIn">
           <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             <i class="fe fe-user"></i> {{ userProfile?.name }}

@@ -9,6 +9,8 @@ import { FooterBackComponent } from "../../footer-back/footer-back.component";
 import { LeaveSettingsComponent } from '../leave-settings/leave-settings.component';
 import { LeaveRequestsListComponent } from '../leave-requests-list/leave-requests-list.component';
 import { LeaveSummaryComponent } from '../leave-summary/leave-summary.component';
+import { SalarySettingsComponent } from '../salary-settings/salary-settings.component';
+import { PayrollListComponent } from '../payroll-list/payroll-list.component';
 
 @Component({
   selector: 'app-leaveadmin',
@@ -19,7 +21,9 @@ import { LeaveSummaryComponent } from '../leave-summary/leave-summary.component'
     FooterBackComponent,
     LeaveSettingsComponent,
     LeaveRequestsListComponent,
-    LeaveSummaryComponent
+    LeaveSummaryComponent,
+    SalarySettingsComponent,
+    PayrollListComponent
     ],
   templateUrl: './leaveadmin.component.html',
   styleUrl: './leaveadmin.component.css'

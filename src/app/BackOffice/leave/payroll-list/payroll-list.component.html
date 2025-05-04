@@ -1,0 +1,29 @@
+<div class="container mt-4">
+  <h2 class="text-center mb-4">Salary Deductions (Payroll)</h2>
+
+  <div *ngIf="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
+
+  <div class="table-responsive">
+    <table class="table table-bordered table-hover shadow-sm">
+      <thead class="table-dark text-center">
+        <tr>
+          <th>Driver Name</th>
+          <!-- Dynamically generate months as columns -->
+          <th *ngFor="let month of months">{{ month }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let driver of drivers" class="text-center">
+          <td>{{ driver.name }}</td>
+          <!-- Loop over each month and show the total salary cut for that month for each driver -->
+          <td *ngFor="let month of months">
+            <ng-container *ngIf="salaryCuts[month] && salaryCuts[month][driver.id]; else noData">
+              {{ salaryCuts[month][driver.id] | number:'1.0-2' }}
+            </ng-container>
+            <ng-template #noData>-</ng-template>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

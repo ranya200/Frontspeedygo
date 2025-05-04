@@ -1,0 +1,32 @@
+<!--
+<div class="settings-container">
+  <h2 class="settings-title">Salary Settings</h2>
+
+  <button (click)="toggleSalarySettings()" class="toggle-btn">{{ showSalarySettings ? 'Hide Settings' : 'Update Settings' }}</button>
+
+  <div *ngIf="showSalarySettings" class="settings-form">
+    <form [formGroup]="salaryForm" (ngSubmit)="updateSettings()">
+      <div class="form-group">
+        <label for="dailySalary">Daily Salary Cut (DT)</label>
+        <input type="range" min="10" max="200" step="10" id="dailySalary" formControlName="dailySalary" class="slider">
+        <div class="slider-value">
+          {{ salaryForm.value.dailySalary }} DT
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="monthlySalary">Monthly Driver Salary (DT)</label>
+        <input type="range" min="500" max="5000" step="100" id="monthlySalary" formControlName="monthlySalary" class="slider">
+        <div class="slider-value">
+          {{ salaryForm.value.monthlySalary }} DT
+        </div>
+      </div>
+
+      <button type="submit" [disabled]="salaryForm.invalid" class="update-button">Update</button>
+    </form>
+  </div>
+
+  <div *ngIf="successMessage" class="alert alert-success">{{ successMessage }}</div>
+  <div *ngIf="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
+</div>
+-->

@@ -1,112 +1,211 @@
 <div class="chat-container">
+  <!-- Sidebar with user list -->
+  <div class="chat-sidebar">
+    <div class="sidebar-header">
+      <h3>Conversations</h3>
+      <div class="search-container">
+        <i class="search-icon">🔍</i>
+        <input
+          type="text"
+          placeholder="Rechercher..."
+          class="search-input"
+          [(ngModel)]="searchTerm"
+          (input)="searchUsers($event)"
+        />
+      </div>
+    </div>
 
-  <!-- 👥 Liste des utilisateurs -->
-  <div class="user-list">
-    <h3>Utilisateurs</h3>
-    <ul>
-      <li 
-        *ngFor="let user of users"
+    <div class="user-list">
+      <div
+        *ngFor="let user of filteredUsers"
+        class="user-item"
         [class.selected]="user.id === receiverId"
+        [class.has-unread]="unreadMessages[user.id!] > 0"
         (click)="selectUser(user)">
-        {{ user.firstName }} {{ user.lastName }} ({{ user.username }})
-      </li>
-    </ul>
-  </div>
 
-  <!-- 💬 Zone des messages -->
-  <div class="messages">
-    <div 
-      *ngFor="let msg of messages" 
-      class="message" 
-      [ngClass]="{ 'me': msg.sender === currentUserId }">
-
-      <div class="message-bubble">
-
-        <!-- 📌 En-tête du message -->
-        <div class="meta">
-          <strong>{{ msg.sender === currentUserId ? 'Moi' : getReceiverName() }}</strong>
-          <small>{{ msg.timestamp | date: 'short' }}</small>
-
-          <!-- 🗑️ Bouton de suppression -->
-          <button 
-            *ngIf="msg.sender === currentUserId" 
-            (click)="askDelete(msg)" 
-            title="Supprimer ce message">
-            🗑️
-          </button>
+        <div class="user-avatar">
+          <div class="avatar-circle">
+            {{ user.firstName?.charAt(0) }}{{ user.lastName?.charAt(0) }}
+          </div>
+          <span class="status-indicator" [ngClass]="{'online': onlineStatus[user.id!], 'offline': !onlineStatus[user.id!]}"></span>
         </div>
-       
-        <!-- 🖼️ Affichage contenu -->
-        <ng-container *ngIf="isImage(msg.content); else checkAudio">
-          <img  [src]="msg.content" 
-          alt="Image envoyée" 
-          style="max-width: 200px; border-radius: 5px;" />
-        </ng-container>
-        
-        <ng-template #checkAudio>
-          <ng-container *ngIf="isAudio(msg.content); else textMsg">
-            <audio [src]="msg.content" controls></audio>
-          </ng-container>
-        </ng-template>
-        
-        <ng-template #textMsg>
-          <ng-container *ngIf="msg.content && msg.content.includes('google.com/maps'); else checkFile">
-            <a [href]="msg.content" target="_blank">📍 Voir l'emplacement</a>
-          </ng-container>
-        </ng-template>
-        
-        <ng-template #checkFile>
-          <ng-container *ngIf="isFile(msg.content); else plainText">
-            <a [href]="msg.content" download target="_blank">
-              📄 {{ (msg.content && msg.content.split('/').pop()) || 'Fichier' }}
-            </a>
-          </ng-container>
-        </ng-template>
-        
-        <ng-template #plainText>
-          {{ msg.content }}
-        </ng-template>
-        
-        
-                
 
+        <div class="user-info">
+          <div class="user-name">{{ user.firstName }} {{ user.lastName }}</div>
+          <div class="user-username">{{ '@' + user.username }}</div>
+        </div>
+
+        <!-- Unread message indicator -->
+        <div *ngIf="unreadMessages[user.id!] > 0" class="unread-badge">
+          {{ unreadMessages[user.id!] }}
+        </div>
       </div>
     </div>
   </div>
 
-  <!-- ✍️ Zone de saisie -->
-  <div class="input-area">
-    <input 
-      [(ngModel)]="message" 
-      placeholder="Tapez votre message..." 
-      aria-label="Zone de saisie du message" />
-
-    <input 
-      type="file" 
-      (change)="onFileSelected($event)" 
-      #fileInput 
-      aria-label="Sélectionner un fichier" />
-
-      <canvas #waveCanvas width="300" height="60" class="waveform-canvas" ></canvas>
-       <!-- 🎙️ Contrôle audio -->
-      <button *ngIf="!isRecording" (click)="startRecording()">🎙️</button>
-      <button *ngIf="isRecording" (click)="stopRecording()">⏹️</button>
-      <div class="recording-visual" *ngIf="isRecording">
-        <div class="pulse-circle"></div>
+  <!-- Main chat area -->
+  <div class="chat-main">
+    <!-- Chat header -->
+    <div class="chat-header" *ngIf="receiverId">
+      <div class="chat-header-user">
+        <div class="user-avatar small">
+          <div class="avatar-circle">
+            {{ getReceiverName().charAt(0) }}
+          </div>
+          <span class="status-indicator" [ngClass]="{'online': onlineStatus[receiverId], 'offline': !onlineStatus[receiverId]}"></span>
+        </div>
+        <div class="header-user-name">{{ getReceiverName() }}</div>
       </div>
-      
+      <div class="chat-header-actions">
+        <button class="icon-button" title="Appel vidéo">📹</button>
+        <button class="icon-button" title="Appel audio">📞</button>
+        <button class="icon-button" title="Informations">ℹ️</button>
+      </div>
+    </div>
 
-    <button (click)="send()">Envoyer</button>
-    <button (click)="openLocationDialog()">📍 Partager ma position</button>
+    <!-- Empty state when no conversation is selected -->
+    <div class="empty-state" *ngIf="!receiverId">
+      <div class="empty-state-icon">💬</div>
+      <h3>Sélectionnez une conversation</h3>
+      <p>Choisissez un utilisateur dans la liste pour commencer à discuter</p>
+    </div>
 
+    <!-- Messages area -->
+    <div class="messages-container" *ngIf="receiverId">
+      <div class="messages">
+        <div
+          *ngFor="let msg of messages"
+          class="message"
+          [ngClass]="{ 'outgoing': msg.sender === currentUserId, 'incoming': msg.sender !== currentUserId }">
+
+          <!-- Message content -->
+          <div class="message-bubble">
+            <!-- Message content based on type -->
+            <ng-container *ngIf="isImage(msg.content); else checkAudio">
+              <img [src]="msg.content" alt="Image envoyée" class="message-image" />
+            </ng-container>
+
+            <ng-template #checkAudio>
+              <ng-container *ngIf="isAudio(msg.content); else textMsg">
+                <div class="audio-container" [ngClass]="{'outgoing': msg.sender === currentUserId}">
+                  <div class="audio-player">
+                    <button class="audio-play-button" (click)="toggleAudio($event, msg.content)">
+                      <i class="play-icon">▶️</i>
+                    </button>
+                    <div class="audio-waveform">
+                      <div class="waveform-bars">
+                        <div class="waveform-bar" *ngFor="let bar of generateWaveform(12)"></div>
+                      </div>
+                      <div class="audio-duration">{{ getAudioDuration(msg.content) }}</div>
+                    </div>
+                  </div>
+                  <audio [src]="msg.content" class="hidden-audio" (loadedmetadata)="onAudioLoaded($event)" (error)="onAudioError(msg.content)" preload="metadata" #audioElement></audio>
+                </div>
+              </ng-container>
+            </ng-template>
+
+            <ng-template #textMsg>
+              <ng-container *ngIf="msg.content && msg.content.includes('google.com/maps'); else checkFile">
+                <a [href]="msg.content" target="_blank" class="location-link">
+                  <i class="location-icon">📍</i> Voir l'emplacement
+                </a>
+              </ng-container>
+            </ng-template>
+
+            <ng-template #checkFile>
+              <ng-container *ngIf="isFile(msg.content); else plainText">
+                <a [href]="msg.content" download target="_blank" class="file-link">
+                  <i class="file-icon">📄</i> {{ (msg.content && msg.content.split('/').pop()) || 'Fichier' }}
+                </a>
+              </ng-container>
+            </ng-template>
+
+            <ng-template #plainText>
+              <div class="message-text">{{ msg.content }}</div>
+            </ng-template>
+          </div>
+
+          <!-- Message metadata -->
+          <div class="message-meta">
+            <span class="message-time">{{ msg.timestamp | date: 'HH:mm' }}</span>
+
+            <!-- Seen indicator for outgoing messages -->
+            <span
+              *ngIf="msg.sender === currentUserId"
+              class="seen-indicator"
+              [ngClass]="{'seen': msg.seen}">
+              <i class="seen-icon" [ngClass]="msg.seen ? 'seen-double' : 'seen-single'"></i>
+            </span>
+          </div>
+
+          <!-- Message actions -->
+          <div class="message-actions" *ngIf="msg.sender === currentUserId">
+            <button class="action-button" (click)="askDelete(msg)" title="Supprimer ce message">
+              <i class="delete-icon">🗑️</i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Input area -->
+    <div class="input-container" *ngIf="receiverId">
+      <div class="input-actions">
+        <button class="action-button" (click)="fileInput.click()" title="Joindre un fichier">
+          <i class="attach-icon">📎</i>
+        </button>
+        <input
+          type="file"
+          (change)="onFileSelected($event)"
+          #fileInput
+          class="file-input"
+          aria-label="Sélectionner un fichier" />
+
+        <button class="action-button" (click)="openLocationDialog()" title="Partager ma position">
+          <i class="location-icon">📍</i>
+        </button>
+      </div>
+
+      <div class="message-input-wrapper">
+        <input
+          [(ngModel)]="message"
+          placeholder="Tapez votre message..."
+          class="message-input"
+          aria-label="Zone de saisie du message" />
+      </div>
+
+      <div class="input-actions right">
+        <!-- Audio recording controls -->
+        <button class="action-button" *ngIf="!isRecording" (click)="startRecording()" title="Enregistrer un message vocal">
+          <i class="mic-icon">🎙️</i>
+        </button>
+        <button class="action-button recording" *ngIf="isRecording" (click)="stopRecording()" title="Arrêter l'enregistrement">
+          <i class="stop-icon">⏹️</i>
+        </button>
+
+        <!-- Recording visualization -->
+        <div class="recording-indicator" *ngIf="isRecording">
+          <div class="recording-pulse"></div>
+          <canvas #waveCanvas width="60" height="30" class="waveform-canvas"></canvas>
+        </div>
+
+        <!-- Send button -->
+        <button class="send-button" (click)="send()" [disabled]="!message && !selectedFile && !recordedAudioBlob">
+          <i class="send-icon">📤</i>
+        </button>
+      </div>
+    </div>
   </div>
 
-  <!-- 🗑️ Fenêtre de confirmation suppression -->
+  <!-- Confirmation modal for message deletion -->
   <div class="modal" *ngIf="confirmDeleteMessage">
     <div class="modal-content">
+      <h4>Supprimer le message</h4>
       <p>Voulez-vous vraiment supprimer ce message ?</p>
-      <button (click)="deleteMessage()">Oui</button>
-      <button (click)="cancelDelete()">Non</button>
+      <div class="modal-actions">
+        <button class="modal-button cancel" (click)="cancelDelete()">Annuler</button>
+        <button class="modal-button delete" (click)="deleteMessage()">Supprimer</button>
+      </div>
     </div>
   </div>
 </div>

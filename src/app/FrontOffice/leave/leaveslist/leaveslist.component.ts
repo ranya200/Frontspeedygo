@@ -10,16 +10,16 @@ import { jwtDecode } from 'jwt-decode';
 @Component({
   selector: 'app-leaveslist',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, HeaderFrontComponent, FooterFrontComponent, RouterModule ],  
+  imports: [CommonModule, ReactiveFormsModule, HeaderFrontComponent, FooterFrontComponent, RouterModule],
   templateUrl: './leaveslist.component.html',
   styleUrl: './leaveslist.component.css'
 })
-export class LeaveslistComponent implements OnInit{
+export class LeaveslistComponent implements OnInit {
 
   leaves: Leave[] = [];
   currentUserId!: string;
   errorMessage = '';
-  successMessage='';
+  successMessage = '';
   totalDays: number = 0;
 
   constructor(private leaveService: LeaveControllerService, private router: Router) { }
@@ -48,7 +48,7 @@ export class LeaveslistComponent implements OnInit{
     const token = localStorage.getItem('token');
     if (token) {
       const decoded: any = jwtDecode(token);
-      this.currentUserId = decoded.sub; // Assuming `sub` is the user ID (UUID)
+      this.currentUserId = decoded.sub;
     }
   }
 
@@ -67,28 +67,13 @@ export class LeaveslistComponent implements OnInit{
       }
     });
   }
-  
-  getAllLeaves(): void {
-    this.leaveService.getAllLeaves().subscribe({
-      next: async (response) => {
-        if (response instanceof Blob) {
-          const text = await response.text(); // Convertir Blob en texte
-          this.leaves = JSON.parse(text); // Convertir en JSON
-        } else {
-          this.leaves = response; // Déjà un tableau JSON
-        }
-        console.log("Données reçues :", this.leaves);
-      },
-      error: (err) => console.error('Erreur lors de la récupération des congés', err)
-    });
-  }
 
   deleteLeave(id: string): void {
     if (confirm('Are you sure you want to delete this leave request?')) {
       this.leaveService.deleteLeave(id).subscribe({
         next: () => {
           this.successMessage = 'Leave deleted successfully.';
-          this.fetchLeavesForUser(); // Refresh list
+          this.fetchLeavesForUser();
         },
         error: err => {
           console.error('Error deleting leave:', err);
@@ -97,9 +82,9 @@ export class LeaveslistComponent implements OnInit{
       });
     }
   }
-    
+
   editLeave(id: string): void {
-    this.router.navigate(['/leaveedit', id]); // Redirect to edit page with leave ID
+    this.router.navigate(['/leaveedit', id]);
   }
 
 }

@@ -1,19 +1,49 @@
-<div class="card shadow p-4">
-    <h2 class="text-center mb-4">Leave Settings</h2>
-  
-    <form [formGroup]="settingsForm" (ngSubmit)="updateSettings()">
-      <div class="form-group mb-3">
-        <label for="maxAllowedDays">Max Allowed Leave Days</label>
-        <input type="number" class="form-control" id="maxAllowedDays"
-               formControlName="maxAllowedDays" min="1" required />
-      </div>
-  
-      <div class="text-center">
-        <button type="submit" class="btn btn-primary" [disabled]="settingsForm.invalid">Update</button>
-      </div>
-  
-      <div *ngIf="successMessage" class="alert alert-success mt-3">{{ successMessage }}</div>
-      <div *ngIf="errorMessage" class="alert alert-danger mt-3">{{ errorMessage }}</div>
-    </form>
+<div class="settings-container">
+  <div class="settings-card">
+    <h2 class="settings-title">Settings</h2>
+
+    <!-- Button to open both settings -->
+    <button (click)="showSettings = !showSettings" class="toggle-btn">
+      {{ showSettings ? 'Hide All Settings' : 'Update All Settings' }}
+    </button>
+
+    <div *ngIf="showSettings" class="settings-form">
+      <!-- Leave Settings Form -->
+      <form [formGroup]="settingsForm" (ngSubmit)="saveAllSettings()">
+        <div class="form-group">
+          <label for="maxAllowedDays">Max Allowed Leave Days</label>
+          <input type="range" min="1" max="30" step="1" id="maxAllowedDays" formControlName="maxAllowedDays" class="slider">
+          <div class="slider-value">
+            {{ settingsForm.value.maxAllowedDays }} Days
+          </div>
+        </div>
+        <!-- Updated button for saving all settings -->
+      </form>
+
+      <!-- Salary Settings Form -->
+      <form [formGroup]="salaryForm" (ngSubmit)="saveAllSettings()">
+        <div class="form-group">
+          <label for="dailySalary">Daily Salary Cut (DT)</label>
+          <input type="range" min="10" max="200" step="10" id="dailySalary" formControlName="dailySalary" class="slider">
+          <div class="slider-value">
+            {{ salaryForm.value.dailySalary }} DT
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="monthlySalary">Monthly Salary (DT)</label>
+          <input type="range" min="500" max="5000" step="100" id="monthlySalary" formControlName="monthlySalary" class="slider">
+          <div class="slider-value">
+            {{ salaryForm.value.monthlySalary }} DT
+          </div>
+        </div>
+
+        <!-- Updated button for saving all settings -->
+        <button type="submit" [disabled]="salaryForm.invalid" class="update-button">Save All Settings</button>
+      </form>
+    </div>
   </div>
-  
+
+  <div *ngIf="successMessage" class="alert alert-success">{{ successMessage }}</div>
+  <div *ngIf="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
+</div>

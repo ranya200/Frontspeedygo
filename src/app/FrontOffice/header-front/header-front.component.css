@@ -1,0 +1,25 @@
+/* Message notification styles */
+.position-relative {
+  position: relative;
+}
+
+.badge.bg-danger {
+  background-color: #e41e3f !important;
+  color: white;
+  font-size: 0.7rem;
+  font-weight: bold;
+  padding: 0.25rem 0.4rem;
+  border-radius: 50%;
+  min-width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 0 2px white;
+}
+
+.position-absolute.top-0.start-100.translate-middle {
+  transform: translate(-50%, -50%);
+  top: 0;
+  right: 0;
+}

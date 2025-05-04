@@ -48,4 +48,12 @@ export class RideRequestService {
     return this.http.put(`http://localhost:8089/speedygo/api/ride-requests/${requestId}/decline`, {});
   }
   
+  deleteRide(requestId: string): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${requestId}`);
+  }
+
+  editRideRequest(request: RideRequest): Observable<RideRequest> {
+    const url = `${this.apiUrl}/${request.id}`; 
+    return this.http.put<RideRequest>(url, request); 
+  }
 }

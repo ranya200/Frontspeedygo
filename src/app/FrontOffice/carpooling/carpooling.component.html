@@ -159,46 +159,31 @@
           <button class="btn btn-primary" (click)="bookRide(carpool.id!); $event.stopPropagation()">Book This ↑</button>
         </div>
 
-<!-- Rating Section -->
-<div *ngIf="confirmedRides.includes(carpool.id!)">
-  <!-- Rating form if toggle is ON -->
-  <app-ride-rating-form 
-  *ngIf="showRatingForm[carpool.id!]"
-  [driverId]="carpool.driverId!"
-  [passengerId]="currentUserId!"
-  [rideId]="carpool.id!"
-  [editMode]="true"
-  [existingRating]="editRatingData[carpool.id!]"
-  (ratingUpdated)="showRatingForm[carpool.id!] = false">
-</app-ride-rating-form>
-
-
-
  <!-- Thank you message with inline "edit✏️?" -->
-<div *ngIf="!showRatingForm[carpool.id!]"
-class="alert alert-success d-flex justify-content-between align-items-center">
-<span>
-✅ Thank you for rating this ride! 🙌,
-<span style="text-decoration: underline; color: #0d6efd; cursor: pointer;"
-     (click)="onEditRatingClick(carpool.id!); $event.stopPropagation()">
- edit ✏️?
-</span>
-</span>
-</div>
-
-
-
-
-        <app-ride-ratings-list *ngIf="showRatings[carpool.id!]" [rideId]="carpool.id!">
-        </app-ride-ratings-list>
-
-        <button class="btn btn-sm btn-outline-secondary mt-1" (click)="toggleShowRatings(carpool.id!); $event.stopPropagation()">
-          {{ showRatings[carpool.id!] ? '🛑 Hide Reviews' : '📝 Show Reviews' }}
-        </button>
-      </div>
-    </div>
-  </div>
-</div>
+ <div *ngIf="!showRatingForm[carpool.id!]"
+ class="alert alert-success d-flex justify-content-between align-items-center">
+ <span>
+ ✅ Thank you for rating this ride! 🙌,
+ <span style="text-decoration: underline; color: #0d6efd; cursor: pointer;"
+      (click)="onEditRatingClick(carpool.id!); $event.stopPropagation()">
+  edit ✏️?
+ </span>
+ </span>
+ </div>
+ 
+ 
+ 
+ 
+         <app-ride-ratings-list *ngIf="showRatings[carpool.id!]" [rideId]="carpool.id!">
+         </app-ride-ratings-list>
+ 
+         <button class="btn btn-sm btn-outline-secondary mt-1" (click)="toggleShowRatings(carpool.id!); $event.stopPropagation()">
+           {{ showRatings[carpool.id!] ? '🛑 Hide Reviews' : '📝 Show Reviews' }}
+         </button>
+       </div>
+     </div>
+   </div>
+ </div>
 
 <!-- Suggest a Ride Modal -->
 <div class="modal-backdrop" *ngIf="showSuggestRideModal">

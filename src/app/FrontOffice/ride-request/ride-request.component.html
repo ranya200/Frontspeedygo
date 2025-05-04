@@ -62,6 +62,7 @@
           <th><i class="fas fa-clock text-warning"></i> Time</th>
           <th><i class="fas fa-tag"></i> Status</th>
           <th><i class="fas fa-users"></i> Applicants</th>
+          <th>Action</th>
         </tr>
       </thead>
       <tbody>
@@ -105,6 +106,11 @@ title="Decline"
             <ng-template #noApplicants>
               <span class="text-muted">No applicants</span>
             </ng-template>
+          </td>
+          <td>
+            <button class="btn btn-outline-edit btn-sm" (click)="editRide(request)">✏️</button>
+<button class="btn btn-outline-delete btn-sm" (click)="deleteRide(request.id)">🗑️ </button>
+
           </td>
         </tr>
       </tbody>
@@ -154,54 +160,115 @@ title="Decline"
 </div>
 
 
-  <!-- Create Ride Modal -->
+  <!-- Create/Edit Ride Modal -->
   <div class="modal-backdrop" *ngIf="showCreateModal && !isMapDialogOpen">
     <div class="modal">
       <div class="modal-header bg-primary text-white">
-        <h5 class="modal-title">Create a New Ride Request</h5>
+        <h5 class="modal-title">{{ showEditModal ? 'Edit Ride Request' : 'Create a New Ride Request' }}</h5>
       </div>
       <div class="modal-body">
         <form #rideForm="ngForm" (submit)="$event.preventDefault(); submitRequest();">
           <div class="mb-3">
             <label class="form-label fw-bold">Pickup Location</label>
             <div class="input-group">
-              <input [(ngModel)]="newRequest.pickupLocation" name="pickupLocation" class="form-control" readonly />
+              <!-- Bind to newRequest instead of editedRequest -->
+              <input [(ngModel)]="newRequest.pickupLocation" name="pickupLocation" class="form-control" required />
               <button type="button" class="btn btn-outline-secondary" (click)="openLocationPicker('pickup')">
                 <i class="fas fa-map-marker-alt"></i>
               </button>
             </div>
           </div>
-
+  
           <div class="mb-3">
             <label class="form-label fw-bold">Dropoff Location</label>
             <div class="input-group">
-              <input [(ngModel)]="newRequest.dropoffLocation" name="dropoffLocation" class="form-control" readonly />
+              <!-- Bind to newRequest instead of editedRequest -->
+              <input [(ngModel)]="newRequest.dropoffLocation" name="dropoffLocation" class="form-control" required />
               <button type="button" class="btn btn-outline-secondary" (click)="openLocationPicker('dropoff')">
                 <i class="fas fa-map-marker-alt"></i>
               </button>
             </div>
           </div>
-
+  
           <div class="mb-3">
             <label class="form-label fw-bold">Preferred Time</label>
             <input type="datetime-local" class="form-control" [(ngModel)]="newRequest.preferredTime" name="preferredTime" required #time="ngModel" />
             <div *ngIf="time.invalid && time.touched" class="text-danger small">Preferred Time is required</div>
           </div>
-
+  
           <div class="mb-3">
             <label class="form-label fw-bold">Seats Needed</label>
             <input type="number" class="form-control" [(ngModel)]="newRequest.seatsNeeded" name="seatsNeeded" min="1" required #seats="ngModel" placeholder="Number of seats" />
             <div *ngIf="seats.invalid && seats.touched" class="text-danger small">At least 1 seat is required</div>
           </div>
-
+  
           <div class="text-end">
-            <button type="submit" class="btn btn-success me-2" [disabled]="rideForm.invalid">✅ Submit</button>
+            <button type="submit" class="btn btn-success me-2" [disabled]="rideForm.invalid">{{ showEditModal ? 'Update' : 'Submit' }}</button>
             <button type="button" class="btn btn-secondary" (click)="showCreateModal = false">Cancel</button>
           </div>
         </form>
       </div>
     </div>
   </div>
+  
+
+
+  <!-- Create/Edit Ride Modal -->
+  <div class="modal-backdrop" *ngIf="showEditModal && !isMapDialogOpen">
+    <div class="modal">
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title">{{ showEditModal ? 'Edit Ride Request' : 'Create a New Ride Request' }}</h5>
+      </div>
+      <div class="modal-body">
+        <form #rideForm="ngForm" (submit)="$event.preventDefault(); submitRequest();">
+          <div class="mb-3">
+            <label class="form-label fw-bold">Pickup Location</label>
+            <div class="input-group">
+              <!-- Bind to newRequest instead of editedRequest -->
+              <input [(ngModel)]="editedRequest.pickupLocation" name="pickupLocation" class="form-control" required />
+              <button type="button" class="btn btn-outline-secondary" (click)="openLocationPicker('pickup')">
+                <i class="fas fa-map-marker-alt"></i>
+              </button>
+            </div>
+          </div>
+  
+          <div class="mb-3">
+            <label class="form-label fw-bold">Dropoff Location</label>
+            <div class="input-group">
+              <!-- Bind to newRequest instead of editedRequest -->
+              <input [(ngModel)]="editedRequest.dropoffLocation" name="dropoffLocation" class="form-control" required />
+              <button type="button" class="btn btn-outline-secondary" (click)="openLocationPicker('dropoff')">
+                <i class="fas fa-map-marker-alt"></i>
+              </button>
+            </div>
+          </div>
+  
+          <div class="mb-3">
+            <label class="form-label fw-bold">Preferred Time</label>
+            <input type="datetime-local" class="form-control" [(ngModel)]="editedRequest.preferredTime" name="preferredTime" required #time="ngModel" />
+            <div *ngIf="time.invalid && time.touched" class="text-danger small">Preferred Time is required</div>
+          </div>
+  
+          <div class="mb-3">
+            <label class="form-label fw-bold">Seats Needed</label>
+            <input type="number" class="form-control" [(ngModel)]="editedRequest.seatsNeeded" name="seatsNeeded" min="1" required #seats="ngModel" placeholder="Number of seats" />
+            <div *ngIf="seats.invalid && seats.touched" class="text-danger small">At least 1 seat is required</div>
+          </div>
+  
+          <div class="text-end">
+            <button type="submit" class="btn btn-success me-2" [disabled]="rideForm.invalid">{{ showEditModal ? 'Update' : 'Submit' }}</button>
+            <button type="button" class="btn btn-secondary" (click)="showCreateModal = false ">Cancel</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  
+
+
 </section>
+
+
+
 
 <app-footer-front></app-footer-front>

@@ -1,4 +1,3 @@
-// ✅ FINAL VERSION of CarpoolingComponent (with backend favorites)
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -69,6 +68,15 @@ export class CarpoolingComponent implements OnInit {
   showEditForm: { [rideId: string]: boolean } = {};
   editRatingData: { [rideId: string]: RideRating } = {};
   showTodayOnly: boolean = false;
+  editMode: { [key: string]: boolean } = {};
+
+  canRateRide: { [rideId: string]: boolean } = {};
+
+  showEditMessage: { [rideId: string]: boolean } = {};  // To show "edit message"
+  submittedRatings: { [rideId: string]: boolean } = {};
+
+
+
 
   newCarpool: Carpool = {
     driverId: '',
@@ -91,14 +99,6 @@ export class CarpoolingComponent implements OnInit {
     private snackBar: MatSnackBar
   ) {}
 
- 
-
-toggleTodayFilter(): void {
-  this.showTodayOnly = !this.showTodayOnly;
-  this.applyRideFilter(); // Reapply filter when toggling
-}
-
-
   ngOnInit(): void {
     this.currentUserId = this.authService.getUserIdFromToken();
     this.currentUserName = this.authService.getUserNameFromToken() ?? '';
@@ -106,7 +106,15 @@ toggleTodayFilter(): void {
     this.fetchConfirmedBookings();
     this.loadGlobalBadges();
     this.loadDriverRatings();
-    this.loadFavoritesFromBackend(); // ✅ load from backend
+    this.loadFavoritesFromBackend();
+  }
+
+
+
+
+  toggleTodayFilter(): void {
+    this.showTodayOnly = !this.showTodayOnly;
+    this.applyRideFilter();
   }
 
   loadFavoritesFromBackend(): void {
@@ -242,6 +250,7 @@ toggleTodayFilter(): void {
       }
     });
   }
+
   applyRideFilter(): void {
     this.filteredRides = this.carpoolingList.filter(c => {
       const matchesDriver = !this.showMyRidesOnly || c.driverId === this.currentUserId;
@@ -263,7 +272,6 @@ toggleTodayFilter(): void {
       rideDate.getFullYear() === today.getFullYear()
     );
   }
-  
 
   toggleFavoritesFilter(): void {
     this.showFavoritesOnly = !this.showFavoritesOnly;
@@ -313,6 +321,7 @@ toggleTodayFilter(): void {
       next: () => {
         this.showToast(`✅ ${seats} seat(s) booked successfully!`);
         this.seatsToBook[rideId] = 1;
+       
       },
       error: (err) => {
         console.error(err);

@@ -387,3 +387,17 @@ body.modal-open button {
 body:not(.modal-open) button {
   pointer-events: auto;
 }
+
+/* Custom styling for the Edit and Delete buttons */
+.btn-outline-edit, .btn-outline-delete {
+  background-color: white;        /* White background */
+  color: black;                   /* Black text color */
+  border-color: black;            /* Black border */
+  font-weight: bold;              /* Make the text bold */
+}
+
+.btn-outline-edit:hover, .btn-outline-delete:hover {
+  background-color: black;       /* Change to black background on hover */
+  color: white;                   /* Change text color to white on hover */
+  border-color: black;            /* Keep black border */
+}

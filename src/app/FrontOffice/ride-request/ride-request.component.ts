@@ -14,6 +14,7 @@ import { FooterFrontComponent } from '../footer-front/footer-front.component';
 import { LocationMapDialogComponent } from '../location-map-dialog/location-map-dialog.component';
 import { RideRouteMapDialogComponent } from '../ride-route-map-dialog/ride-route-map-dialog.component';
 
+
 @Component({
   selector: 'app-ride-request',
   standalone: true,
@@ -37,8 +38,34 @@ export class RideRequestComponent implements OnInit {
   
 
   showMyRequests: boolean = false;
+  showEditModal = false;
+  
+  editedRequest: RideRequest = {
+    passengerId: '',
+    pickupLocation: '',
+    dropoffLocation: '',
+    preferredTime: '',
+    seatsNeeded: 1
+  };
+  
+  editRide(request: RideRequestWithNames): void {
+    // Clone the selected request to prevent modifying the original data
+    this.editedRequest = { ...request };
+     // Set the current user as the passenger ID
+  
+    // Open the modal
+    this.showCreateModal = true;
+    this.showEditModal = true;
+  }
+  
 
-
+  deleteRide(requestId: string): void {
+   
+    this.rideRequestService.deleteRide(requestId).subscribe(() => {
+      this.snackBar.open('🗑️ Ride request deleted!', 'Close', { duration: 3000 });
+      this.loadRequests();  // Reload requests to update the UI
+    });
+  }
   
   declineConfirmedRide(requestId: string): void {
     // Send the request to the backend to decline the confirmed ride
@@ -47,6 +74,7 @@ export class RideRequestComponent implements OnInit {
       this.loadRequests(); // Reload requests to update the UI
     });
   }
+  
   
 
   openRouteMap(pickup: string, dropoff: string): void {
@@ -98,6 +126,26 @@ export class RideRequestComponent implements OnInit {
     }
   }
 
+  openEditModal(request: RideRequestWithNames): void {
+    this.editedRequest = { ...request };  // Clone the selected request to prevent modifying original data
+    this.showEditModal = true;
+    this.showCreateModal = true;  // Show the modal
+  }
+
+  openCreateModal(): void {
+    // Clear the newRequest object for creating a fresh request
+    this.newRequest = {
+      passengerId: this.currentUserId || '',
+      pickupLocation: '',
+      dropoffLocation: '',
+      preferredTime: '',
+      seatsNeeded: 1
+    };
+  
+    this.showCreateModal = true;  // Show the modal for creating a new request
+    this.showEditModal = false;  // Ensure the edit modal is hidden
+  }
+
   decline(driverId: string, requestId: string): void {
     if (!driverId || !requestId) return;
   
@@ -124,12 +172,50 @@ export class RideRequestComponent implements OnInit {
 
   submitRequest(): void {
     if (!this.currentUserId) return;
+  
+    // If we're in the edit mode, we call the edit method
+    if (this.showEditModal) {
+      this.submitEditRequest();
+    } else {
+      // If we're creating a new ride request
+      // Ensure that both pickup and dropoff locations are filled
+     
+  
+      // Assign the current user as the passenger
+      this.newRequest.passengerId = this.currentUserId;
+  
+      // Call the service to create the ride request
+      this.rideRequestService.create(this.newRequest).subscribe({
+        next: () => {
+          this.snackBar.open('✅ Ride request submitted!', 'Close', { duration: 3000 });
+          this.resetForm();
+          this.loadRequests(); // Reload requests to update the UI
+        },
+        error: (err) => {
+          console.error('Error submitting ride request:', err);
+          this.snackBar.open('⚠️ Error submitting ride request. Please try again.', 'Close', { duration: 3000 });
+        }
+      });
+    }
+  }
+  
 
-    this.newRequest.passengerId = this.currentUserId;
-    this.rideRequestService.create(this.newRequest).subscribe(() => {
-      this.snackBar.open('✅ Ride request submitted!', 'Close', { duration: 3000 });
-      this.resetForm();
-      this.loadRequests();
+  submitEditRequest(): void {
+    if (!this.currentUserId || !this.editedRequest.id) return;
+
+    this.editedRequest.passengerId = this.currentUserId; // Ensure passengerId is set to current user
+
+    this.rideRequestService.editRideRequest(this.editedRequest).subscribe({
+      next: () => {
+        this.snackBar.open('✅ Ride request updated!', 'Close', { duration: 3000 });
+        this.loadRequests(); // Reload requests to update the UI
+        this.showEditModal = false; // Close the modal after updating
+        this.showCreateModal = false;
+      },
+      error: (err) => {
+        console.error('Error editing ride request:', err);
+        this.snackBar.open('⚠️ Error updating ride request. Please try again.', 'Close', { duration: 3000 });
+      }
     });
   }
 
@@ -180,23 +266,46 @@ export class RideRequestComponent implements OnInit {
       if (coords) {
         this.reverseGeocode(coords.lat, coords.lng)
           .then((address) => {
-            if (type === 'pickup') {
-              this.newRequest.pickupLocation = address;
+            // Check if we're editing or creating a new request
+            if (this.showEditModal) {
+              // Editing an existing request
+              if (type === 'pickup') {
+                this.editedRequest.pickupLocation = address;
+              } else {
+                this.editedRequest.dropoffLocation = address;
+              }
             } else {
-              this.newRequest.dropoffLocation = address;
+              // Creating a new request
+              if (type === 'pickup') {
+                this.newRequest.pickupLocation = address;
+              } else {
+                this.newRequest.dropoffLocation = address;
+              }
             }
           })
           .catch(() => {
+            // Fallback to the coordinates if reverse geocoding fails
             const fallback = `Lat: ${coords.lat.toFixed(5)}, Lng: ${coords.lng.toFixed(5)}`;
-            if (type === 'pickup') {
-              this.newRequest.pickupLocation = fallback;
+            if (this.showEditModal) {
+              // Editing an existing request
+              if (type === 'pickup') {
+                this.editedRequest.pickupLocation = fallback;
+              } else {
+                this.editedRequest.dropoffLocation = fallback;
+              }
             } else {
-              this.newRequest.dropoffLocation = fallback;
+              // Creating a new request
+              if (type === 'pickup') {
+                this.newRequest.pickupLocation = fallback;
+              } else {
+                this.newRequest.dropoffLocation = fallback;
+              }
             }
           });
       }
     });
   }
+  
   
 
   private async reverseGeocode(lat: number, lng: number): Promise<string> {

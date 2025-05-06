@@ -38,6 +38,7 @@ export class CreateAdComponent implements OnInit {
   onFileSelected(event: any): void {
     if (event.target.files && event.target.files.length > 0) {
       this.selectedFile = event.target.files[0];
+      this.adForm.patchValue({ image: this.selectedFile.name });
     }
   }
   onSubmit(): void {
@@ -49,10 +50,11 @@ export class CreateAdComponent implements OnInit {
         endDate: new Date(this.adForm.value.endDate).toISOString()
       };
   
-      const imageBlob = this.selectedFile; // Blob de l'image sélectionnée
+      const adJson = JSON.stringify(formattedData); // Serialize the Ad data to a JSON string
   
       // Utiliser la nouvelle méthode du service
-      this.adService.createAd(formattedData, imageBlob).subscribe({
+      this.adService.createAd(adJson, this.selectedFile, 'body').subscribe({
+
         next: () => {
           alert('Annonce soumise avec succès !');
           this.router.navigate(['/adlist']);

@@ -6,8 +6,29 @@
     <app-sidebar-back></app-sidebar-back>
   </div>
 
+
   <!-- Main Content (Takes remaining space) -->
   <div class="container mt-4 content">
+
+    <div class="container mt-5">
+      <div class="card shadow p-4">
+        <h2 class="text-center mb-4">Gestion des jours de congé autorisés</h2>
+    
+        <form [formGroup]="settingsForm" (ngSubmit)="updateSettings()">
+          <div class="form-group mb-3">
+            <label for="maxAllowedDays" class="form-label fw-bold">Nombre maximum de jours autorisés</label>
+            <input type="number" id="maxAllowedDays" class="form-control" formControlName="maxAllowedDays" min="1" required>
+          </div>
+    
+          <div class="d-flex justify-content-center">
+            <button type="submit" class="btn btn-primary" [disabled]="settingsForm.invalid">
+              Mettre à jour
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
     <h2 class="text-primary text-center mb-4">Leave Requests List</h2>
 
     <div class="table-responsive">

@@ -20,21 +20,38 @@
     <div class="form-group mb-3">
       <label for="receiverName">Receiver Name</label>
       <input id="receiverName" formControlName="receiverName" class="form-control">
-    </div>
-    <div class="form-group mb-3">
+      <div *ngIf="fastPostForm.get('receiverName')?.touched && fastPostForm.get('receiverName')?.invalid" class="text-danger">
+        <small *ngIf="fastPostForm.get('receiverName')?.errors?.['required']">Name is required.</small>
+        <small *ngIf="fastPostForm.get('receiverName')?.errors?.['pattern']">Only letters are allowed.</small>
+        <small *ngIf="fastPostForm.get('receiverName')?.errors?.['maxLength']">Max 20 characters allowed.</small>
+      </div>
+
+
       <label for="receiverAddress">Receiver Address</label>
       <input id="receiverAddress" formControlName="receiverAddress" class="form-control">
-    </div>
-    <div class="form-group mb-3">
-      <label for="receiverTelNbr">Receiver Tel Number</label>
+      <div *ngIf="fastPostForm.get('receiverAddress')?.touched && fastPostForm.get('receiverAddress')?.invalid" class="text-danger">
+        <small *ngIf="fastPostForm.get('receiverAddress')?.errors?.['required']">Address is required.</small>
+        <small *ngIf="fastPostForm.get('receiverAddress')?.errors?.['pattern']">Only letters are allowed.</small>
+        <small *ngIf="fastPostForm.get('receiverAddress')?.errors?.['minlength']">Minimum 5 characters required.</small>
+      </div>
+
+      <label for="receiverTelNbr">Receiver Phone Number</label>
       <input id="receiverTelNbr" type="number" formControlName="receiverTelNbr" class="form-control">
-    </div>
-    <div class="form-group mb-3">
-      <label for="packageWeight">Package Weight With Kg</label>
+      <div *ngIf="fastPostForm.get('receiverTelNbr')?.touched && fastPostForm.get('receiverTelNbr')?.invalid" class="text-danger">
+        <small *ngIf="fastPostForm.get('receiverTelNbr')?.errors?.['required']">Phone number is required.</small>
+        <small *ngIf="fastPostForm.get('receiverTelNbr')?.errors?.['pattern']">Must be at least 8 digits and only numbers.</small>
+      </div>
+
+      <label for="packageWeight">Package Weight (kg)</label>
       <input id="packageWeight" type="number" step="0.1" formControlName="packageWeight" class="form-control">
+      <div *ngIf="fastPostForm.get('packageWeight')?.touched && fastPostForm.get('packageWeight')?.invalid" class="text-danger">
+        <small *ngIf="fastPostForm.get('packageWeight')?.errors?.['required']">Weight is required.</small>
+        <small *ngIf="fastPostForm.get('packageWeight')?.errors?.['pattern']">Only whole numbers are allowed.</small>
+      </div>
     </div>
 
     <button type="submit" class="btn btn-primary">Submit Fast Post</button>
   </form>
+</div>
 </div>
 <app-footer-front></app-footer-front>

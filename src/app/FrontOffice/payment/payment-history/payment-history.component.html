@@ -1,0 +1,27 @@
+<app-header-front></app-header-front>
+
+<h2>🧾 Historique des paiements</h2>
+
+<table class="table">
+  <thead>
+  <tr>
+    <th>Montant (€)</th>
+    <th>Date</th>
+    <th>Type</th>
+    <th>Statut</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let p of payments">
+    <td>{{ p.amount }}</td>
+    <td>{{ p.paymentDate | date:'short' }}</td>
+    <td>{{ p.paymentType }}</td>
+    <td>
+        <span [ngClass]="p.status ? 'text-success' : 'text-danger'">
+          {{ p.status ? 'Réussi' : 'Échoué' }}
+        </span>
+    </td>
+  </tr>
+  </tbody>
+</table>
+<app-footer-front></app-footer-front>

@@ -24,10 +24,16 @@ export class FastpostFormComponent implements OnInit {
 
   ngOnInit(): void {
     this.fastPostForm = this.fb.group({
-      receiverName: ['', Validators.required],
-      receiverAddress: ['', Validators.required],
-      receiverTelNbr: ['', Validators.required],
-      packageWeight: ['', Validators.required],
+      receiverName: ['', [Validators.required,
+        Validators.pattern('^[A-Za-z ]+$'), // Only letters and spaces
+        Validators.maxLength(20) ]],
+      receiverAddress: ['', [Validators.required,
+        Validators.pattern('^[A-Za-z ]+$'), // Only letters and spaces
+        Validators.minLength(5)]],
+      receiverTelNbr: ['', [Validators.required,
+        Validators.pattern('^[0-9]{8,}$')]],
+      packageWeight: ['', [Validators.required,
+        Validators.pattern('^[0-9]+$')]],
       fastPostStatus: ['PENDING']
       //packageSize: ['', Validators.required]
     });
@@ -35,20 +41,35 @@ export class FastpostFormComponent implements OnInit {
 
   onSubmit(): void {
     if (this.fastPostForm.valid) {
-      const fastPost: FastPost = this.fastPostForm.value;
+      // Ensure correct data types before submission
+      const fastPost: FastPost = {
+        ...this.fastPostForm.value,
+        packageWeight: Number(this.fastPostForm.value.packageWeight) || 0, // Ensure it's a number
+        receiverTelNbr: String(this.fastPostForm.value.receiverTelNbr) // Ensure it's a string
+      };
+
+      console.log('Submitting Fast Post:', fastPost); // Debugging
+
       this.fastPostService.addFastPost(fastPost).subscribe({
         next: (response: any) => {
-          console.log('Fast post created', response);
+          console.log('Fast post created:', response);
           alert('Fast post submitted successfully!');
           this.router.navigate(['/']);
         },
         error: (err) => {
-          console.error('Error submitting fast post', err);
+          console.error('Error submitting fast post:', err);
+          alert('An error occurred while submitting the form. Please try again.');
         }
       });
+
     } else {
-      console.error("Form is invalid");
+      console.error("Form is invalid", this.fastPostForm.errors);
+      alert('Please fill in all required fields correctly.');
     }
+  }
+
+  get f() {
+    return this.fastPostForm.controls;
   }
 
 }

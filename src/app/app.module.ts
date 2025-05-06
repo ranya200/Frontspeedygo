@@ -26,7 +26,7 @@ import { ProductListComponent } from "./FrontOffice/Product/product-list/product
 import { ProductCreateComponent } from './FrontOffice/Product/product-create/product-create.component';
 import { ProductEditComponent } from './FrontOffice/Product/product-edit/product-edit.component';
 import { ProductDetailComponent } from "./FrontOffice/Product/product-detail/product-detail.component";
-
+import { ClientProductListComponent} from "./FrontOffice/Product/client-product-list/client-product-list.component";
 
 // Order & Payment Components
 import { OrderCreateComponent } from "./FrontOffice/Order/order-create/order-create.component";
@@ -61,6 +61,9 @@ import { ComplaintDetailsComponent } from './FrontOffice/complaint/complaint-det
 import { ComplaintAdminComponent } from './BackOffice/complaint/complaint-admin/complaint-admin.component';
 import { ComplaintAdminopenComponent } from './BackOffice/complaint/complaint-adminopen/complaint-adminopen.component';
 import { AdDetailsComponent } from './FrontOffice/Ad/ad-details/ad-details.component';
+import {StarRatingComponent} from "./FrontOffice/Product/star-rating-component/star-rating-component.component";
+import {VehicleAlertComponent} from "./BackOffice/Vehicle/vehicle-alert/vehicle-alert.component";
+import { ProductclientComponent } from './FrontOffice/Product/productclient/productclient.component';
 
 export function initializeKeycloak(authService: AuthService) {
   return () => authService.init();
@@ -75,51 +78,53 @@ const apiConfig = new Configuration({
   declarations: [
     AppComponent
   ],
-  imports: [
-    BrowserModule,
-    FormsModule,
-    ReactiveFormsModule,
-    AppRoutingModule,
-    RouterModule,
-    CommonModule,
-    HttpClientModule,
-    KeycloakAngularModule,
-    NgOptimizedImage,
-    AllTemplateBackComponent,
-    FooterBackComponent,
-    NavbarBackComponent,
-    CreateAdComponent,
-    AdListComponent,
-    EditAdComponent,
-    SidebarBackComponent,
-    CompanyComponent,
-    AllTemplateFrontComponent,
-    HeaderFrontComponent,
-    FooterFrontComponent,
-    LeaveAddComponent,
-    LeaveslistComponent,
-    LeaveEditComponent,
-    CarpoolingComponent,
-    ProductListComponent,
-    ProductCreateComponent,
-    ProductEditComponent,
-    ProductDetailComponent,
-    OrderCreateComponent,
-    PaymentFormComponent,
-    LeaveadminComponent,
-    PromotionaddComponent,
-    PromotioneditComponent,
-    PromotionlistComponent,
-    PackageListComponent,
-    ComplaintAddComponent,
-    ComplaintEditComponent,
-    ComplaintListComponent,
-    ComplaintDetailsComponent,
-    ComplaintAdminComponent,
-    ComplaintAdminopenComponent,
-    AdDetailsComponent,
-    ApiModule.forRoot(() => apiConfig)
-  ],
+    imports: [
+        BrowserModule,
+        FormsModule,
+        ReactiveFormsModule,
+        AppRoutingModule,
+        RouterModule,
+        CommonModule,
+        HttpClientModule,
+        KeycloakAngularModule,
+        NgOptimizedImage,
+        AllTemplateBackComponent,
+        FooterBackComponent,
+        NavbarBackComponent,
+        CreateAdComponent,
+        AdListComponent,
+        EditAdComponent,
+        SidebarBackComponent,
+        CompanyComponent,
+        AllTemplateFrontComponent,
+        HeaderFrontComponent,
+        FooterFrontComponent,
+        LeaveAddComponent,
+        LeaveslistComponent,
+        LeaveEditComponent,
+        CarpoolingComponent,
+        ProductListComponent,
+        ProductCreateComponent,
+        ProductEditComponent,
+        ProductDetailComponent,
+        ClientProductListComponent,
+        OrderCreateComponent,
+        PaymentFormComponent,
+        LeaveadminComponent,
+        PromotionaddComponent,
+        PromotioneditComponent,
+        PromotionlistComponent,
+        PackageListComponent,
+        ComplaintAddComponent,
+        ComplaintEditComponent,
+        ComplaintListComponent,
+        ComplaintDetailsComponent,
+        ComplaintAdminComponent,
+        ComplaintAdminopenComponent,
+        AdDetailsComponent,
+        ApiModule.forRoot(() => apiConfig),
+        StarRatingComponent
+    ],
   providers: [
     {
       provide: APP_INITIALIZER,

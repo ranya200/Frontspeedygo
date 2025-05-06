@@ -1,0 +1,35 @@
+<app-navbar-back></app-navbar-back>
+
+<!-- Sidebar Component -->
+<app-sidebar-back></app-sidebar-back>
+<div class="container mt-4">
+  <div class="card shadow-lg p-4">
+  <h2 class="text-center mb-4">🛠️ Planifier une maintenance</h2>
+    <div class="offset-md-2 col-md-10">
+      <div class="container">
+
+  <form [formGroup]="scheduleForm" (ngSubmit)="submit()">
+    <div class="mb-3">
+      <label>Description</label>
+      <input class="form-control" type="text" formControlName="description">
+    </div>
+
+    <div class="mb-3">
+      <label>Kilométrage prévu (trigger)</label>
+      <input class="form-control" type="number" formControlName="triggerDistanceKm">
+    </div>
+
+    <div class="mb-3">
+      <label>Kilométrage actuel</label>
+      <input class="form-control" type="number" formControlName="currentDistanceKm">
+    </div>
+
+    <button type="submit" class="btn btn-primary" [disabled]="scheduleForm.invalid">
+      Enregistrer
+    </button>
+  </form>
+      </div>
+    </div>
+  </div>
+
+</div>

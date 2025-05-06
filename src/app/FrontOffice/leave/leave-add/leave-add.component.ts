@@ -26,10 +26,22 @@ export class LeaveAddComponent implements OnInit {
       endDate: ['', Validators.required],
       reason: ['', [Validators.required, Validators.minLength(5)]],
       status: ['PENDING', Validators.required] // Default to PENDING
+    }, {
+      validators: this.dateRangeValidator  // ✅ Add validator here
     });
         // Fetch all leaves when component loads
-
   }
+
+  dateRangeValidator(form: FormGroup): { [key: string]: any } | null {
+    const start = new Date(form.get('startDate')?.value);
+    const end = new Date(form.get('endDate')?.value);
+  
+    if (start && end && start > end) {
+      return { dateInvalid: true };
+    }
+    return null;
+  }
+  
 
   onSubmit(): void {
     if (this.leaveForm.valid) {

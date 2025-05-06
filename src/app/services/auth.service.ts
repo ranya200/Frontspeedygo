@@ -54,17 +54,28 @@ export class AuthService {
   async storeToken() {
     const token = this.keycloak.getKeycloakInstance().token;
     if (token) {
-      localStorage.setItem('token', token); // Sauvegarde du token
-      console.log('Token enregistré dans Local Storage');
-    } else {
-      console.warn('Aucun token récupéré');
+      localStorage.setItem('token', token);
+      console.log('✅ Token enregistré dans Local Storage');
+
+      // 🔹 Assure-toi que la requête envoie bien le token
+      this.http.get('http://localhost:8089/speedygo/api/user/me', {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }).subscribe({
+        next: (data) => console.log('✅ Utilisateur récupéré:', data),
+        error: (err) => console.error('❌ Erreur lors de l’enregistrement utilisateur:', err)
+      });
     }
   }
 
 
+
+
   getToken(): string | null {
-    return this.keycloak.getKeycloakInstance().token || null;
+    return localStorage.getItem('token');
   }
+
 
 
   async getUserProfile() {
@@ -85,6 +96,4 @@ export class AuthService {
     const token = this.keycloak.getKeycloakInstance().tokenParsed;
     return token?.realm_access?.roles || [];
   }
-
-
 }

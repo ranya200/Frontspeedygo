@@ -1,75 +1,49 @@
 <app-header-front></app-header-front>
 
-<div class="container">
-  <h2>Demande de Congé</h2>
-  
-  <form [formGroup]="leaveForm" (ngSubmit)="selectedLeave ? updateLeave() : onSubmit()">
-    
-    <!-- Date de début -->
-    <div class="form-group">
-      <label for="startDate">Date de début</label>
-      <input id="startDate" type="date" formControlName="startDate" class="form-control" required>
+<div class="container mt-4">
+  <div class="card shadow-lg p-4">
+    <h2 class="text-primary text-center mb-4">Leave Request</h2>
+
+    <form [formGroup]="leaveForm" (ngSubmit)="onSubmit()">
+      
+      <!-- Start Date -->
+      <div class="form-group mb-3">
+        <label for="startDate" class="form-label fw-bold">Start Date</label>
+        <input id="startDate" type="date" formControlName="startDate" class="form-control rounded" required>
+      </div>
+
+      <!-- End Date -->
+      <div class="form-group mb-3">
+        <label for="endDate" class="form-label fw-bold">End Date</label>
+        <input id="endDate" type="date" formControlName="endDate" class="form-control rounded" required>
+      </div>
+      <div *ngIf="leaveForm.errors?.['dateInvalid'] && leaveForm.touched" class="alert alert-danger mt-2">
+        La date de début doit être antérieure à la date de fin.
+      </div>      
+
+      <!-- Reason for Leave -->
+      <div class="form-group mb-3">
+        <label for="reason" class="form-label fw-bold">Reason</label>
+        <textarea id="reason" formControlName="reason" class="form-control rounded" rows="4" required></textarea>
+      </div>
+
+      <!-- Submit Button -->
+      <div class="d-flex justify-content-center">
+        <button type="submit" class="btn btn-primary btn-lg px-4" [disabled]="leaveForm.invalid">
+          <i class="fas fa-paper-plane"></i> Submit
+        </button>
+      </div>
+
+    </form>
+
+    <!-- Return Button -->
+    <div class="d-flex justify-content-center mt-3">
+      <a class="btn btn-secondary btn-lg px-4" [routerLink]="['/leave']">
+        <i class="fas fa-arrow-left"></i> Return
+      </a>
     </div>
 
-    <!-- Date de fin -->
-    <div class="form-group">
-      <label for="endDate">Date de fin</label>
-      <input id="endDate" type="date" formControlName="endDate" class="form-control" required>
-    </div>
-
-    <!-- Raison du congé -->
-    <div class="form-group">
-      <label for="reason">Raison</label>
-      <textarea id="reason" formControlName="reason" class="form-control" required></textarea>
-    </div>
-
-    <!-- Statut -->
-    <div class="form-group">
-      <label for="status">Statut</label>
-      <select id="status" formControlName="status" class="form-control">
-        <option value="PENDING">En attente</option>
-        <option value="APPROVED">Approuvé</option>
-        <option value="REJECTED">Rejeté</option>
-      </select>
-    </div>
-
-    <!-- Boutons d'action -->
-    <button type="submit" class="btn btn-primary" [disabled]="leaveForm.invalid">
-      {{ selectedLeave ? 'Mettre à Jour' : 'Soumettre' }}
-    </button>
-
-    <button *ngIf="selectedLeave" type="button" class="btn btn-secondary" (click)="cancelEdit()">
-      Annuler
-    </button>
-
-  </form>
-
-  <hr>
-
-  <h2>Liste des demandes de congé</h2>
-  <table class="table">
-    <thead>
-      <tr>
-        <th>Date de début</th>
-        <th>Date de fin</th>
-        <th>Motif</th>
-        <th>Statut</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let leave of leaves">
-        <td>{{ leave.startDate }}</td>
-        <td>{{ leave.endDate }}</td>
-        <td>{{ leave.reason }}</td>
-        <td>{{ leave.status }}</td>
-        <td>
-          <button class="btn btn-warning" (click)="editLeave(leave)">Modifier</button>
-          <button class="btn btn-danger" (click)="deleteLeave(leave.id!)">Supprimer</button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  </div>
 </div>
 
 <app-footer-front></app-footer-front>

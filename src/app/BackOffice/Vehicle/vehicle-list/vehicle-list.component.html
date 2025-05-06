@@ -1,113 +1,101 @@
 <app-navbar-back></app-navbar-back>
 <app-sidebar-back></app-sidebar-back>
+
 <div class="container mt-4">
-  <!-- Sidebar (Fixed on the Left) -->
-
-
   <div class="row">
     <div class="offset-md-2 col-md-10">
-         <h2 class="mb-3">List Of Vehicules</h2>
-      <div class="table-responsive">
-    <!-- The offset adds left space -->
-        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 15px;">
-          <label for="search">Rechercher par marque</label>
-          <input
-            id="search"
-            type="text"
-            [(ngModel)]="searchTerm"
-            placeholder="Entrez une marque..."
-            style="padding: 8px; border: 1px solid #ccc; border-radius: 5px; font-size: 16px;"
-          />
-          <button (click)="search()"
-                  style="padding: 8px 12px; background-color: #ff6b5b; color: white; border: none; border-radius: 5px; cursor: pointer;">
-            Search
-          </button>
+      <h2 class="mb-4 text-center">List of Vehicles</h2>
+
+      <!-- Search Bar -->
+      <div class="d-flex align-items-center gap-2 mb-4">
+        <label for="search" class="form-label me-2">Rechercher par marque</label>
+        <input
+          id="search"
+          type="text"
+          [(ngModel)]="searchTerm"
+          placeholder="Entrez une marque..."
+          class="form-control w-auto"
+        />
+        <button (click)="search()" class="btn btn-warning">
+          Search
+        </button>
+      </div>
+
+      <!-- Top Buttons -->
+      <div class="d-flex flex-wrap justify-content-between align-items-center mb-4">
+        <a class="btn btn-success" routerLink="/admin/vehicles/new">
+          <i class="bi bi-plus-circle"></i> Add Vehicle
+        </a>
+        <a class="btn btn-danger" routerLink="/admin">
+          <i class="bi bi-speedometer2"></i> Dashboard
+        </a>
+        <a class="btn btn-outline-warning" routerLink="/maintenance-alerts">
+          <i class="bi bi-exclamation-triangle"></i> Vehicles to Maintain
+        </a>
+      </div>
+
+      <!-- Vehicle Cards View -->
+      <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+        <div class="col" *ngFor="let vehicle of vehicles">
+          <div class="card h-100 shadow">
+            <img *ngIf="vehicle.imageFileName"
+                 [src]="'data:image/jpeg;base64,' + vehicle.imageFileName"
+                 class="card-img-top"
+                 alt="{{ vehicle.brand }}" />
+
+            <div class="card-body">
+              <h5 class="card-title">{{ vehicle.brand }} - {{ vehicle.model }}</h5>
+              <p class="card-text mb-1"><strong>Capacity:</strong> {{ vehicle.capacity }}</p>
+              <p class="card-text mb-1"><strong>License:</strong> {{ vehicle.licensePlate }}</p>
+              <p class="card-text mb-1"><strong>VIN:</strong> {{ vehicle.vin }}</p>
+              <p class="card-text mb-1"><strong>Fabrication Date:</strong> {{ vehicle.fabricationDate | date:'dd/MM/yyyy' }}</p>
+              <p class="card-text mb-1"><strong>Fuel Type:</strong> {{ vehicle.fuelType }}</p>
+              <p class="card-text mb-1"><strong>Type:</strong> {{ vehicle.vehicleType }}</p>
+
+              <!-- ✅ Affichage du driver -->
+              <p class="card-text mb-1" *ngIf="vehicle.driverFirstName && vehicle.driverLastName">
+                👨‍✈️ <strong>Driver:</strong> {{ vehicle.driverFirstName }} {{ vehicle.driverLastName }}
+              </p>
+
+
+
+              <p class="card-text">
+                <span class="badge"
+                      [ngClass]="{
+                        'bg-warning text-dark': vehicle.vehicleStatusD === 'PENDING',
+                        'bg-success': vehicle.vehicleStatusD === 'APPROVED',
+                        'bg-danger': vehicle.vehicleStatusD === 'REJECTED'
+                      }">
+                  {{ vehicle.vehicleStatusD }}
+                </span>
+              </p>
+            </div>
+
+            <div class="card-footer d-flex flex-wrap gap-2 justify-content-center">
+              <button *ngIf="vehicle.vehicleStatusD === 'PENDING'"
+                      class="btn btn-sm btn-success"
+                      (click)="approveVehicle(vehicle)">
+                ✅ Approve
+              </button>
+              <button *ngIf="vehicle.vehicleStatusD === 'PENDING'"
+                      class="btn btn-sm btn-danger"
+                      (click)="rejectVehicle(vehicle)">
+                ❌ Reject
+              </button>
+              <a class="btn btn-sm btn-info" [routerLink]="['/edit-vehicle', vehicle.idV]">
+                ✏️ Edit
+              </a>
+              <a class="btn btn-sm btn-warning" [routerLink]="['/maintenance/schedule', vehicle.idV]">
+                🛠️ Schedule
+              </a>
+              <button class="btn btn-sm btn-danger" (click)="deleteVehicle(vehicle.idV)">
+                🗑️ Delete
+              </button>
+            </div>
+          </div>
         </div>
+      </div>
 
-
-
-        <!-- Add Vehicle Button (for admin) -->
-        <div class="d-flex justify-content-between align-items-center mb-3">
-          <a class="btn btn-success px-4 py-2" routerLink="/admin/vehicles/new">
-      <i class="bi bi-plus-circle"></i> Add Vehicle
-    </a>
-    <!-- Right Side: Dashboard Button -->
-    <a class="btn btn-danger px-4 py-2" routerLink="/admin">
-      <i class="bi bi-speedometer2"></i> Dashboard
-    </a>
-  </div>
-
-
-  <!-- Vehicle List Table -->
-  <div class="table-responsive">
-    <table class="table table-bordered table-hover shadow-sm">
-      <thead class="table-dark">
-      <tr>
-        <th>Brand</th>
-        <th>Model</th>
-        <th>Capacity</th>
-        <th>License Plate</th>
-        <th>Vin</th>
-        <th>fabrication Date</th>
-        <th>fuel Type</th>
-        <th>image File Name</th>
-        <th>Vehicle Status</th>
-        <th>vehicle Type</th>
-        <th>Status</th>
-
-        <th class="text-center">Actions</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr *ngFor="let vehicle of vehicles">
-        <td>{{ vehicle.brand }}</td>
-        <td>{{ vehicle.model }}</td>
-        <td>{{ vehicle.capacity }}</td>
-        <td>{{ vehicle.licensePlate }}</td>
-        <td>{{vehicle.vin}}</td>
-        <td>{{vehicle.fabricationDate}}</td>
-        <td>{{vehicle.fuelType}}</td>
-        <td><img *ngIf = "vehicle.imageFileName" [src]="'data:image/jpeg;base64,'+ vehicle.imageFileName" class="card-img-top" alt="{{ vehicle.brand}}" /></td>
-        <td>{{vehicle.vehicleStatus}}</td>
-        <td>{{vehicle.vehicleType}}</td>
-        <td>
-              <span
-                class="badge"
-                [ngClass]="{
-                  'bg-warning text-dark': vehicle.vehicleStatusD === 'PENDING',
-                  'bg-success': vehicle.vehicleStatusD === 'APPROVED',
-                  'bg-danger': vehicle.vehicleStatusD === 'REJECTED'
-                }">{{vehicle.vehicleStatusD}}
-              </span>
-        </td>
-
-        <td class="text-center">
-          <!-- ✅ Approve Button (Visible only if leave is PENDING) -->
-          <button *ngIf="vehicle.vehicleStatusD === 'PENDING'" class="btn btn-success btn-sm me-2" (click)="approveVehicle(vehicle)">
-            <i class="fas fa-check-circle"></i> Approve
-          </button>
-
-          <!-- ❌ Reject Button (Visible only if leave is PENDING) -->
-          <button *ngIf="vehicle.vehicleStatusD === 'PENDING'" class="btn btn-danger btn-sm" (click)="rejectVehicle(vehicle)">
-            <i class="fas fa-times-circle"></i> Reject
-          </button>
-
-        <!-- Edit Button -->
-          <a class="btn btn-sm btn-info me-2" [routerLink]="['/edit-vehicle', vehicle.idV]">
-            <i class="bi bi-pencil"></i> Edit
-          </a>
-
-          <!-- Delete Button -->
-          <button class="btn btn-sm btn-danger" (click)="deleteVehicle(vehicle.idV)">
-            <i class="bi bi-trash"></i> Delete
-          </button>
-        </td>
-      </tr>
-      </tbody>
-    </table>
+    </div>
   </div>
 </div>
-  </div>
-</div>
- </div>
-

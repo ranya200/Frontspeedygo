@@ -1,0 +1,31 @@
+<app-navbar-back></app-navbar-back>
+<app-sidebar-back></app-sidebar-back>
+<div class="container mt-4">
+  <div class="row">
+    <!-- The offset adds left space -->
+    <div class="offset-md-2 col-md-10">
+  <h2>Produits en attente de validation</h2>
+
+      <div *ngIf="!pendingProducts || pendingProducts.length === 0">
+        <p>Aucun produit en attente.</p>
+      </div>
+
+      <div class="row">
+    <div *ngFor="let product of pendingProducts" class="col-md-4 mb-4">
+      <div class="card">
+        <img *ngIf="product.image" [src]="'data:image/jpeg;base64,' + product.image" class="card-img-top" alt="Product image">
+        <div class="card-body">
+          <h5 class="card-title">{{ product.name }}</h5>
+          <p class="card-text">{{ product.description }}</p>
+          <p class="card-text"><strong>Prix:</strong> {{ product.price }}€</p>
+          <p class="card-text"><strong>Partenaire:</strong> {{ product.partnerName }}</p>
+          <button class="btn btn-success me-2" (click)="approveProduct(product.id!)">✅ Approuver</button>
+          <button class="btn btn-danger" (click)="rejectProduct(product.id!)">❌ Rejeter</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+  </div>
+</div>
+

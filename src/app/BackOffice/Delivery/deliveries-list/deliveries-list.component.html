@@ -1,0 +1,43 @@
+<app-navbar-back></app-navbar-back>
+<app-sidebar-back></app-sidebar-back>
+
+<div class="container mt-4">
+  <div class="row">
+    <div class="offset-md-2 col-md-10">
+      <h2 class="text-center mb-4">📦 Commandes à Livrer</h2>
+
+      <!-- ✅ BOUTON D’AFFECTATION AUTO -->
+      <div class="text-end mb-3">
+        <button class="btn btn-success" (click)="assignDeliveries()">
+          🛠️ Affecter les Livraisons Automatiquement
+        </button>
+      </div>
+
+      <div class="row">
+        <div *ngFor="let order of orders" class="col-md-4 mb-4">
+          <div class="card shadow-sm h-100">
+            <div class="card-body d-flex flex-column">
+              <h5 class="card-title">Commande #{{ order.trackingNumber }}</h5>
+              <p class="card-text">
+                <strong>Date estimée :</strong> {{ order.estimatedDeliveryDate | date:'shortDate' }}<br>
+                <strong>Prix :</strong> {{ order.price }} €<br>
+                <strong>Priorité :</strong> {{ order.priority }}<br>
+                <strong>Status :</strong> {{ order.status }}
+              </p>
+
+              <h6>🛒 Produits :</h6>
+              <ul class="list-group list-group-flush mb-3">
+                <li *ngFor="let item of order.items" class="list-group-item">
+                  Produit : {{ item.productId }} - Quantité : {{ item.quantity }}
+                </li>
+              </ul>
+
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

@@ -1,0 +1,62 @@
+<app-header-front></app-header-front>
+
+<div class="container-fluid mt-4">
+  <div class="row">
+    <!-- Sidebar -->
+    <div class="col-md-3">
+      <div class="sidebar p-3 shadow-sm">
+        <h4 class="text-center">Categories</h4>
+        <ul class="list-group">
+          <li class="list-group-item" 
+              [class.active]="selectedCategory === 'ALL'"
+              (click)="selectCategory('ALL')">
+            All Products
+          </li>
+          <li *ngFor="let category of categories" class="list-group-item" 
+              [class.active]="selectedCategory === category"
+              (click)="selectCategory(category)">
+            {{ category }}
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="col-md-9">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h1>Liste des Produits</h1>
+        <button (click)="router.navigate(['/create-product'])" class="btn btn-primary">
+          <i class="fa fa-plus"></i> Ajouter un Produit
+        </button>
+      </div>
+      <div *ngIf="errorMessage" class="alert alert-danger">
+        {{ errorMessage }}
+      </div>
+      <div class="row">
+        <div *ngFor="let product of filteredProducts" class="col-md-4 mb-4">
+          <div class="card h-100">
+            <img *ngIf="product.image" [src]="'data:image/jpeg;base64,' + product.image" class="card-img-top" alt="{{ product.name }}">
+            <div class="card-body">
+              <h5 class="card-title">{{ product.name }}</h5>
+              <p class="card-text">{{ product.description }}</p>
+               <!-- Display Discounted Price and Original Price -->
+               <div class="card-text" *ngIf="product.discountedPrice !== product.price; else normalPrice">
+                <span class="text-muted" style="text-decoration: line-through;">{{ product.price | currency:'EUR' }}</span>
+                <p><strong>{{ product.discountedPrice | currency:'EUR' }}</strong></p>
+               </div>
+              <ng-template #normalPrice>
+                <strong>{{ product.price | currency:'EUR' }}</strong>
+              </ng-template>
+            </div>
+            <div class="card-footer">
+              <button (click)="viewProductDetails(product.id!)" class="btn btn-success btn-sm">Show Details</button>
+              <button (click)="addToPackage(product)" class="btn btn-orange btn-sm ml-2">Add to Package</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-footer-front></app-footer-front>

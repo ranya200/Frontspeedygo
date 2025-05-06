@@ -1,42 +1,73 @@
 import { Component, OnInit } from '@angular/core';
-import { ProductControllerService, Product } from '../../../openapi';
+import { ProductControllerService, Product, PanierControllerService } from 'src/app/openapi';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { HeaderFrontComponent } from "../../header-front/header-front.component";
 import { FooterFrontComponent } from "../../footer-front/footer-front.component";
+import { jwtDecode } from 'jwt-decode';
+
 
 @Component({
   selector: 'app-product-list',
   standalone: true,
-  imports: [CommonModule, HeaderFrontComponent, FooterFrontComponent, ],
+  imports: [CommonModule, HeaderFrontComponent, FooterFrontComponent],
   templateUrl: './product-list.component.html',
   styleUrl: './product-list.component.css'
 })
 export class ProductListComponent implements OnInit {
   products: Product[] = [];
   filteredProducts: Product[] = [];
-  categories = Object.values(Product.CategoryEnum); // Extract category values
+  categories = Object.values(Product.CategoryEnum);
   selectedCategory: string = 'ALL';
   errorMessage: string = '';
 
-  constructor(private productService: ProductControllerService, public router: Router) {}
+  constructor(
+    private productService: ProductControllerService,
+    private panierService: PanierControllerService, // ✅ Inject package service
+    public router: Router
+  ) {}
+
 
   ngOnInit(): void {
-    this.loadProducts();
+    const token = localStorage.getItem('token');
+    if (token) {
+      const decoded: any = jwtDecode(token);
+      const roles: string[] = decoded.realm_access?.roles || [];
+
+      if (roles.includes('partner')) {
+        this.loadPartnerProducts();
+      } else {
+        this.loadAllProducts(); // admin or client
+      }
+    }
   }
 
-  loadProducts(): void {
+  loadPartnerProducts(): void {
+    this.productService.getMyProducts().subscribe({
+      next: (data: Product[]) => {
+        this.products = data;
+        this.filterProducts();
+      },
+      error: (err) => {
+        console.error('Erreur de chargement (partenaire)', err);
+        this.errorMessage = 'Erreur de chargement de vos produits.';
+      }
+    });
+  }
+
+  loadAllProducts(): void {
     this.productService.listProducts().subscribe({
       next: (data: Product[]) => {
         this.products = data;
-        this.filterProducts(); // Filter products after loading
+        this.filterProducts();
       },
       error: (err) => {
-        console.error('Erreur de chargement', err);
+        console.error('Erreur de chargement (admin/client)', err);
         this.errorMessage = 'Erreur de chargement des produits.';
       }
     });
   }
+
 
   filterProducts(): void {
     if (this.selectedCategory === 'ALL') {
@@ -51,7 +82,7 @@ export class ProductListComponent implements OnInit {
       this.productService.deleteProduct(id).subscribe({
         next: () => {
           console.log('Produit supprimé');
-          this.loadProducts();
+          this.loadPartnerProducts();
         },
         error: (err) => console.error('Erreur lors de la suppression', err)
       });
@@ -69,5 +100,10 @@ export class ProductListComponent implements OnInit {
   selectCategory(category: string): void {
     this.selectedCategory = category;
     this.filterProducts();
+  }
+
+  // added by firas
+  makepromotion(id: string): void {
+    this.router.navigate(['/promoadd', id]);
   }
 }

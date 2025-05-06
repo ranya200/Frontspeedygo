@@ -31,9 +31,11 @@ export class ProductCreateComponent implements OnInit {
       description: [''],
       price: [0, Validators.required],
       stockQuantity: [0, Validators.required],
-      category: [''], // Adapter si c'est un objet ou un enum
+      weight: [0, Validators.required], // ✅ ajouté ici
+      category: ['', Validators.required],
       image: ['', Validators.required]
     });
+
   }
 
   onSubmit(): void {

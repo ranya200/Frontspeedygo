@@ -28,6 +28,7 @@ export class VehicleFormClientComponent implements OnInit {
 
   // List of vehicle types
   vehicleTypes = ['car', 'van', 'motoCycle'];
+  today: string = new Date().toISOString().split('T')[0];
 
 
   constructor(
@@ -39,13 +40,25 @@ export class VehicleFormClientComponent implements OnInit {
   ngOnInit(): void {
     // Set default values for status and type
     this.vehicleForm = this.fb.group({
-      brand: ['', Validators.required],
-      model: ['', Validators.required],
-      capacity: ['', Validators.required],
-      licensePlate: ['', Validators.required],
-      vin: ['', Validators.required],
+      brand: ['', Validators.required,
+        Validators.pattern('^[A-Za-z ]+$'), // Only letters and spaces
+        Validators.maxLength(20)],
+      model: ['', Validators.required,
+        Validators.pattern('^[A-Za-z0-9 ]+$'), // Letters, numbers, and spaces
+        Validators.maxLength(20)],
+      capacity: ['', Validators.required,
+        Validators.pattern('^[0-9]+$'), // Only numbers
+        Validators.min(1), // Min value = 1
+        Validators.max(9)],
+      licensePlate: ['',  Validators.required,
+        Validators.pattern('^[A-Z0-9-]+$'), // Letters, numbers, and dashes
+        Validators.maxLength(10)],
+      vin: ['', Validators.required,
+        Validators.pattern('^[A-HJ-NPR-Z0-9]{17}$')],
       fabricationDate: ['', Validators.required],
-      fuelType: ['', Validators.required],
+      fuelType: ['', Validators.required,
+        Validators.pattern('^[A-Za-z ]+$'), // Only letters and spaces
+        Validators.maxLength(15)],
       image: ['', Validators.required],
 // Set defaults for fields not shown in the UI:
       vehicleStatus: ['', Validators.required],
@@ -69,30 +82,42 @@ export class VehicleFormClientComponent implements OnInit {
   }
   onSubmit(): void {
     if (this.vehicleForm.valid && this.selectedFile) {
-      const vehicle: Vehicle = this.vehicleForm.value;
+      const formData = new FormData();
 
-      // ✅ Check if vehicleStatus and vehicleType are selected
-      if (!vehicle.vehicleStatus) {
-        alert("⚠️ Please select a vehicle status!");
-        return;
-      }
-      if (!vehicle.vehicleType) {
-        alert("⚠️ Please select a vehicle type!");
-        return;
-      }
+      // ✅ Convert vehicle object to JSON string
+      const vehicleData = {
+        idV: this.vehicleForm.value.idV || null,
+        brand: this.vehicleForm.value.brand,
+        model: this.vehicleForm.value.model,
+        capacity: this.vehicleForm.value.capacity,
+        licensePlate: this.vehicleForm.value.licensePlate,
+        vin: this.vehicleForm.value.vin,
+        fabricationDate: this.vehicleForm.value.fabricationDate,
+        fuelType: this.vehicleForm.value.fuelType,
+        vehicleStatus: this.vehicleForm.value.vehicleStatus,
+        vehicleStatusD: this.vehicleForm.value.vehicleStatusD,
+        vehicleType: this.vehicleForm.value.vehicleType,
+        adminName: null // Will be assigned in backend
+      };
 
-      const image: Blob = this.selectedFile;
+      formData.append('vehicle', JSON.stringify(vehicleData)); // ✅ Send vehicle JSON
+      formData.append('imageFileName', this.selectedFile, this.selectedFile.name); // ✅ Send Image
 
-      this.vehicleService.addVehicle(vehicle , image).subscribe({
+      // @ts-ignore
+      this.vehicleService.addVehicle(formData).subscribe({
         next: (data) => {
           console.log('✅ Vehicle created', data);
           this.router.navigate(['/']);
         },
-        error: (err) => console.error('❌ Error creating vehicle', err)
+        error: (err) => {
+          console.error('❌ Error creating vehicle', err);
+          alert("⚠️ Failed to create vehicle: " + err.message);
+        }
       });
     } else {
-      alert("⚠️ Please fill out all fields and select an image!");
+      alert("⚠️ Please fill out all required fields and select an image!");
     }
   }
+
 
 }

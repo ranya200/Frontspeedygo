@@ -1,0 +1,84 @@
+<app-header-front></app-header-front>
+
+<div class="container mt-4">
+  <h2 class="text-primary text-center mb-4">📦 Mon Package</h2>
+
+  <!-- 🛑 Error Message -->
+  <div *ngIf="errorMessage" class="alert alert-danger">
+    {{ errorMessage }}
+  </div>
+
+  <!-- ✅ Package Details -->
+  <div *ngIf="packageData" class="card shadow-lg p-4">
+    <h4 class="text-center">Produits dans le package</h4>
+
+    <div *ngIf="packageData && packageData.products && packageData.products.length > 0; else emptyPackage">
+        <table class="table table-bordered table-hover shadow-sm mt-3">
+        <thead class="table-dark">
+          <tr>
+            <th>Image</th>
+            <th>Nom</th>
+            <th>Prix</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let pip of packageData.products">
+          <td>
+            <img *ngIf="pip.product?.image"
+                 [src]="'data:image/jpeg;base64,' + pip.product?.image"
+                 class="img-thumbnail"
+                 alt="{{ pip.product?.name }}"
+                 width="60">
+          </td>
+          <td>{{ pip.product?.name }}</td>
+          <td>{{ pip.product?.price }} €</td>
+          <td>
+            <input type="number" [(ngModel)]="pip.quantity"
+                   (change)="updateQuantity(pip.product?.id!, pip.quantity!)"
+                   min="1" class="form-control form-control-sm">
+          </td>
+          <td>
+            <button (click)="removeProduct(pip.product?.id!)"
+                    class="btn btn-danger btn-sm">
+              Supprimer
+            </button>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+
+      <!-- ✅ Total Price -->
+      <div class="text-end mt-3">
+        <h5 class="text-success"><strong>Total: {{ packageData.totalPrice }} €</strong></h5>
+      </div>
+
+      <div class="text-end mt-3">
+        <p>Distance estimée : <strong>{{ deliveryDistance }} km</strong></p>
+        <p>Poids total :
+          <strong>{{ totalWeight }} kg</strong>
+        </p>
+
+        <p>Prix livraison : <strong>{{ deliveryCost }} €</strong></p>
+        <h5 class="text-success">Total à payer :
+          <strong>{{ (packageData?.totalPrice ?? 0) + deliveryCost }}</strong>
+        </h5>
+      </div>
+
+
+    </div>
+    <div class="text-end mt-4">
+      <button class="btn btn-primary" (click)="goToPayment()">Payer</button>
+    </div>
+
+    <app-delivery-estimate-map (distanceCalculated)="deliveryDistance = $event; updateEstimation()"></app-delivery-estimate-map>
+
+
+    <!-- 🛑 Empty Package Message -->
+    <ng-template #emptyPackage>
+      <p class="text-center text-muted">Aucun produit dans le package.</p>
+    </ng-template>
+  </div>
+</div>
+
+<app-footer-front></app-footer-front>

@@ -3,13 +3,13 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { HeaderFrontComponent } from '../../header-front/header-front.component';
 import { FooterFrontComponent } from '../../footer-front/footer-front.component';
-import { Leave, LeaveControllerService } from 'src/app/openapi';
-import { Router } from '@angular/router';
+import { Leave, LeaveControllerService, LeaveStatistics, LeaveStatisticsControllerService } from 'src/app/openapi';
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-leaveslist',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, HeaderFrontComponent, FooterFrontComponent],  
+  imports: [CommonModule, ReactiveFormsModule, HeaderFrontComponent, FooterFrontComponent, RouterModule ],  
   templateUrl: './leaveslist.component.html',
   styleUrl: './leaveslist.component.css'
 })
@@ -18,11 +18,29 @@ export class LeaveslistComponent implements OnInit{
   leaveForm!: FormGroup;
   leaves: Leave[] = []; // Store all leaves
   selectedLeave: Leave | null = null; // Stocke le congé en cours d'édition
+  totalDaysTaken: number = 0;
 
-  constructor(private fb: FormBuilder, private leaveService: LeaveControllerService, private router: Router) { }
+
+  constructor(private fb: FormBuilder, private leaveService: LeaveControllerService, private router: Router, private statisticsService: LeaveStatisticsControllerService) { }
   ngOnInit(): void {
     this.getAllLeaves();
+    this.fetchTotalDaysTaken();
 
+    }
+    
+    fetchTotalDaysTaken(): void {
+      this.statisticsService.getTotalDaysTaken().subscribe({
+        next: async (response) => {
+          if (response instanceof Blob) {
+            const text = await response.text();
+            const stats: LeaveStatistics = JSON.parse(text);
+            this.totalDaysTaken = stats.totalDaysTaken ?? 0;
+          } else {
+            this.totalDaysTaken = response.totalDaysTaken ?? 0;
+          }
+        },
+        error: (err) => console.error('Erreur lors de la récupération des statistiques', err)
+      });
     }
   
 

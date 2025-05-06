@@ -1,0 +1,67 @@
+<app-header-front></app-header-front>
+
+<section class="py-5 bg-success text-white text-center mb-5">
+  <div class="container">
+    <h1 class="display-5 fw-bold">📋 My Bookings</h1>
+    <p class="lead">View and manage your ride reservations easily.</p>
+  </div>
+</section>
+
+<section class="container mb-5">
+  <h2 class="h5 text-center text-dark fw-bold mb-4">🧍 Your Carpool Bookings</h2>
+
+  <div *ngIf="bookings.length === 0" class="text-center text-muted fs-5 my-5">
+    <p>You have no bookings yet. 🚶‍♂️</p>
+  </div>
+
+  <div *ngIf="bookings.length > 0" class="table-responsive">
+    <table class="table table-hover align-middle shadow-sm">
+      <thead class="table-light">
+        <tr>
+          <th>Pickup</th>
+          <th>Dropoff</th>
+          <th>Departure Time</th>
+          <th>Seats</th>
+          <th>Status</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let booking of bookings">
+          <td>{{ booking.pickupLocation }}</td>
+          <td>{{ booking.dropoffLocation }}</td>
+          <td>
+            <i class="fas fa-calendar-alt text-primary me-1"></i>
+            {{ booking.departureTime | date:'fullDate' }}<br />
+            <i class="fas fa-clock text-warning me-1"></i>
+            {{ booking.departureTime | date:'shortTime' }}
+          </td>
+          <td>{{ booking.seatsBooked }}</td>
+          <td>
+            <span class="badge rounded-pill px-3 py-2"
+              [ngClass]="{
+                'bg-warning text-dark': booking.status === 'PENDING',
+                'bg-success': booking.status === 'CONFIRMED',
+                'bg-danger': booking.status === 'DECLINED'|| booking.status === 'FULL',
+                'bg-secondary': booking.status === 'CANCELED'
+              }">
+              {{ booking.status }}
+            </span>
+          </td>
+          <td class="text-center">
+            <div *ngIf="booking.status === 'PENDING' || booking.status === 'CONFIRMED'">
+              <button class="btn btn-outline-danger btn-sm" (click)="cancelBooking(booking.id!)">
+                ❌ Cancel
+              </button>
+            </div>
+            <div *ngIf="booking.status === 'DECLINED' || booking.status === 'CANCELED'" class="text-muted small">
+              {{ booking.status === 'DECLINED' ? '❌ Declined' : '🚫 Canceled' }}
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<app-footer-front></app-footer-front>

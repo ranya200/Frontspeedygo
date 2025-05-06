@@ -1,0 +1,274 @@
+<app-header-front></app-header-front>
+
+<!-- Hero Header -->
+<section class="py-5 bg-primary text-white text-center mb-5">
+  <div class="container">
+    <h1 class="display-5 fw-bold">🚀 Manage Your Special Rides</h1>
+    <p class="lead">Find, Request, and Confirm rides easily with SpeedyGo!</p>
+  </div>
+</section>
+
+<!-- Main Section -->
+<section class="container mb-5">
+  <!-- Actions -->
+  <div class="d-flex justify-content-between align-items-center flex-wrap mb-4">
+    <h2 class="h5 fw-bold text-dark">🚘 Available Ride Requests</h2>
+    <div class="d-flex gap-2" *ngIf="!isMapDialogOpen">
+      <button class="btn btn-success" (click)="showCreateModal = true">➕ Request a Ride</button>
+      <button class="btn btn-primary" (click)="toggleMyRequests()">🧍 My Requests</button>
+      <button class="btn btn-secondary" (click)="toggleMatchedRides()">🎯 Confirmed Rides</button>
+    </div>
+  </div>
+
+  <!-- Ride Requests Table -->
+  <div *ngIf="rideRequests.length > 0" class="table-responsive">
+    <table class="table table-hover align-middle shadow-sm">
+      <thead class="table-light">
+        <tr>
+          <th><i class="fas fa-map-marker-alt text-primary"></i> Pickup</th>
+          <th><i class="fas fa-map-marker-alt text-danger"></i> Dropoff</th>
+          <th><i class="fas fa-clock text-warning"></i> Preferred Time</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let request of rideRequests" >
+          <td>{{ request.pickupLocation }}</td>
+          <td>{{ request.dropoffLocation }}</td>
+          <td>{{ request.preferredTime | date:'short' }}</td>
+          <td class="d-flex gap-2" *ngIf="!isMapDialogOpen">
+            <button *ngIf="!isApplied(request.id)" (click)="toggleApply(request.id!)" class="btn btn-outline-primary btn-sm">🚗 Apply</button>
+            <button *ngIf="isApplied(request.id)" (click)="toggleApply(request.id!)" class="btn btn-outline-danger btn-sm">❌ Unapply</button>
+            <button class="btn btn-outline-info btn-sm" (click)="openRouteMap(request.pickupLocation, request.dropoffLocation)">🗺️ View Route</button>
+          </td>
+          
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <hr class="my-5" *ngIf="yourRideRequests.length > 0 || matchedRideRequests.length > 0" />
+
+ <!-- Your Ride Requests Table -->
+<div *ngIf="showMyRequests && yourRideRequests.length > 0">
+  <h3 class="h5 mb-3">🧍 Your Ride Requests</h3>
+  <p class="text-muted">Confirm drivers who applied to your requests:</p>
+  <div class="table-responsive">
+    <table class="table table-hover align-middle shadow-sm">
+      <thead class="table-light">
+        <tr>
+          <th><i class="fas fa-map-marker-alt text-primary"></i> Pickup</th>
+          <th><i class="fas fa-map-marker-alt text-danger"></i> Dropoff</th>
+          <th><i class="fas fa-clock text-warning"></i> Time</th>
+          <th><i class="fas fa-tag"></i> Status</th>
+          <th><i class="fas fa-users"></i> Applicants</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let request of yourRideRequests">
+          <td>{{ request.pickupLocation }}</td>
+          <td>{{ request.dropoffLocation }}</td>
+          <td>{{ request.preferredTime | date:'short' }}</td>
+          <td><span class="badge bg-info">{{ request.status }}</span></td>
+          <td>
+            <div *ngIf="request.appliedDrivers?.length; else noApplicants">
+              <ul class="list-unstyled mb-0">
+                <li
+                  *ngFor="let driver of request.appliedDrivers; let last = last"
+                  class="d-flex justify-content-between align-items-center py-2 px-1"
+                  [ngStyle]="{ 'border-bottom': last ? 'none' : '1px solid #dee2e6' }"
+                  style="transition: background-color 0.2s ease;"
+                >
+                  <span>{{ driver.fullName }}</span>
+                  <span class="d-flex gap-2">
+                    <!-- Confirm and Decline icons -->
+                    <!-- Confirm Button with Tick Icon -->
+<button 
+class="btn btn-sm custom-button-confirm" 
+title="Confirm" 
+(click)="confirm(driver.id, request.id!)">
+<i class="fas fa-check"></i>
+</button>
+
+<!-- Decline Button with Cross Icon -->
+<button 
+class="btn btn-sm custom-button-decline" 
+title="Decline" 
+(click)="decline(driver.id, request.id!)">
+<i class="fas fa-times"></i>
+</button>
+
+                  </span>
+                </li>
+              </ul>
+            </div>
+            <ng-template #noApplicants>
+              <span class="text-muted">No applicants</span>
+            </ng-template>
+          </td>
+          <td>
+            <button class="btn btn-outline-edit btn-sm" (click)="editRide(request)">✏️</button>
+<button class="btn btn-outline-delete btn-sm" (click)="deleteRide(request.id)">🗑️ </button>
+
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+  
+  
+
+  <!-- Confirmed Rides Table -->
+  <!-- Confirmed Rides Table -->
+<div *ngIf="showMatchedRides && matchedRideRequests.length > 0" class="mt-5">
+  <h3 class="h5 mb-3">✅ Confirmed Rides</h3>
+  <p class="text-muted">Drivers confirmed for your ride requests:</p>
+  <div class="table-responsive">
+    <table class="table table-hover align-middle shadow-sm">
+      <thead class="table-light">
+        <tr>
+          <th><i class="fas fa-map-marker-alt text-primary"></i> Pickup</th>
+          <th><i class="fas fa-map-marker-alt text-danger"></i> Dropoff</th>
+          <th><i class="fas fa-clock text-warning"></i> Time</th>
+          <th><i class="fas fa-check-circle"></i> Status</th>
+          <th><i class="fas fa-user-check"></i> Confirmed Driver</th>
+          <th><i class="fas fa-times"></i> Action</th> <!-- Added Action Column for Decline -->
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let request of matchedRideRequests">
+          <td>{{ request.pickupLocation }}</td>
+          <td>{{ request.dropoffLocation }}</td>
+          <td>{{ request.preferredTime | date:'short' }}</td>
+          <td><span class="badge bg-success">{{ request.status }}</span></td>
+          <td>{{ getConfirmedDriverName(request) }}</td>
+          <td>
+            <button *ngIf="request.status === 'MATCHED'" 
+            title="Cancel"
+                    class="btn btn-sm custom-button-decline"  
+                    (click)="declineConfirmedRide(request.id)">
+              X
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+
+  <!-- Create/Edit Ride Modal -->
+  <div class="modal-backdrop" *ngIf="showCreateModal && !isMapDialogOpen">
+    <div class="modal">
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title">{{ showEditModal ? 'Edit Ride Request' : 'Create a New Ride Request' }}</h5>
+      </div>
+      <div class="modal-body">
+        <form #rideForm="ngForm" (submit)="$event.preventDefault(); submitRequest();">
+          <div class="mb-3">
+            <label class="form-label fw-bold">Pickup Location</label>
+            <div class="input-group">
+              <!-- Bind to newRequest instead of editedRequest -->
+              <input [(ngModel)]="newRequest.pickupLocation" name="pickupLocation" class="form-control" required />
+              <button type="button" class="btn btn-outline-secondary" (click)="openLocationPicker('pickup')">
+                <i class="fas fa-map-marker-alt"></i>
+              </button>
+            </div>
+          </div>
+  
+          <div class="mb-3">
+            <label class="form-label fw-bold">Dropoff Location</label>
+            <div class="input-group">
+              <!-- Bind to newRequest instead of editedRequest -->
+              <input [(ngModel)]="newRequest.dropoffLocation" name="dropoffLocation" class="form-control" required />
+              <button type="button" class="btn btn-outline-secondary" (click)="openLocationPicker('dropoff')">
+                <i class="fas fa-map-marker-alt"></i>
+              </button>
+            </div>
+          </div>
+  
+          <div class="mb-3">
+            <label class="form-label fw-bold">Preferred Time</label>
+            <input type="datetime-local" class="form-control" [(ngModel)]="newRequest.preferredTime" name="preferredTime" required #time="ngModel" />
+            <div *ngIf="time.invalid && time.touched" class="text-danger small">Preferred Time is required</div>
+          </div>
+  
+          <div class="mb-3">
+            <label class="form-label fw-bold">Seats Needed</label>
+            <input type="number" class="form-control" [(ngModel)]="newRequest.seatsNeeded" name="seatsNeeded" min="1" required #seats="ngModel" placeholder="Number of seats" />
+            <div *ngIf="seats.invalid && seats.touched" class="text-danger small">At least 1 seat is required</div>
+          </div>
+  
+          <div class="text-end">
+            <button type="submit" class="btn btn-success me-2" [disabled]="rideForm.invalid">{{ showEditModal ? 'Update' : 'Submit' }}</button>
+            <button type="button" class="btn btn-secondary" (click)="showCreateModal = false">Cancel</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  
+
+
+  <!-- Create/Edit Ride Modal -->
+  <div class="modal-backdrop" *ngIf="showEditModal && !isMapDialogOpen">
+    <div class="modal">
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title">{{ showEditModal ? 'Edit Ride Request' : 'Create a New Ride Request' }}</h5>
+      </div>
+      <div class="modal-body">
+        <form #rideForm="ngForm" (submit)="$event.preventDefault(); submitRequest();">
+          <div class="mb-3">
+            <label class="form-label fw-bold">Pickup Location</label>
+            <div class="input-group">
+              <!-- Bind to newRequest instead of editedRequest -->
+              <input [(ngModel)]="editedRequest.pickupLocation" name="pickupLocation" class="form-control" required />
+              <button type="button" class="btn btn-outline-secondary" (click)="openLocationPicker('pickup')">
+                <i class="fas fa-map-marker-alt"></i>
+              </button>
+            </div>
+          </div>
+  
+          <div class="mb-3">
+            <label class="form-label fw-bold">Dropoff Location</label>
+            <div class="input-group">
+              <!-- Bind to newRequest instead of editedRequest -->
+              <input [(ngModel)]="editedRequest.dropoffLocation" name="dropoffLocation" class="form-control" required />
+              <button type="button" class="btn btn-outline-secondary" (click)="openLocationPicker('dropoff')">
+                <i class="fas fa-map-marker-alt"></i>
+              </button>
+            </div>
+          </div>
+  
+          <div class="mb-3">
+            <label class="form-label fw-bold">Preferred Time</label>
+            <input type="datetime-local" class="form-control" [(ngModel)]="editedRequest.preferredTime" name="preferredTime" required #time="ngModel" />
+            <div *ngIf="time.invalid && time.touched" class="text-danger small">Preferred Time is required</div>
+          </div>
+  
+          <div class="mb-3">
+            <label class="form-label fw-bold">Seats Needed</label>
+            <input type="number" class="form-control" [(ngModel)]="editedRequest.seatsNeeded" name="seatsNeeded" min="1" required #seats="ngModel" placeholder="Number of seats" />
+            <div *ngIf="seats.invalid && seats.touched" class="text-danger small">At least 1 seat is required</div>
+          </div>
+  
+          <div class="text-end">
+            <button type="submit" class="btn btn-success me-2" [disabled]="rideForm.invalid">{{ showEditModal ? 'Update' : 'Submit' }}</button>
+            <button type="button" class="btn btn-secondary" (click)="showCreateModal = false ">Cancel</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  
+
+
+</section>
+
+
+
+
+<app-footer-front></app-footer-front>

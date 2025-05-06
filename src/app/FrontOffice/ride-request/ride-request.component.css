@@ -1,0 +1,403 @@
+/* Container Styling */
+.carpooling-container {
+  max-width: 1200px;
+  margin: auto;
+  text-align: center;
+  padding: 20px;
+}
+
+h2 {
+  font-size: 28px;
+  color: #007bff;
+  margin-bottom: 20px;
+}
+
+.carpooling-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+}
+
+.carpool-card:hover {
+  transform: translateY(-5px);
+}
+
+/* Card Header */
+.card-header {
+  font-size: 20px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 15px;
+}
+
+.card-header i {
+  color: #007bff;
+  margin-right: 5px;
+}
+
+.card-footer {
+  margin-top: auto;
+  text-align: center;
+}
+
+/* Card Body */
+.card-body {
+  font-size: 16px;
+  color: #666;
+  text-align: left;
+}
+
+.card-body p {
+  margin: 5px 0;
+}
+
+.card-body i {
+  color: #ff6b6b;
+  margin-right: 5px;
+}
+
+/* Card Footer */
+.card-footer {
+  margin-top: 15px;
+}
+
+.btn {
+  background-color: #ff6600;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.btn:hover {
+  background-color: #0056b3;
+}
+
+.carpool-card {
+  background: white;
+  width: 300px;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease-in-out;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 350px;
+}
+
+/* Submit Form Styling */
+.submit-form {
+  max-width: 500px;
+  margin: 40px auto;
+  padding: 20px;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.submit-form h2 {
+  font-size: 24px;
+  color: #007bff;
+  margin-bottom: 15px;
+}
+
+.submit-form form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.submit-form input, .submit-form button {
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+  font-size: 16px;
+  width: 100%;
+}
+
+.submit-form input:focus {
+  outline: none;
+  border-color: #007bff;
+}
+
+.submit-form button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.submit-form button:hover {
+  background-color: #0056b3;
+}
+
+/* Delete Button (X) */
+.delete-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: red !important;
+  color: white !important;
+  border: none;
+  width: 30px;
+  height: 30px;
+  font-size: 18px;
+  font-weight: bold;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.3s ease-in-out;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+  z-index: 10;
+}
+
+.delete-btn:hover {
+  background-color: darkred !important;
+}
+
+/* Update Carpool Card */
+.carpool-card {
+  background: white;
+  width: 300px;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease-in-out;
+  position: relative;
+}
+
+.carpool-card:hover {
+  transform: translateY(-5px);
+}
+
+.book-btn {
+  background-color: #ff6600;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s;
+  width: 100%;
+}
+
+.book-btn:hover {
+  background-color: #0056b3;
+}
+
+/* Modal css */
+
+/* Hide Modal If `display: none` Is Applied Somewhere */
+.modal-backdrop[hidden] {
+  display: flex !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+/* Animation */
+@keyframes fadeIn {
+  from {
+      transform: scale(0.9);
+      opacity: 0;
+  }
+  to {
+      transform: scale(1);
+      opacity: 1;
+  }
+}
+
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  z-index: 1040 !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+.modal {
+  background: white;
+  width: 400px;
+  height: 700px;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation: fadeIn 0.3s ease-in-out;
+  z-index: 1050 !important;
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+.modal-body {
+  padding-top: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Form Styling */
+.modal-body form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 10px;
+}
+
+/* Input Fields */
+.modal-body input {
+  width: 100%;
+  padding: 10px;
+  margin: 5px 0;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+/* Buttons Styling */
+.modal-body button {
+  width: 100%;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  border: none;
+}
+
+.cancel-btn {
+  background-color: #ff4d4d;
+  color: white;
+}
+
+.cancel-btn:hover {
+  background-color: #cc0000;
+}
+
+/* Carpooling Header - Fix Alignment */
+.carpooling-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding: 0 20px;
+  position: relative;
+}
+
+/* Suggest a Ride Button */
+.suggest-btn {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s ease-in-out;
+  margin-left: auto;
+}
+
+.suggest-btn:hover {
+  background-color: #218838;
+}
+
+/* Error Messages */
+.error-msg {
+  color: red;
+  font-size: 14px;
+  margin-top: 5px;
+  text-align: left;
+}
+
+button[disabled] {
+  background-color: gray !important;
+  cursor: not-allowed;
+}
+
+.applicant-scroll-container {
+  max-height: 150px;
+  overflow-y: auto;
+  padding-right: 10px;
+}
+
+button {
+  z-index: 1;
+}
+
+.fas {
+  position: relative;
+  z-index: 2;
+}
+
+.custom-button-confirm,
+.custom-button-decline {
+  background-color: white !important;
+  color: black !important;
+  border: 1px solid #ccc;
+}
+
+.custom-button-confirm:hover,
+.custom-button-decline:hover {
+  background-color: #f8f9fa !important;
+}
+
+.custom-button-confirm i,
+.custom-button-decline i {
+  color: black;
+}
+
+/* Modal Overlay */
+.modal-backdrop {
+  z-index: 1040 !important;
+}
+
+.modal {
+  z-index: 1050 !important;
+}
+
+.modal-backdrop.show {
+  pointer-events: all;
+}
+
+body.modal-open button {
+  pointer-events: none;
+}
+
+body:not(.modal-open) button {
+  pointer-events: auto;
+}
+
+/* Custom styling for the Edit and Delete buttons */
+.btn-outline-edit, .btn-outline-delete {
+  background-color: white;        /* White background */
+  color: black;                   /* Black text color */
+  border-color: black;            /* Black border */
+  font-weight: bold;              /* Make the text bold */
+}
+
+.btn-outline-edit:hover, .btn-outline-delete:hover {
+  background-color: black;       /* Change to black background on hover */
+  color: white;                   /* Change text color to white on hover */
+  border-color: black;            /* Keep black border */
+}

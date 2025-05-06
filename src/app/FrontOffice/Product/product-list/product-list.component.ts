@@ -6,7 +6,6 @@ import { HeaderFrontComponent } from "../../header-front/header-front.component"
 import { FooterFrontComponent } from "../../footer-front/footer-front.component";
 import { jwtDecode } from 'jwt-decode';
 
-
 @Component({
   selector: 'app-product-list',
   standalone: true,
@@ -26,7 +25,6 @@ export class ProductListComponent implements OnInit {
     private panierService: PanierControllerService, // ✅ Inject package service
     public router: Router
   ) {}
-
 
   ngOnInit(): void {
     const token = localStorage.getItem('token');
@@ -68,7 +66,6 @@ export class ProductListComponent implements OnInit {
     });
   }
 
-
   filterProducts(): void {
     if (this.selectedCategory === 'ALL') {
       this.filteredProducts = this.products;
@@ -100,10 +97,5 @@ export class ProductListComponent implements OnInit {
   selectCategory(category: string): void {
     this.selectedCategory = category;
     this.filterProducts();
-  }
-
-  // added by firas
-  makepromotion(id: string): void {
-    this.router.navigate(['/promoadd', id]);
   }
 }

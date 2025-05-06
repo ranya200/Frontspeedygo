@@ -36,26 +36,26 @@
         <div *ngFor="let product of filteredProducts" class="col-md-4 mb-4">
           <div class="card h-100">
             <img *ngIf="product.image" [src]="'data:image/jpeg;base64,' + product.image" class="card-img-top" alt="{{ product.name }}">
+
+            <!-- Badge de prédiction dans le coin -->
+            <div class="badge-container">
+              <span class="badge"
+                    [ngClass]="{
+                      'badge-success': product.prediction === 'Fast',
+                      'badge-danger': product.prediction === 'Slow'
+                    }">
+                {{ product.prediction === 'Fast' ? 'Fast' : 'Slow' }}
+              </span>
+            </div>
+
             <div class="card-body">
               <h5 class="card-title">{{ product.name }}</h5>
               <p class="card-text">{{ product.description }}</p>
-               <!-- Display Discounted Price and Original Price -->
-               <div class="card-text" *ngIf="product.discountedPrice !== product.price; else normalPrice">
-                <span class="text-muted" style="text-decoration: line-through;">{{ product.price | currency:'EUR' }}</span>
-                <p><strong>{{ product.discountedPrice | currency:'EUR' }}</strong></p>
-               </div>
-              <ng-template #normalPrice>
-                <strong>{{ product.price | currency:'EUR' }}</strong>
-              </ng-template>
+              <p class="card-text"><strong>{{ product.price }} €</strong></p>
             </div>
             <div class="card-footer">
-
-              <button (click)="viewProductDetails(product.id!)" class="btn btn-success btn-sm">Show Details</button>
-              <button (click)="editProduct(product.id!)" class="btn btn-success btn-sm">Edit</button>
-            </div>
-            <div class="card-footer">
-              <button (click)="makepromotion(product.id!)" class="btn btn-secondary btn-sm mr-2">add promotion</button>
-              <button (click)="deleteProduct(product.id!)" class="btn btn-danger btn-sm">Delete</button>
+              <button (click)="editProduct(product.id!)" class="btn btn-secondary btn-sm mr-2">Modifier</button>
+              <button (click)="deleteProduct(product.id!)" class="btn btn-danger btn-sm">Supprimer</button>
             </div>
           </div>
         </div>

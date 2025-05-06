@@ -34,4 +34,10 @@ export class CarpoolingService {
   updateCarpooling(id: string, carpool: Carpool): Observable<Carpool> {
     return this.http.put<Carpool>(`${this.apiUrl}/${id}`, carpool);
   }
+
+  getCarpoolingByDriverId(driverId: string): Observable<Carpool[]> {
+    return this.http.get<Carpool[]>(`/api/carpooling/by-driver/${driverId}`);
+  }
+  
+  
 }

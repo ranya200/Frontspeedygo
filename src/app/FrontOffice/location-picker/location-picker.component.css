@@ -1,0 +1,15 @@
+#map {
+    height: 350px;
+    width: 100%;
+    border-radius: 8px;
+    margin-top: 10px;
+    z-index: 1000;
+  }
+  
+  .location-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  

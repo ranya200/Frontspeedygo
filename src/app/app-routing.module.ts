@@ -48,12 +48,23 @@ import {VehicleEditComponent} from "./BackOffice/Vehicle/vehicle-edit/vehicle-ed
 import {DeliveryListComponent} from "./BackOffice/Delivery/delivery-list/delivery-list.component";
 import {FastpostEditComponent} from "./BackOffice/FastPost/fastpost-edit/fastpost-edit.component";
 import {DeliveryEditComponent} from "./BackOffice/Delivery/delivery-edit/delivery-edit.component";
+
+import { RideRequestComponent } from './FrontOffice//ride-request/ride-request.component';
+import { RideApplyComponent } from './FrontOffice//ride-apply/ride-apply.component';
+
 import {OrderHistoryComponent} from "./FrontOffice/Orders/order-history/order-history.component";
+
 import { adminGuard } from './guards/admin.guard';
 import { clientGuard } from './guards/client.guard';
 import { driverGuard } from './guards/driver.guard';
 import { visitorGuard } from './guards/visitor.guard';
 import { partnerGuard } from './guards/partner.guard';
+
+import {LocationMapComponent} from './FrontOffice/location-map/location-map.component'
+import { CarpoolingBookingsComponent } from './FrontOffice/carpooling-bookings/carpooling-bookings.component';
+import { MyBookingsComponent } from './FrontOffice/my-bookings/my-bookings.component';
+
+
 import {PaymentSuccessComponent} from "./FrontOffice/payment/payment-success/payment-success.component";
 import {PaymentCancelComponent} from "./FrontOffice/payment/payment-cancel/payment-cancel.component";
 import {PaymentHistoryComponent} from "./FrontOffice/payment/payment-history/payment-history.component";
@@ -137,6 +148,14 @@ const routes: Routes = [
   { path: 'fastposts/new', component: FastpostFormComponent, canActivate: [clientGuard] },
   { path: 'fastposts', component: FastpostListComponent , canActivate: [adminGuard] },
   { path: 'fastposts/edit/:id', component: FastpostEditComponent, canActivate: [adminGuard]  },
+
+  //carpooling
+  { path: 'request-ride', component: RideRequestComponent },
+  { path: 'apply-to-ride', component: RideApplyComponent },
+  { path: 'map', component: LocationMapComponent },
+  { path: 'carpooling-bookings', component: CarpoolingBookingsComponent },
+  { path: 'my-bookings', component: MyBookingsComponent },
+
 
   { path: 'admin', component: AllTemplateBackComponent, canActivate: [adminGuard] },
   { path: '**', redirectTo: '' },

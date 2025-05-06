@@ -1,0 +1,32 @@
+<app-header-front></app-header-front>
+
+<!-- Banner -->
+<div class="py-3 bg-primary bg-pattern mb-4">
+  <div class="container text-center text-white">
+    <span class="heading-xxs letter-spacing-xl">
+      Apply to Ride Requests as a Driver
+    </span>
+  </div>
+</div>
+
+<!-- Apply Section -->
+<div class="carpooling-container">
+  <div class="carpooling-header">
+    <h2>Open Ride Requests</h2>
+  </div>
+
+  <div class="carpooling-list">
+    <div class="carpool-card" *ngFor="let request of rideRequests">
+      <div class="card-body">
+        <p><i class="fas fa-map-marker-alt"></i> <strong>Pickup:</strong> {{ request.pickupLocation }}</p>
+        <p><i class="fas fa-map-marker-alt"></i> <strong>Dropoff:</strong> {{ request.dropoffLocation }}</p>
+        <p><i class="fas fa-clock"></i> <strong>Time:</strong> {{ request.preferredTime }}</p>
+      </div>
+      <div class="card-footer">
+        <button class="btn book-btn" (click)="apply(request.id!)">🚗 Apply as Driver</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-footer-front></app-footer-front>

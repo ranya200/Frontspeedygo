@@ -1,0 +1,17 @@
+<div *ngIf="ratings.length > 0" class="mt-2">
+    <div *ngFor="let rating of ratings" class="border rounded p-2 mb-2 bg-light">
+      <p class="mb-1"><strong>⭐ Average:</strong> {{ average(rating) | number:'1.1-2' }} / 5</p>
+      <p class="mb-1">
+        🛡️ Safety: {{ rating.safetyScore }} |
+        ⏱️ Punctuality: {{ rating.punctualityScore }} |
+        💺 Comfort: {{ rating.comfortScore }}
+      </p>
+      <p *ngIf="rating.comment" class="fst-italic text-secondary">“{{ rating.comment }}”</p>
+      <small class="text-muted">🕒 Rated on {{ rating.createdAt | date:'short' }}</small>
+    </div>
+  </div>
+  
+  <div *ngIf="ratings.length === 0" class="text-muted small mt-2">
+    No reviews for this ride yet.
+  </div>
+  

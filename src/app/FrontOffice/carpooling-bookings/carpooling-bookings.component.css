@@ -1,0 +1,19 @@
+.card {
+    transition: transform 0.2s ease;
+  }
+  
+  .card:hover {
+    transform: scale(1.01);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+  
+  .badge {
+    font-size: 0.95rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  
+  .btn-success {
+    font-weight: 500;
+  }
+  
